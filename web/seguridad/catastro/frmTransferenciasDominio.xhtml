@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <div class="ui-g"> 
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <center><b>Transferencias de Dominio</b></center>
+                    <p:dataTable id="tblTransferencias" var="transferencia" value="#{ctTransferenciaDominio.lstTransferencias}" rows="10"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{transferencia.idTransferencia}"
+                                 selection="#{ctTransferenciaDominio.objTransferencia}" selectionMode="single">
+                        <p:column headerText="Clave Catastral" width="5%" style="text-align: center">
+                            <h:outputText value="#{transferencia.predio.claveCatastral}"/>
+                        </p:column>
+                        <p:column headerText="Cédula-RUC Propietario" width="5%" style="text-align: center">
+                            <h:outputText value="#{transferencia.propietario.cedula}"/>
+                        </p:column>
+                        <p:column headerText="Propietario" width="6%" style="text-align: center">
+                            <h:outputText value="#{transferencia.propietario.nombres}"/>
+                        </p:column>
+                        <p:column headerText="Cédula-RUC Comprador" width="5%" style="text-align: center">
+                            <h:outputText value="#{transferencia.comprador.cedula}"/>
+                        </p:column>
+                        <p:column headerText="Comprador" width="6%" style="text-align: center">
+                            <h:outputText value="#{transferencia.comprador.nombres}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha de Transferencia" width="4%" style="text-align: center">
+                            <h:outputText value="#{transferencia.fechaRegistro}">
+                                <f:convertDateTime pattern = "dd-MMM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column exportable="false" width="2%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-assignment"
+                                             onclick="PF('wdlgDetalleTransfer').show()"
+                                             update="frmDetalles">
+                                <f:setPropertyActionListener value="#{transferencia}" target="#{ctTransferenciaDominio.objTransferencia}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <f:facet name="footer">                            
+                            <h:commandLink>
+                                <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                <p:dataExporter type="xls" target="tblTransferencias" fileName="Transferencias de dominio" />
+                            </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage name="/imagenes/pdf.png"/>
+                                <p:dataExporter type="pdf" target="tblTransferencias" fileName="Transferencias de dominio"/>
+                            </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage name="/imagenes/csv.png"/>
+                                <p:dataExporter type="csv" target="tblTransferencias" fileName="Transferencias de dominio" />
+                            </h:commandLink>                                        
+                        </f:facet>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+
+        <ui:include src="dlgDetalleTransferencia.xhtml"/>  
+    </ui:define>   
+</ui:composition>    

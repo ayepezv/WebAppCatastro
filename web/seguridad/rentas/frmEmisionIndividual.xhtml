@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 21}">
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                        <h:form id="frmPrincipal">
+                            <center>
+                                <h2>Emisión Individual</h2>
+                            </center>
+                            <p:growl autoUpdate="true" showDetail="false"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-12 ui-lg-3">
+                                    <div class="card">     
+                                        <b>Buscar:</b>
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Zona: "/>
+                                            <h:inputText id="txtZona" value="#{ctEmisionIndividual.numZona}"
+                                                         size="5"/>
+                                            <p:outputLabel value="Sector: "/>
+                                            <h:inputText id="txtSector" value="#{ctEmisionIndividual.numSector}"
+                                                         size="5"/>
+                                            <p:outputLabel value="Manzana: "/>
+                                            <h:inputText id="txtManzan" value="#{ctEmisionIndividual.numManzana}"
+                                                         size="5"/>
+                                            <p:outputLabel value="Predio: "/>
+                                            <h:inputText id="txtPredio" value="#{ctEmisionIndividual.numPredio}"
+                                                         size="5"/>
+                                            <p:commandButton id="btnBuscar" value="Buscar"
+                                                             icon="ui-icon-search"
+                                                             action="#{ctEmisionIndividual.buscarPredios()}"
+                                                             title="Buscar"
+                                                             update="tblPredios"
+                                                             process="txtZona, txtSector, txtManzan, txtPredio, btnBuscar"/>
+                                            <p:commandButton value="Limpiar"
+                                                             icon="ui-icon-refresh"
+                                                             title="Limpiar"
+                                                             action="#{ctEmisionIndividual.inicializar()}"
+                                                             update="@form"
+                                                             process="@this"/>
+                                        </p:panelGrid>
+                                    </div>                        
+                                </div>   
+                                <div class="ui-g-12 ui-md-12 ui-lg-9">
+                                    <div class="card">     
+                                        <p:dataTable id="tblPredios" var="predio" value="#{ctEmisionIndividual.lstPredios}" rows="5"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                                     editable="true" selection="#{ctEmisionIndividual.objPredio}" selectionMode="single">
+                                            <f:facet name="header">
+                                                <p:outputLabel value="Listado de predios"/>
+                                            </f:facet>
+                                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.claveCatastral}"/>
+                                            </p:column>
+                                            <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                            </p:column>
+                                            <p:column headerText="Dirección" width="12%">
+                                                <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                            </p:column>   
+                                            <p:column width="5%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-swap-horiz"
+                                                                 title="Seleccionar" process="@this"
+                                                                 action="#{ctEmisionIndividual.buscarTitulos()}"
+                                                                 update="frmPrincipal:tblTitulos">
+                                                    <f:setPropertyActionListener value="#{predio}" target="#{ctEmisionIndividual.objPredio}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>                        
+                                </div>
+                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <div class="card">                                        
+                                        <p:dataTable id="tblTitulos" var="titulo" value="#{ctEmisionIndividual.lstTitPendientes}" rows="10"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="10,15,20,25" reflow="true">  
+                                            <f:facet name="header">
+                                                <b>Títulos pendientes</b>
+                                            </f:facet>
+                                            <p:column headerText="Año" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.anioTitulo}"/>
+                                            </p:column>
+                                            <p:column headerText="Número de título" width="8%" style="text-align: center">
+                                                <h:outputText value="#{titulo.tituloNumero}"/>
+                                            </p:column>
+                                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                                <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha de emisión" width="8%" style="text-align: center">
+                                                <h:outputText value="#{titulo.fechaEmision}">
+                                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Valor titulo" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.totalTitulo}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Descuentos" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.descuento}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Intereses" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.interesesMora}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Total a pagar" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.totalPagar}">                                    
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>                                   
+
+                                            <f:facet name="footer">    
+                                                <p:commandButton value="Nuevo"
+                                                                 icon="ui-icon-add-to-queue"
+                                                                 onclick="PF('dlgNuevaEmision').show()"
+                                                                 update="frmNuevaEmision"/>
+                                            </f:facet>
+
+                                        </p:dataTable>
+                                    </div>                                        
+                                </div>
+
+
+                            </div> 
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                        </p:dialog>
+                    </c:when>
+                </c:choose>
+
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert != VariablesGlobales.privActivo}">
+                        <center>
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <div class="card">  
+                                        <b><h1>Permisos Insuficientes</h1></b>
+                                        <b>Consulte con el administrador</b>                      
+                                    </div>                        
+                                </div>                        
+                            </div>  
+                        </center>
+                    </c:when>
+                </c:choose>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != 21}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="dlgEmisionIndividual.xhtml"/>  
+    </ui:define>
+</ui:composition>

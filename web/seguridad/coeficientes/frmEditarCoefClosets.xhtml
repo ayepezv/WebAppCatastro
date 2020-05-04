@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarCoefClosets" widgetVar="dlgEditarCoefClosets" closable="false" modal="true" resizable="true" 
+              header="Editar Coeficientes de Closets" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarCoefClosets">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefAcabClosets.coefclosetsSel.coeficiente}"
+                             required="true"
+                             requiredMessage="Nombre Obligatorio"/>
+                <p:outputLabel value="Codigo: "/>
+                <p:inputText value="#{ctrlCoefAcabClosets.coefclosetsSel.codigo}"
+                             required="true"
+                             requiredMessage="Codigo Obligatorio"/>
+                <p:outputLabel value="Valor del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefAcabClosets.coefclosetsSel.valorCoeficiente}"
+                             required="true"
+                             requiredMessage="Valor Obligatorio"/>
+                
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefAcabClosets.actualizar()}"
+                                 update="frmListaCoefClosets:tblListaCoefClosets"
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarCoefClosets').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

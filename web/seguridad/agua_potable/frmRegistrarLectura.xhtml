@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgRegistrarLectura" widgetVar="dlgRegistrarLectura" closable="false" modal="true" resizable="true" 
+              header="Registrar lectura" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarLectura">
+            <p:panelGrid columns="4"  styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Medidor: "/>
+                <p:selectOneMenu id="advanced" value="#{controladorLecturasAP.idMedidor}"                                 
+                                 effect="fade" filter="true" filterMatchMode="startsWith"
+                                 required="true" requiredMessage="Seleccione un medidor.">
+                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                    <f:selectItems value="#{controladorLecturasAP.lstMedidores}" var="medidor" 
+                                   itemLabel="#{medidor.numSerie}" itemValue="#{medidor.idMedidor}" />                   
+                </p:selectOneMenu>
+                <p:outputLabel value="Fecha de lectura: "/>
+                <p:calendar id="fechaLectura" value="#{controladorLecturasAP.fechaLectura}" showOn="button" 
+                            required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"
+                            requiredMessage="Especifique la fecha de lectura"/>
+                <p:outputLabel value="Inicio periodo: "/>
+                <p:calendar id="inicioPeriodo" value="#{controladorLecturasAP.fechaInicio}" showOn="button" 
+                            required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"
+                            requiredMessage="Especifique la fecha de inicio del perdiodo"/>
+                <p:outputLabel value="Fin periodo: "/>
+                <p:calendar id="finPeriodo" value="#{controladorLecturasAP.fechaFin}" showOn="button" 
+                            required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"
+                            requiredMessage="Especifique la fecha de finalización del perdiodo"/>                 
+                <p:outputLabel value="Lectura: "/>
+                <p:inputText value="#{controladorLecturasAP.objLectura.lecturaActual}" rendered="true"
+                             requiredMessage="La lectura es campo obligatorio"/>
+            </p:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                 update="frmLecturas:tblLecturas,frmRegistrarLectura"
+                                 action="#{controladorLecturasAP.registrarLectura()}"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarLectura').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

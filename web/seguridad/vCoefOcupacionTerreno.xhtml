@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgOcupTerreno" widgetVar="wgOcupTerreno" modal="true" resizable="false" 
+              appendTo="@(body)" header="Escoja una Opción" showEffect="fade" hideEffect="fade" style="width: 100%">
+
+        <h:form id="frmOcupTerreno">
+            <p:panel id="panelIngresar"  widgetVar="plnOcupTerreno" closable="true" toggleable="true" style="width: 100%">                
+                <div class="menu-gestion">
+                    <!--<div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefLocalizacion.xhtml"> falta                   
+                            <span class="gestion-icono">3</span>
+                            <div >
+                                <h2 class="titulo-gestion">Ocupación</h2>
+                            </div>
+                        </a>
+                    </div> -->
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefLocalizacion.xhtml">
+                            <span class="gestion-icono">2</span>
+                            <div >
+                                <h2 class="titulo-gestion">Localización</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefTopografia.xhtml">
+                            <span class="gestion-icono">1</span>
+                            <div >
+                                <h2 class="titulo-gestion">Topografía</h2>
+                            </div>
+                        </a>
+                    </div >
+
+                     <!--<div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefLocalizacion.xhtml"> 
+                             <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Forma</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                     <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefLocalizacion.xhtml"> falta 
+                             <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Caract. del suelo</h2>
+                            </div>
+                        </a>
+                    </div> -->
+                </div>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

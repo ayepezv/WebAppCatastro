@@ -1,0 +1,536 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+
+                    <h:form id="frmRegistrarPredios">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+                        <center>                        
+                            <h2>CATASTRO URBANO</h2>
+                            <h3>Registro de Predios</h3>
+                        </center>                    
+                        <div class="main1-box" style="height: 100%">                                                                                                           
+                            <p:panel header="1. IDENTIFICACIÓN">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" style="text-align: left">
+                                    <h:panelGroup>
+                                        <b>1.1. DIVISIÓN POLÍTICA TERRITORIAL</b>
+                                        <p:panelGrid columns="7" layout="grid" styleClass="ui-panelgrid-blank form-group" style="text-align: left">                                          
+                                            <h:outputLabel value="PROVINCIA:"/>
+                                            <b>Napo</b>
+                                            <h:outputLabel value="CANTÓN:"/>
+                                            <b>Archidona</b>
+                                            <h:outputLabel value="PARROQUIA:"/>
+                                            <p:selectOneMenu id="cmbParroquias" value="#{predioCtrl.idParroquiaSel}" required="true"
+                                                             requiredMessage="La parroquia es obligatoria" filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstParroquias}" var="parroquia" itemLabel="#{parroquia.nombre}"
+                                                               itemValue="#{parroquia.idParroquia}"/>
+                                                <p:ajax event="change" listener="#{predioCtrl.obtenerBarriosDadoParroquia()}" update="cmbBarrios"/>
+                                            </p:selectOneMenu> 
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <b>1.2. CLAVE CATASTRAL LOCAL</b>
+                                        <p:panelGrid columns="11" layout="grid" styleClass="ui-panelgrid-blank form-group">                                            
+                                            <h:outputLabel value="ZONA:"/>
+                                            <p:selectOneMenu id="cmbZona" value="#{predioCtrl.idZonaSel}" required="true"
+                                                             requiredMessage="La zona es obligatoria"
+                                                             filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstZonas}" var="zona" itemLabel="#{zona.nombre}"
+                                                               itemValue="#{zona.idZona}"/>
+                                                <p:ajax event="change" listener="#{predioCtrl.obtenerSectorDadoZona()}" update="cmbSector"/>
+                                            </p:selectOneMenu>  
+                                            <h:outputLabel value="SECTOR:"/>
+                                            <p:selectOneMenu id="cmbSector" value="#{predioCtrl.idSectorSel}" required="true"
+                                                             requiredMessage="El sector es obligatoria"
+                                                             filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstSectores}" var="sector" itemLabel="#{sector.nombre}"
+                                                               itemValue="#{sector.idSector}"/>
+                                                <p:ajax event="change" listener="#{predioCtrl.obtenerManzanasDadoSector()}" update="cmbManzana"/>
+                                            </p:selectOneMenu>  
+                                            <h:outputLabel value="MANZANA:"/>
+                                            <p:selectOneMenu id="cmbManzana" value="#{predioCtrl.idManzanaSel}" required="true"
+                                                             requiredMessage="La manzana es obligatoria"
+                                                             filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstManzanas}" var="manzana" itemLabel="#{manzana.numManzana}"
+                                                               itemValue="#{manzana.idManzana}"/>
+                                            </p:selectOneMenu> 
+                                            <h:outputLabel value="PREDIO:"/>
+                                            <p:inputText value="#{predioCtrl.numeroPredio}" style="width: 35px"/>
+                                            <h:outputLabel value="TIPO DE LOTE:"/>
+                                            <p:selectOneMenu id="cmbTipoPredio" value="#{predioCtrl.idTipoPredioSel}" required="true"
+                                                             requiredMessage="El tipo de predio es obligatoria">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstTiposLotes}" var="tipoLote" itemLabel="#{tipoLote.nombre}"
+                                                               itemValue="#{tipoLote.idTipoLote}"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+                                    <!--
+                                    <h:panelGroup styleClass="md-inputfield">                                       
+                                        <b>1.3. CLAVE CATASTRAL ANTERIOR</b>    
+                                        <p:inputText value="#{predioCtrl.predio.claveCatAnterior}" style="width: 70%"/>
+                                    </h:panelGroup>    
+                                    -->
+                                </p:panelGrid>
+                            </p:panel>
+                        </div> 
+                        <br/>
+                        <div class="main1-box" style="height: 100%">                                                                                                           
+                            <p:panel header="2. UBICACIÓN">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup id="pnlUbicacion">
+                                        <p:panelGrid columns="7" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <b>2.1. BARRIO:</b>
+                                            <p:selectOneMenu id="cmbBarrios" value="#{predioCtrl.idBarrioSel}" required="true"
+                                                             requiredMessage="El barrio es obligatorio" panelStyle="width:180px"
+                                                             filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstBarrios}" var="barrio" itemLabel="#{barrio.nombre}"
+                                                               itemValue="#{barrio.idBarrio}"/>
+                                            </p:selectOneMenu>  
+                                            <b>2.2. CALLES:</b>
+                                            <h:outputText value="Principal"/>
+                                            <p:selectOneMenu id="cmbCallePrincipal" value="#{predioCtrl.idCallePrincipal}" required="true"
+                                                             requiredMessage="La calle principal es obligatoria" panelStyle="width:250px"
+                                                             filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstCalles}" var="callePrinc" itemLabel="#{callePrinc.nombre}"
+                                                               itemValue="#{callePrinc.idCalle}"/>
+                                            </p:selectOneMenu> 
+                                            <h:outputText value="Secundaria"/>
+                                            <p:selectOneMenu id="cmbCalleSecuandaria" value="#{predioCtrl.idCalleSecundaria}" required="true"
+                                                             requiredMessage="La calle secundaria es obligatoria" panelStyle="width:250px"
+                                                             filter="true" filterMatchMode="startsWith">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstCalles}" var="calleSec" itemLabel="#{calleSec.nombre}"
+                                                               itemValue="#{calleSec.idCalle}"/>
+                                            </p:selectOneMenu> 
+                                            <b>2.3. NOMBRE DEL EDIFICIO:</b>
+                                            <p:inputTextarea value="#{predioCtrl.predio.nombreEdificio}" placeholder="Ej. Residencia estudiantil Guadalupe"
+                                                             />
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>                                
+                            </p:panel>
+                        </div> 
+                        <br/>
+                        <div class="main1-box" style="height: 100%">                                                                                                           
+                            <p:panel header="3. TENENCIA DEL PREDIO - ASPECTOS LEGALES">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <b>3.1. PROPIETARIO:</b>
+                                            <h:outputLabel id="otxtPropietario" value="#{predioCtrl.propietarioSel.apellidos} #{predioCtrl.propietarioSel.nombres}"/>
+
+                                            <p:commandButton value="Buscar" icon="ui-icon-search" 
+                                                             process="@this" onclick="PF('dlgBuscar').show();"/>    
+
+                                            <p:commandButton value="Nuevo" icon="ui-icon-pencil" 
+                                                             process="@this" onclick="PF('dlgNuevo').show();"/>
+                                            <b>Dominio:</b>
+                                            <p:selectOneMenu id="cmbPersoneria" value="#{predioCtrl.idPersoneria}" required="true"
+                                                             requiredMessage="El tipo de personería es obligatorio">
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstTiposPersonerias}" var="personeria" itemLabel="#{personeria.nombre}"
+                                                               itemValue="#{personeria.idTipoPersoneria}"/>
+                                            </p:selectOneMenu>   
+                                            <b>3.2. EXCENCIONES ESPECIALES:</b>
+                                            <p:selectOneMenu id="cmbExcenciones" value="#{predioCtrl.idExenciones}" >
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.lstExenciones}" var="ex" itemLabel="#{ex.excencion}"
+                                                               itemValue="#{ex.idExccencion}"/>
+                                            </p:selectOneMenu>      
+                                        </p:panelGrid>   
+                                    </h:panelGroup>  
+                                    <h:panelGroup>
+                                        <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <b>3.3. FORMA DE ADQUISICIÓN:</b>
+                                            <p:selectOneMenu id="cmbFormaAdq" value="#{predioCtrl.idFormaAdq}" >
+                                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                <f:selectItems value="#{predioCtrl.formasAdq}" var="forma" itemLabel="#{forma.formaAdq}"
+                                                               itemValue="#{forma.idFormaAdq}"/>
+                                            </p:selectOneMenu>
+                                            <b>Fecha de Escrituración:</b>
+                                            <p:calendar id="fechaEscrituracion" value="#{predioCtrl.predio.fechaEscrituracion}" 
+                                                        navigator="true" pattern="dd/MM/yyyy" showOn="button"/>
+                                            <b>Fecha de Registro:</b>
+                                            <p:calendar id="fechaRegistro" value="#{predioCtrl.predio.fechaRegistroPredio}" 
+                                                        navigator="true" pattern="dd/MM/yyyy" showOn="button" />
+                                            <b>Cuantía:</b>
+                                            <p:inputText value="#{predioCtrl.predio.cuantia}" required="true" requiredMessage="La cuantía del predio es obligatoria"/>
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+                                    <!--
+                                    <h:panelGroup>                                    
+                                        <b>3.4. PRESTAMO:</b>
+                                        <p:selectOneRadio id="console">
+                                            <f:selectItem itemLabel="SI" itemValue="SI" />
+                                            <f:selectItem itemLabel="NO" itemValue="NO" />                                
+                                        </p:selectOneRadio>                                                                            
+                                    </h:panelGroup>
+                                    -->
+                                    <h:panelGroup>                                    
+                                        <b>3.5. CONDICIÓN DEL PREDIO:</b>                                       
+                                        <p:selectOneMenu id="mcbCondPredio" value="#{predioCtrl.predio.condPedio}" >
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="En Arrendamiento" itemValue="En Arrendamiento"/>
+                                            <f:selectItem itemLabel="Uso del propietario" itemValue="Uso del propietario"/>                                    
+                                        </p:selectOneMenu>                                                                         
+                                    </h:panelGroup>
+                                </p:panelGrid>
+
+                            </p:panel>
+                        </div> 
+                        <br/>
+                        <div class="main1-box" style="height: 100%">                                                                                                           
+                            <p:panel header="4. CARACTERÍSTICAS FÍSICAS Y DE SERVICIOS">
+                                <h:panelGroup>
+                                    <b>4.1. USO DEL SUELO</b>     
+                                    <br/>
+                                    <p:panelGrid columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group">                                                                   
+                                        <b>Producción</b>
+                                        <p:selectOneMenu id="produccion" value="#{predioCtrl.usoSuelo.produccion}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Industrial" itemValue="Industrial" />
+                                            <f:selectItem itemLabel="Artesanal" itemValue="Artesanal" />
+                                            <f:selectItem itemLabel="Agropecuario" itemValue="Agropecuario" />
+                                        </p:selectOneMenu>
+                                        <b>Intercambio</b>    
+                                        <p:selectOneMenu id="intercambio" value="#{predioCtrl.usoSuelo.intercambio}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Comercial" itemValue="Comercial" />
+                                            <f:selectItem itemLabel="Transporte" itemValue="Transporte" />
+                                            <f:selectItem itemLabel="Comunicaciones" itemValue="Comunicaciones" />
+                                        </p:selectOneMenu>
+                                        <b>Consumo</b> 
+                                        <p:selectOneMenu id="consumo" value="#{predioCtrl.usoSuelo.consumo}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Residencial" itemValue="Residencial" />
+                                            <f:selectItem itemLabel="Salubridad" itemValue="Salubridad" />
+                                            <f:selectItem itemLabel="Recreacional" itemValue="Recreacional" />
+                                            <f:selectItem itemLabel="Educacional" itemValue="Educacional" />
+                                            <f:selectItem itemLabel="Culto" itemValue="Culto" />
+                                        </p:selectOneMenu>
+                                        <b>Gestión</b>   
+                                        <p:selectOneMenu id="gestion" value="#{predioCtrl.usoSuelo.gestion}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Ninguno" itemValue="Ninguno" />
+                                            <f:selectItem itemLabel="Inst. Públicas" itemValue="Instituciones Publicas" />
+                                            <f:selectItem itemLabel="Inst. Privadas" itemValue="Instituciones Privadas" />  
+                                         </p:selectOneMenu>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <b>4.2. LOCALIZACIÓN, TOPOGRAFÍA Y OBRAS DE INFRAESTRUCTURA:</b>
+                                    <br/>
+                                    <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">                                                                        
+                                        <b>Localización</b>   
+                                        <p:selectOneMenu id="localizacion" value="#{predioCtrl.localizacion.localizacion}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="Esquinero" itemValue="Esquinero" />
+                                            <f:selectItem itemLabel="En cabecera" itemValue="En cabecera" />
+                                            <f:selectItem itemLabel="Intermedio vert." itemValue="Intermedio vert." />
+                                            <f:selectItem itemLabel="Intermedio horiz." itemValue="Intermedio horiz." />
+                                            <f:selectItem itemLabel="En L" itemValue="En L" />
+                                            <f:selectItem itemLabel="En T" itemValue="En T" />
+                                            <f:selectItem itemLabel="En cruz" itemValue="En cruz" />
+                                            <f:selectItem itemLabel="Manzanero (Cuadr.)" itemValue="Manzanero (Cuadr.)" />
+                                            <f:selectItem itemLabel="Manzanero (Trian.)" itemValue="Manzanero (Trian.)" />
+                                            <f:selectItem itemLabel="Triangular" itemValue="Triangular" />
+                                            <f:selectItem itemLabel="En callejón" itemValue="En callejon" />
+                                            <f:selectItem itemLabel="Interior" itemValue="Interior" />
+                                        </p:selectOneMenu>
+                                        <b>Topografía</b>   
+                                        <p:selectOneMenu id="topografia" value="#{predioCtrl.localizacion.topografia}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="A nivel" itemValue="A nivel" />
+                                            <f:selectItem itemLabel="Bajo nivel" itemValue="Bajo nivel" />                                        
+                                            <f:selectItem itemLabel="Sobre nivel" itemValue="Sobre nivel" />                                        
+                                            <f:selectItem itemLabel="Pendiente (Asc)" itemValue="Pendiente (Asc)" />   
+                                            <f:selectItem itemLabel="Pendiente (Desc)" itemValue="Pendiente (Desc)" />   
+                                            <f:selectItem itemLabel="Accidentado" itemValue="Accidentado" />   
+                                        </p:selectOneMenu>
+                                        <b>Material Víal</b>   
+                                        <p:selectOneMenu id="matVial" value="#{predioCtrl.localizacion.materialVial}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Tierra o Lastre" itemValue="Tierra o Lastre" />                                        
+                                            <f:selectItem itemLabel="Piedra" itemValue="Piedra" />                                        
+                                            <f:selectItem itemLabel="Adoquín" itemValue="Adoquín" />   
+                                            <f:selectItem itemLabel="Hormigón Simple" itemValue="Hormigon Simple" />   
+                                            <f:selectItem itemLabel="Asfalto" itemValue="Asfalto" />   
+                                        </p:selectOneMenu>
+                                        <b>Constr. del Suelo</b>   
+                                        <p:selectOneMenu id="constSuelo" value="#{predioCtrl.localizacion.construcSuelo}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No edificable" itemValue="No edificable" />
+                                            <f:selectItem itemLabel="Edificable" itemValue="Edificable" />                                        
+                                            <f:selectItem itemLabel="Edificable con mejoras" itemValue="Edificable con mejoras" />   
+                                        </p:selectOneMenu>
+                                        <b>Bordillos</b>   
+                                        <p:selectOneMenu id="bordillos" value="#{predioCtrl.localizacion.bordillos}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Aceras</b>   
+                                        <p:selectOneMenu id="aceras" value="#{predioCtrl.localizacion.aceras}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Redes Agua Potable</b>   
+                                        <p:selectOneMenu id="aguaPotable" value="#{predioCtrl.localizacion.aguaPotable}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Alcant. pluvial</b>   
+                                        <p:selectOneMenu id="alcantPluvial" value="#{predioCtrl.localizacion.alcantPluvial}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Alcant. sanitario</b>   
+                                        <p:selectOneMenu id="alcantSanit" value="#{predioCtrl.localizacion.alcantSanitario}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Redes Energía Eléctrica</b>   
+                                        <p:selectOneMenu id="energElectr" value="#{predioCtrl.localizacion.energiaElectrica}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Red Telefónica</b>   
+                                        <p:selectOneMenu id="redTelef" value="#{predioCtrl.localizacion.redTelefonica}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Alumbrado público</b>   
+                                        <p:selectOneMenu id="alumbPublic" value="#{predioCtrl.localizacion.alumbPublico}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+
+                                <h:panelGroup>
+                                    <b>4.3. SERVICIOS URBANOS</b>
+                                    <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <b>Med. agua</b>   
+                                        <p:selectOneMenu id="medAgua" value="#{predioCtrl.servicUrbanos.medAguaPot}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Med. eléctrico</b>   
+                                        <p:selectOneMenu id="medElect" value="#{predioCtrl.servicUrbanos.medElectric}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Rec. basura</b>   
+                                        <p:selectOneMenu id="recBasura" value="#{predioCtrl.servicUrbanos.recolBasura}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Aseo público</b>   
+                                        <p:selectOneMenu id="aseoPublico" value="#{predioCtrl.servicUrbanos.aseoPublico}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Transp. urbano</b>   
+                                        <p:selectOneMenu id="transpUrbano" value="#{predioCtrl.servicUrbanos.transpUrbano}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                        <b>Teléfono</b>   
+                                        <p:selectOneMenu id="telefono" value="#{predioCtrl.servicUrbanos.telefono}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                            <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                            <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                        </p:selectOneMenu>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                            </p:panel>
+                        </div>
+                        <br/>
+                        <div class="main1-box" style="height: 100%">
+                            <p:panel header="INFORMACIÓN DEL PREDIO">
+                                <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <b>Patio</b>   
+                                    <p:selectOneMenu id="patio" value="#{predioCtrl.predio.patio}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                        <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                    </p:selectOneMenu>
+                                    <b>Cerramiento</b>   
+                                    <p:selectOneMenu id="cerramiento" value="#{predioCtrl.predio.cerramiento}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                        <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                    </p:selectOneMenu>
+                                    <b>Muros</b>   
+                                    <p:selectOneMenu id="muros" value="#{predioCtrl.predio.muros}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                        <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                    </p:selectOneMenu>
+                                    <b>Piscina</b>   
+                                    <p:selectOneMenu id="piscina" value="#{predioCtrl.predio.piscina}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                        <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                    </p:selectOneMenu>
+                                    <b>Cisterna</b>   
+                                    <p:selectOneMenu id="cisterna" value="#{predioCtrl.predio.cisterna}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                        <f:selectItem itemLabel="Si tiene" itemValue="Si tiene" />                                                                            
+                                    </p:selectOneMenu>
+                                    <b>Num. banios</b>   
+                                    <p:inputText value="#{predioCtrl.predio.numBanios}"/>
+                                </p:panelGrid>
+                            </p:panel> 
+                        </div>   
+                        <center>
+                            <br/>
+                            <p:commandButton value="Aceptar" action="#{predioCtrl.insertarPredio()}" update="@form"/>
+                            <p:commandButton value="Cancelar"/>
+                        </center>
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                    <p:dialog header="Buscar propietario" widgetVar="dlgBuscar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold" >
+                        <h:form id="frmBuscarPropietario">  
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <h:outputText value="Apellidos/Cédula Ciudadanía/RUC:"/>
+                                        <p:inputText value="#{predioCtrl.txtCedula}" />
+                                        <p:commandButton icon="ui-icon-search" action="#{predioCtrl.buscarPropietarioDadoCriterio()}"
+                                                         update="pnlgPropietarioSel,frmRegistrarPredios:otxtPropietario"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid id="pnlgPropietarioSel" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <b>Propietario:</b>
+                                        <h:outputText value="#{predioCtrl.propietarioSel.nombres} #{predioCtrl.propietarioSel.apellidos}"/>
+                                        <b>Cédula de ciudadanía:</b>
+                                        <h:outputText value="#{predioCtrl.propietarioSel.cedula}"/>
+                                        <b>Dirección:</b>
+                                        <h:outputText value="#{predioCtrl.propietarioSel.direccionDom}"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+                            <center>
+                                <p:commandButton onclick="PF('dlgBuscar').hide();" value="Aceptar" icon="ui-icon-check"
+                                                 process="@this"/>
+                                <p:commandButton onclick="PF('dlgBuscar').hide();" value="Cancelar" icon="ui-icon-close"
+                                                 process="@this"/>
+                            </center>
+                        </h:form>
+
+                    </p:dialog>
+
+                    <p:dialog header="Registrar propietario" widgetVar="dlgNuevo" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold" >
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <h:form id="frmNuevoPropietario">
+                                    <p:panel>
+                                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText maxlength="10" value="#{predioCtrl.txtCedula}"
+                                                             title="Cedula" required="true" requiredMessage="La Cédula es un campo obligatorio."
+                                                             onkeypress="return validar(event)" />                                                 
+                                                <label>* Cédula de Identidad </label>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText value="#{predioCtrl.propietario.apellidos}" required="rue" 
+                                                             requiredMessage="Los apellidos del propietario son obligatorios"
+                                                             title="Apellidos" />
+                                                <label>* Apellidos</label>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText value="#{predioCtrl.propietario.nombres}" required="rue" 
+                                                             requiredMessage="Los nombres del propietario son obligatorios"
+                                                             title="Nombres" />
+                                                <label>* Nombres</label>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText value="#{predioCtrl.propietario.direccionDom}" required="rue" 
+                                                             requiredMessage="La dirección domiciliaria es un campo obligatorio"
+                                                             title="Dirección Domiciliaria" />
+                                                <label>* Dirección Domiciliaria</label>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText value="#{predioCtrl.propietario.nick}" required="rue" 
+                                                             requiredMessage="El nick es un campo obligatorio"
+                                                             title="Nick" placeholder="Ej. gcudcop"/>
+                                                <label>* Nick</label>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText value="#{predioCtrl.propietario.mail}" required="rue" 
+                                                             requiredMessage="El mail es obligatorio"
+                                                             title="email" />
+                                                <label>* Correo Electrónico</label>
+                                            </h:panelGroup>
+                                            <h:panelGroup styleClass="md-inputfield">
+                                                <p:inputText value="#{predioCtrl.propietario.celular}" required="rue" 
+                                                             requiredMessage="El celular es obligatorio"
+                                                             title="celular" />
+                                                <label>* Celular</label>
+                                            </h:panelGroup>
+
+                                        </p:panelGrid>
+                                    </p:panel>
+                                    <br/>
+                                    <center>
+                                        <p:commandButton value="Aceptar" icon="ui-icon-check" action="#{predioCtrl.insertarPropietario()}"
+                                                         update="frmNuevoPropietario,frmRegistrarPredios:otxtPropietario"/>
+                                        <p:commandButton onclick="PF('dlgNuevo').hide();" value="Cancelar" icon="ui-icon-close"
+                                                         process="@this"/>
+                                    </center>
+
+                                </h:form>
+                            </div>
+                        </div>                    
+                    </p:dialog>
+
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

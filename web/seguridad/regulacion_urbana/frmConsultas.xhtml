@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolRegulacionPredial}">
+                <h:form id="frmPrincipal">
+                    <center><h1>Consulta de Predios</h1></center>
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <center>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-3">
+                                <div class="card">
+                                    <b>Buscar: </b>                                    
+                                    <p:selectOneMenu value="#{controladorRegistroPropiedad.band}">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>
+                                        <!--<f:selectItem itemLabel="Por Clave Anterior" itemValue="3"/>-->
+                                        <f:selectItem itemLabel="Por Propietario" itemValue="2"/> 
+                                        <p:ajax event="change" listener="#{controladorRegistroPropiedad.limpiar()}" 
+                                                update="pnlBuscarClaveCatastral,pnlBuscarClaveAnterior,
+                                                pnlBuscarPropietario,pnlBuscarDefecto,frmPrincipal:tblPredios"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-9">
+                                <div class="card">
+                                    <p:panel id="pnlBuscarDefecto" visible="#{controladorRegistroPropiedad.band==0}" style="border: none">
+                                        <b><h3>Seleccione el filtro de búsqueda</h3></b>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarClaveCatastral" visible="#{controladorRegistroPropiedad.band==1}" style="border: none">                                       
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                <p:outputLabel value="Zona:"/>
+                                                <p:outputLabel value="Sector:"/>
+                                                <p:outputLabel value="Manzana:"/>
+                                                <p:outputLabel value="Predio:"/>
+                                                <p:spinner id="zona" value="#{controladorRegistroPropiedad.zona}" size="5" min="1" max="5"/>                                                
+                                                <h:inputText id="sector" value="#{controladorRegistroPropiedad.sector}" size="5"/>                                                
+                                                <h:inputText id="manzana" value="#{controladorRegistroPropiedad.manzana}" size="5"/>                                                
+                                                <h:inputText id="predio" value="#{controladorRegistroPropiedad.numPredio}" size="5"/> 
+                                            </p:panelGrid>
+                                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                                 action="#{controladorRegistroPropiedad.obtenerPrediosClaveCatastral()}"
+                                                                 update="frmPrincipal:tblPredios"/>
+                                                <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                                 action="#{controladorRegistroPropiedad.limpiar()}"
+                                                                 update="frmPrincipal:tblPredios,@form"/>
+                                            </p:panelGrid>
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPropietario" visible="#{controladorRegistroPropiedad.band==2}" style="border: none">
+                                        <p:panelGrid columns="4"  styleClass="ui-panelgrid-blank form-group"   >
+                                            <p:outputLabel value="Criterio de Búsqueda:"/>
+                                            <p:inputText value="#{controladorRegistroPropiedad.txtCriterio}"
+                                                         placeholder="Cédula/ruc/Apellidos"/>
+                                            <p:commandButton icon="ui-icon-search" value="Buscar"
+                                                             action="#{controladorRegistroPropiedad.encontrarPredioDadoParametro()}"
+                                                             update="tblPredios"/>
+                                            <p:commandButton icon="ui-icon-refresh" value="Limpiar"
+                                                             action="#{controladorRegistroPropiedad.limpiar()}"
+                                                             update="frmPrincipal:tblPredios,@form"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarClaveAnterior" visible="#{controladorRegistroPropiedad.band==3}" style="border: none">
+                                        <b>Ingrese la clave anterior</b>
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                            <p:panelGrid columns="6" styleClass="ui-panelgrid-blank form-group">
+                                                <h:outputText value="Zona"/>
+                                                <h:outputText value="Sector"/>
+                                                <h:outputText value="Manzana"/>
+                                                <h:outputText value="Predio"/>
+                                                <h:outputText value="Prop. Hor"/>
+                                                <h:outputText value="Derec-Acc"/>
+                                                <h:inputText value="#{controladorRegistroPropiedad.zonaAnt}" size="3"/>
+                                                <h:inputText value="#{controladorRegistroPropiedad.sectorAnt}" size="3"/>
+                                                <h:inputText value="#{controladorRegistroPropiedad.manzanaAnt}" size="3"/>
+                                                <h:inputText value="#{controladorRegistroPropiedad.numPredioAnt}" size="3"/>
+                                                <h:inputText value="#{controladorRegistroPropiedad.propAnt}" size="3"/>
+                                                <h:inputText value="#{controladorRegistroPropiedad.derAcc}" size="3"/>                                              
+                                            </p:panelGrid>
+                                            <p:panel style="border: none">
+                                                <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                                 action="#{controladorRegistroPropiedad.obtenerPrediosClaveAnterior()}"
+                                                                 update="frmPrincipal:tblPredios"/>
+                                                <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                                 action="#{controladorRegistroPropiedad.limpiar()}"
+                                                                 update="frmPrincipal:tblPredios,@form"/>
+                                            </p:panel>
+                                        </p:panelGrid>
+                                    </p:panel>
+                                </div>
+                            </div>
+
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">                            
+                                <div class="card-content">
+
+                                    <p:dataTable id="tblPredios" value="#{controladorRegistroPropiedad.lstPredios}" var="predio"
+                                                 selectionMode="single"
+                                                 paginator="true" rowKey="#{predio.idPredio}" rows="10"
+                                                 rowsPerPageTemplate="5,10,15,20,25"
+                                                 selection="#{controladorRegistroPropiedad.objPredio}"
+                                                 reflow="true">
+
+                                        <p:column headerText="Clave Catastral" width="5%" style="text-align: center">                                            
+                                            <h:outputText value="#{predio.zona} - #{predio.sector} - #{predio.manzana} - #{predio.numPredio}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Propietario"  width="10%" style="text-align: center">                                            
+                                            <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                        </p:column>
+
+                                        <!--
+                                        <p:column filterBy="#{predio.propietario.apellidos} #{predio.propietario.nombres}" filterMatchMode="contains" >
+                                            <f:facet name="header">
+                                                <span class="tooltip" onmouseover="tooltip.pop(this, 'Buscar por apellido', {position: 0})">
+                                                    <h:outputText value="Representante Legal"/>
+                                                </span>
+                                            </f:facet>
+                                            <h:outputText value="#{predio.repLegal.apellidos} #{predio.repLegal.nombres}"/>
+                                        </p:column>
+                                        -->
+
+                                        <p:column headerText="Parroquia" width="5%" style="text-align: center">
+                                            <h:outputText value="#{predio.idParroquia.nombre}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Barrio" width="5%" style="text-align: center">                                            
+                                            <h:outputText value="#{predio.barrio}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Dirección"  width="10%" style="text-align: center">
+                                            <h:outputText value="#{predio.callePrinc} y/entre #{predio.calleSecund}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Legalizado" width="5%" style="text-align: center" exportable="false">                                            
+                                            <p:selectBooleanButton id="value2" 
+                                                                   value="#{predio.legalizado}" 
+                                                                   onLabel="SI" 
+                                                                   offLabel="NO" 
+                                                                   onIcon="ui-icon-check" 
+                                                                   offIcon="ui-icon-close" 
+                                                                   disabled="true">
+                                            </p:selectBooleanButton>
+                                        </p:column>
+
+                                        <!-- <p:column headerText="Detalles" width="5%">
+                                            <p:commandButton icon="ui-icon-description"
+                                                             title="Detalles"/>
+                                        </p:column> -->
+                                        <p:column headerText="Ficha predial" width="5%" style="text-align: center" exportable="false">                                       
+                                            <p:commandButton icon="ui-icon-local-printshop"  ajax="false" title="Imprimir ficha"
+                                                             actionListener="#{controladorRegistroPropiedad.verReporteFicha()}"
+                                                             onclick="this.form.target = '_blank'">
+                                                <f:setPropertyActionListener value="#{predio}" target="#{controladorRegistroPropiedad.objPredio}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+                                        <f:facet name="footer">                                           
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                                <p:dataExporter type="xls" target="tblPredios" fileName="predios" />
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/pdf.png"/>
+                                                <p:dataExporter type="pdf" target="tblPredios" fileName="predios"/>
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/csv.png"/>
+                                                <p:dataExporter type="csv" target="tblPredios" fileName="predios" />
+                                            </h:commandLink>                                        
+                                        </f:facet>
+                                    </p:dataTable>                            
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>              
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolRegulacionPredial}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">
+                                <center>
+                                    <h1>Error</h1>
+                                    <h3>Permisos Insuficientes</h3>
+                                    <b>Consulte con el administrador</b>
+                                </center>
+                            </div> 
+                        </div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+
+    </ui:define>
+</ui:composition>

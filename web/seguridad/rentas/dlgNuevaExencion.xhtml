@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgRegistrar" widgetVar="dlgRegistrar" closable="false" modal="true" resizable="true" 
+              header="Registrar nueva excencion" showEffect="size" hideEffect="size" width="65%">
+        <h:form id="frmRegistrar">            
+            <center>
+                <p:selectOneMenu value="#{ctPrediosExcenciones.band}">
+                    <f:selectItem itemLabel="-- Buscar --" noSelectionOption="true"/>
+                    <f:selectItem itemLabel="Por contribuyente" itemValue="1"/>
+                    <f:selectItem itemLabel="Por Clave Catastral" itemValue="2"/>
+                    <p:ajax event="change" 
+                            update="pnlBuscarPorCedula,pnlBuscarPorClaveCat,tblPredios,@form" />
+                </p:selectOneMenu>
+
+                <p:panel id="pnlBuscarPorCedula" 
+                         visible="#{ctPrediosExcenciones.band==1}" 
+                         style="border: none">
+                    <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="C.I./RUC/Apellidos:"/>
+                        <p:inputText value="#{ctPrediosExcenciones.parametro}" placeholder="C.I./RUC/Apellidos"/>
+                        <p:commandButton icon="ui-icon-search" value="Buscar"
+                                         action="#{ctPrediosExcenciones.buscarPrediosPropietario()}"
+                                         update="frmRegistrar:tblPredios"/>  
+                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                         action="#{ctPrediosExcenciones.limpiar()}"
+                                         update="frmRegistrar:tblPredios,@form"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel id="pnlBuscarPorClaveCat" 
+                         visible="#{ctPrediosExcenciones.band==2}" 
+                         style="border: none">
+                    <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                        <p:outputLabel value="Zona"/>
+                        <p:inputText id="zona" value="#{ctPrediosExcenciones.zona}" style="width: 35%"/>
+                        <p:outputLabel value="Sector"/>
+                        <p:inputText id="sector" value="#{ctPrediosExcenciones.sector}" style="width: 35%"/>
+                        <p:outputLabel value="Manzana"/>
+                        <p:inputText id="manzana" value="#{ctPrediosExcenciones.manzana}" style="width: 35%"/>
+                        <p:outputLabel value="Predio"/>
+                        <p:inputText id="predio" value="#{ctPrediosExcenciones.numPredio}" style="width: 35%"/>                                        
+                        <p:commandButton value="Buscar" icon="ui-icon-search"
+                                         action="#{ctPrediosExcenciones.buscarPredios()}"
+                                         update="frmRegistrar:tblPredios"/>
+                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                         action="#{ctPrediosExcenciones.limpiar()}"
+                                         update="frmRegistrar:tblPredios,@form"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:dataTable id="tblPredios" var="predio" value="#{ctPrediosExcenciones.lstPredios}" rows="10"
+                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                             selection="#{ctPrediosExcenciones.objPredio}" selectionMode="single">
+
+                    <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                        <h:outputText value="#{predio.claveCatastral}"/>
+                    </p:column>
+                    <p:column headerText="Propietario" width="6%" style="text-align: center">
+                        <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                    </p:column>
+                    <p:column headerText="Dirección" width="6%">
+                        <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}"/>
+                    </p:column>
+
+                    <p:column headerText="Seleccionar" width="3%">
+                        <p:commandButton icon="ui-icon-check"
+                                         title="Seleccionar"
+                                         update="frmRegistrar:otxtPredioSel">
+                            <f:setPropertyActionListener value="#{predio}" target="#{ctPrediosExcenciones.objPredio}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <b><h:outputLabel id="otxtPredioSel" value="Predio seleccionado: #{ctPrediosExcenciones.objPredio.claveCatastral}"/></b>
+
+            </center>
+
+            <center>
+                <b>
+                    <p:outputLabel id="otxtDetalleExcen" value="#{ctPrediosExcenciones.detalleExcencion}"/>
+                    <br/>
+                    <p:outputLabel id="otxtFormUso" value="#{ctPrediosExcenciones.formaUso}"/>
+                </b>
+                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Excencion especial:"/>
+                    <p:selectOneMenu value="#{ctPrediosExcenciones.idExencion}" effect="fold"
+                                     filter="true" filterMatchMode="contains" >
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{ctPrediosExcenciones.lstExencionesEsp}" var="excencion" 
+                                       itemLabel="#{excencion.excencion}" itemValue="#{excencion.idExccencion}"/>
+                        <p:ajax event="change" 
+                                listener="#{ctPrediosExcenciones.obtenerExcencionDadoId()}"
+                                update="otxtDetalleExcen,txtCapital,otxtFormUso" />
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Porcentaje:"/>
+                    <p:inputText value="#{ctPrediosExcenciones.objExcencion.porcentaje}" required="true" 
+                                 requiredMessage="Ingrese el porcentaje de la excencion"/>
+
+                    <p:outputLabel value="Fecha de inicio:"/>
+                    <p:calendar id="txtFechaInicio" value="#{ctPrediosExcenciones.objExcencion.fechaInicio}" showOn="button" />
+
+                    <p:outputLabel value="Fecha de finalización:"/>
+                    <p:calendar id="txtFechaFin" value="#{ctPrediosExcenciones.objExcencion.fechaFin}" showOn="button" />
+
+                    <p:outputLabel value="Observaciones1:" />
+                    <p:inputTextarea value="#{ctPrediosExcenciones.objExcencion.observaciones}"/>
+
+                    <p:outputLabel  value="Valor Capital (BIESS):"/>
+                    <p:inputText  id="txtCapital" disabled="#{ctPrediosExcenciones.idExencion!=4}" value="#{ctPrediosExcenciones.objExcencion.capitalBiess}"
+                                  requiredMessage="Ingrese el capital pendiente del préstamo"/>
+
+                </p:panelGrid>
+            </center>
+
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"                                 
+                                 update="frmPrincipal:tblExcenciones"
+                                 action="#{ctPrediosExcenciones.insertar()}"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrar').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

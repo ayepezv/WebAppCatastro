@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgVerificar" widgetVar="dlgVerificar" closable="true" modal="true" resizable="true" 
+              header="Recaudar" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmCobrarTitulo">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-12" style="align-content: stretch">                    
+                    <!-- <p:panelGrid columns="2" layout="grid"  styleClass="ui-panelgrid-blank form-group">
+                       <h:outputText value="Total titulos:" style="font-weight: bold"/>
+                        <h:outputText value="#{ctRecaudacionMultiple.subTotal}" style="font-weight: bold">                                    
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                        <h:outputText value="Total intereses:" style="font-weight: bold"/>
+                        <h:outputText value="#{ctRecaudacionMultiple.intereses}" style="font-weight: bold">                                    
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                        <h:outputText value="Total descuentos:" style="font-weight: bold"/>
+                        <h:outputText value="#{ctRecaudacionMultiple.descuentos}" style="font-weight: bold">                                    
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText> -->   
+                    <p:panelGrid columns="2" layout="grid"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputText value="Total a pagar:" style="font-weight: bold"/>
+                        <h:outputText value="#{ctRecaudacionMultiple.total}" style="font-size: 20px">                                    
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Efectivo:"/>
+                        <p:inputText id="efectivo" value="#{ctRecaudacionMultiple.dineroEfectivo}"
+                                     style="width: 85%"/>
+                        <p:commandButton icon="ui-icon-monetization-on"
+                                         action="#{ctRecaudacionMultiple.calcularVuelto()}"
+                                         update="vuelto"
+                                         title="Calcular Vuelto"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Cambio:"/>
+                        <p:outputLabel id="vuelto" value="#{ctRecaudacionMultiple.vuelto}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </p:outputLabel>
+                    </p:panelGrid> 
+                    <center>
+                        <p:commandButton value="Cobrar" icon="ui-icon-save"
+                                         action="#{ctRecaudacionMultiple.recaudar()}"
+                                         update="frmPrincipal:tblTitulos,frmCobrarTitulo"/>
+                    </center> 
+                </div>                    
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

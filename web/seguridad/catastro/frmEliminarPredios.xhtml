@@ -1,0 +1,500 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgEliminar" widgetVar="wdlgEliminarPredios" closable="false" modal="true" resizable="true" header="Eliminar" showEffect="size" hideEffect="size" width="75%"
+              height="640px">
+        <h:form id="eliminarPredio">
+            <p:growl autoUpdate="true"/>
+            <p:messages autoUpdate="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <div class="card">
+                        <center>
+                            <img src="../../resources/imagenes/escudo_archidona_2.png" alt="" width="60%"/>                            
+                        </center>                    
+                    </div>
+                </div>
+
+                <div class="ui-g-6">
+                    <div class="card">    
+                        <center>
+                            <h1>CATASTRO URBANO</h1>
+                        </center>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h3>FICHA PREDIAL URBANA</h3>                               
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">                                   
+                                <b>N° de Ficha:</b>
+                                <p:inputText  value="#{controladorPredio.predioSel.numFicha}" style="width: 50%" disabled="true"/>
+                            </p:panelGrid>
+                        </p:panelGrid>                                            
+                    </div>
+                </div>
+
+                <div class="ui-g-12">        
+                    <p:fieldset legend="IDENTIFICACIÓN PREDIAL" toggleable="true" toggleSpeed="500">                                            
+                        <!--<p:panel header="IDENTIFICACIÓN PREDIAL">-->
+                        <b>Clave Catastral</b>
+                        <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Parroquia:"/>
+                            <p:selectOneMenu id="cmbParroquia1" value="#{controladorPredio.predioSel.idParroquia.nombre}" disabled="true">
+                                <!--<f:selectItem itemLabel=" Seleccione " itemValue="#{null}"/>-->
+                                <f:selectItems value="#{controladorPredio.lstParroquias}" var="parroquia" 
+                                               itemLabel="#{parroquia.nombre}" itemValue="#{parroquia.idParroquia}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Zona:"/>
+                            <p:selectOneMenu id="cmbZona1" value="#{controladorPredio.predioSel.zona}" disabled="true">
+                                <!--<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>-->
+                                <f:selectItems value="#{controladorPredio.lstZonas}" var="zona"
+                                               itemLabel="#{zona.nombre}" itemValue="#{zona.idZona}"/>
+                                <p:ajax event="change" listener="#{controladorPredio.obtenerSectores()}" update="cmbSector1"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Sector:"/>
+                            <p:selectOneMenu id="cmbSector1" value="#{controladorPredio.predioSel.sector}" disabled="true">
+                                <!--<f:selectItem itemLabel=" Seleccione " itemValue="#{null}"/>-->
+                                <f:selectItems value="#{controladorPredio.lstSectores}" var="sector"
+                                               itemLabel="#{sector.nombre}" itemValue="#{sector.idSector}"/>
+                                <p:ajax event="change" listener="#{controladorPredio.obtenerManzanas()}" update="cmbManzana1"/>
+                            </p:selectOneMenu>                                
+                            <h:outputLabel value="Manzana:"/>
+                            <p:selectOneMenu id="cmbManzana1" value="#{controladorPredio.predioSel.manzana}" disabled="true">
+                                <!--<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>-->
+                                <f:selectItems value="#{controladorPredio.lstManzanas}" var="manzana"
+                                               itemLabel="#{manzana.numManzana}" itemValue="#{manzana.idManzana}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Predio:"/>
+                            <p:inputText value="#{controladorPredio.predioSel.numPredio}" style="width: 60%" disabled="true"/>
+                            <h:outputLabel value="Bloque (Prop. Horizontal):"/>
+                            <p:inputText value="#{controladorPredio.predioSel.propHorBloque}" style="width: 60%" disabled="true"/>
+                            <h:outputLabel value="Piso (Prop. Horizontal):"/>
+                            <p:inputText value="#{controladorPredio.predioSel.propHorPiso}" style="width: 60%" disabled="true"/>
+                            <h:outputLabel value="Unidad (Prop. Horizontal):"/>
+                            <p:inputText value="#{controladorPredio.predioSel.propHorUnidad}" style="width: 60%" disabled="true"/>
+                        </p:panelGrid>
+                        <b>Clave Catastral Anterior</b>
+                        <!--</p:panel> -->  
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-g-12">   
+                    <p:fieldset legend="UBICACIÓN" toggleable="true" toggleSpeed="500">
+                        <!--<p:panel header="UBICACIÓN">-->
+                        <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Barrio:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.barrio}" effect="fold" editable="true" disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstBarrios}" var="barrio" 
+                                               itemLabel="#{barrio.nombre}" itemValue="#{barrio.nombre}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Calle principal: "/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.callePrinc}" effect="fold" editable="true" disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstCalles}" var="calle"
+                                               itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Entre: "/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.calleSecund}" effect="fold" editable="true" disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstCalles}" var="calleSec"
+                                               itemLabel="#{calleSec.nombre}" itemValue="#{calleSec.nombre}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Número:"/>
+                            <p:inputText value="#{controladorPredio.predioSel.numCasa}" style="width: 85%" disabled="true"/>
+                            <h:outputLabel value="Nombre del edificio:"/>
+                            <p:inputText value="#{controladorPredio.predioSel.nombreEdificio}" disabled="true"/>
+                        </p:panelGrid>
+                        <!--</p:panel>-->
+                    </p:fieldset>
+                </div>
+
+                <div class="ui-g-12">
+                    <!--<p:panel header="IDENTIFICACIÓN LEGAL">-->
+                    <p:fieldset legend="IDENTIFICACIÓN LEGAL" toggleable="true" toggleSpeed="500">                                           
+                        <b>Propietario: </b>
+                        <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel id="otxtPropietario" 
+                                           value="Titular del Dominio: " />
+                            <p:inputText value="#{controladorPredio.predioSel.propietario.apellidos} #{controladorPredio.predioSel.propietario.nombres}" disabled="true"/>  
+
+                            <p:outputLabel id="otxtRepLegal"
+                                           value="Representante Legal: "/>
+                            <p:inputText value="#{controladorPredio.predioSel.repLegal.apellidos} #{controladorPredio.predioSel.repLegal.nombres}" disabled="true"/> 
+
+                            <p:outputLabel value="Excenciones especiales:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.excencionEspecial}" effect="fold" editable="true" disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstExcenciones}" var="excencion"
+                                               itemLabel="#{excencion.excencion}" itemValue="#{excencion.excencion}"/>
+                            </p:selectOneMenu>
+                            <p:column/>
+                            <h:outputLabel value="Porcentaje: " id="otxtPorcentaje"/>
+                            <p:inputText value="#{controladorPredio.predioSel.porcentajeExcencion}" id="txtExcencion" disabled="true"/>                                           
+                        </p:panelGrid>
+                        <b>Régimen de Tenencia:</b>
+                        <p:panelGrid columns="7" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Dominio:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.dominio.idDominio}" effect="fold" disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstDominios}" var="dominio" 
+                                               itemLabel="#{dominio.dominio}" itemValue="#{dominio.idDominio}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Condición:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.condicion}" effect="fold"  disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Propietario" itemValue="Propietario"/>
+                                <f:selectItem itemLabel="Poseedor" itemValue="Poseedor"/>
+                                <f:selectItem itemLabel="Arrendatario" itemValue="Arrendatario"/>
+                                <f:selectItem itemLabel="Usufructuario" itemValue="Usufructuario"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Forma de Adq:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.formaAdq}" effect="fold" disabled="true"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Compra venta" itemValue="Compra venta"/>
+                                <f:selectItem itemLabel="Donación" itemValue="Donacion"/>
+                                <f:selectItem itemLabel="Adjudicación" itemValue="Adjudicacion"/>
+                                <f:selectItem itemLabel="Permuta" itemValue="Permuta"/>
+                                <f:selectItem itemLabel="Expropiación" itemValue="Expropiacion"/>
+                                <f:selectItem itemLabel="Partición Judicial" itemValue="Particion Judicial"/>
+                                <f:selectItem itemLabel="Posesión" itemValue="Posesion"/>
+                                <f:selectItem itemLabel="Herencia" itemValue="Herencia"/>
+                                <f:selectItem itemLabel="Bien Mostrenco" itemValue="Bien Mostrenco"/>
+                                <f:selectItem itemLabel="Remate" itemValue="Remate"/>
+                                <f:selectItem itemLabel="Compensación" itemValue="Compensacion"/>
+                                <f:selectItem itemLabel="Sin escritura" itemValue="Sin escritura"/>
+                                <f:selectItem itemLabel="Otros" itemValue="#{null}"/>
+                            </p:selectOneMenu>
+                            <p:column/>
+                        </p:panelGrid>
+                        <b>Título de Propiedad:</b>
+                        <p:panelGrid columns="7" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Notaría N°: "/>
+                            <p:inputText value="#{controladorPredio.predioSel.notaria}" disabled="true"/>
+                            <p:outputLabel value="Fecha: "/>
+                            <p:calendar id="txtFecha" value="#{controladorPredio.predioSel.fechaTituloProp}" showOn="button" disabled="true" />
+                            <p:outputLabel value="Fecha de Registro: "/>
+                            <p:calendar id="txtFechaRegistro" value="#{controladorPredio.predioSel.fechaRegistroPredio}" showOn="button" disabled="true"/>    
+                            <p:column/>
+                            <p:outputLabel value="Área de la escritura: "/>
+                            <p:inputText value="#{controladorPredio.predioSel.areaEscritura}" disabled="true"/>                                                                                              
+                            <p:outputLabel value="Avalúo: "/>
+                            <p:inputText value="#{controladorPredio.predioSel.avaluoProp}" disabled="true"/>
+                            <p:outputLabel value="Propietario anterior: "/>
+                            <p:inputText value="#{controladorPredio.predioSel.propAnterior}" disabled="true"/>  
+                        </p:panelGrid>
+                        <!--</p:panel>-->
+                    </p:fieldset>
+                </div>  
+
+                <div class="ui-g-12">
+                    <!--<p:panel header="DESCRIPCIÓN DEL TERRENO">
+
+                    </p:panel>-->
+                    <p:fieldset legend="DESCRIPCIÓN DEL TERRENO" toggleable="true" toggleSpeed="500">
+                        <b>Uso del Suelo:</b>
+                        <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Gestión:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.usoSueloGestion}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Inst. publ." itemValue="INSTITUCIÓN PUBLICA"/>
+                                <f:selectItem itemLabel="Inst. priv." itemValue="INSTITUCIÓN PRIVADA"/>                                
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Consumo:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.usoSueloConsumo}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Residencial" itemValue="RESIDENCIAL"/>
+                                <f:selectItem itemLabel="Salud" itemValue="SALUD"/>                                
+                                <f:selectItem itemLabel="Reacreación" itemValue="RECREACION"/>                                
+                                <f:selectItem itemLabel="Educación" itemValue="EDUCACION"/>                                
+                                <f:selectItem itemLabel="Culto" itemValue="CULTO"/>                                
+                                <f:selectItem itemLabel="Turismo" itemValue="TURISMO"/>                                
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Intercambio:"/>    
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.usoSuelIntercambio}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Comercio" itemValue="COMERCIO"/>
+                                <f:selectItem itemLabel="Transporte" itemValue="TRANSPORTE"/>                                
+                                <f:selectItem itemLabel="Comunicación" itemValue="COMUNICACION"/>                              
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Producción:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.usoSuelProduc}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Industrial" itemValue="INDUSTRIAL"/>
+                                <f:selectItem itemLabel="Agropecuario" itemValue="AGROPECUARIO"/>                                                                                          
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Ocupación:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.ocupacionPredio}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="No edificado" itemValue="NO EDIFICADO"/>
+                                <f:selectItem itemLabel="En construcción" itemValue="EN CONSTRUCCION"/>                                                                                          
+                                <f:selectItem itemLabel="Edificado" itemValue="EDIFICADO"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Localización:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.localizacionPredio}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstLocalizacion}" var="localizacion"
+                                               itemLabel="#{localizacion.coeficiente}" itemValue="#{localizacion.coeficiente}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Topografía:"/>    
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.topografiaPredio}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstTopografia}" var="topografia"
+                                               itemLabel="#{topografia.coeficiente}" itemValue="#{topografia.coeficiente}"/>                                                                                                                         
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Forma:"/>  
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.formaPredio}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Regular" itemValue="REGULAR"/>
+                                <f:selectItem itemLabel="Irregular" itemValue="IRREGULAR"/>
+                                <f:selectItem itemLabel="Muy iregular" itemValue="MUY IRREGULAR"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Caract. del suelo:"/>  
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.caracteristSuelo}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Seco" itemValue="SECO"/>
+                                <f:selectItem itemLabel="Húmedo" itemValue="HUMEDO"/>
+                                <f:selectItem itemLabel="Inundable" itemValue="INUNDABLE"/>
+                                <f:selectItem itemLabel="Cenagoso" itemValue="CENAGOSO"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+
+                    </p:fieldset>
+                </div>  
+
+                <div class="ui-g-12">                   
+                    <p:fieldset legend="INFRAESTRUCTURA Y SERVICIOS" toggleable="true" toggleSpeed="500">
+                        <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group" style="alignment-adjust: central">
+                            <p:outputLabel value="Uso vías:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.usoVias}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstUsoVias}" var="vias"
+                                               itemLabel="#{vias.coeficiente}" itemValue="#{vias.coeficiente}"/>  
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Material vías:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.materialVias}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstMaterialVial}" var="matVial"
+                                               itemLabel="#{matVial.coeficiente}" itemValue="#{matVial.coeficiente}"/>  
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Red de agua:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.redAgua}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstRedesAguaPotable}" var="aguaPot"
+                                               itemLabel="#{aguaPot.coeficiente}" itemValue="#{aguaPot.coeficiente}"/>  
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Alcantarillado:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.alcantarillado}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstAlcantarilaldo}" var="alcant"
+                                               itemLabel="#{alcant.coeficiente}" itemValue="#{alcant.coeficiente}"/>                               
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Energía eléctrica:"/>
+                            <p:selectOneMenu value="#{controladorPredio.predioSel.energElectric}" disabled="true"
+                                             effect="fold" filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                <f:selectItems value="#{controladorPredio.lstEnergElectrica}" var="energElectr"
+                                               itemLabel="#{energElectr.coeficiente}" itemValue="#{energElectr.coeficiente}"/>     
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <b>Otros servicios</b>
+                        <center>
+                            <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Red telefónica:"/>
+                                <p:selectOneRadio value="#{controladorPredio.predioSel.redTelefon}" layout="responsive" columns="2" disabled="true">
+                                    <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                    <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="Rec. basura:"/>
+                                <p:selectOneRadio value="#{controladorPredio.predioSel.recBasura}" layout="responsive" columns="2" disabled="true">
+                                    <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                    <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="Transp. público:"/>
+                                <p:selectOneRadio value="#{controladorPredio.predioSel.transpPublico}" layout="responsive" columns="2" disabled="true">
+                                    <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                    <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="Internet"/>
+                                <p:selectOneRadio value="#{controladorPredio.predioSel.internet}" layout="responsive" columns="2" disabled="true">
+                                    <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                    <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="Otro:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.otrosServicios}" disabled="true"/>
+                            </p:panelGrid>
+                        </center>
+                    </p:fieldset>
+                </div>  
+
+                <div class="ui-g-12">                    
+                    <p:fieldset legend="INSTALACIONES ESPECIALES" toggleable="true" toggleSpeed="500">
+                        <p:panelGrid columns="12" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                            <p:outputLabel value="Patio:"/>
+                            <p:selectOneRadio value="#{controladorPredio.predioSel.patio}" layout="responsive" columns="2" disabled="true">
+                                <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="Cerramiento:"/>
+                            <p:selectOneRadio value="#{controladorPredio.predioSel.cerramiento}" layout="responsive" columns="2" disabled="true">
+                                <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="Muros:"/>
+                            <p:selectOneRadio value="#{controladorPredio.predioSel.muros}" layout="responsive" columns="2" disabled="true">
+                                <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="Piscina:"/>
+                            <p:selectOneRadio value="#{controladorPredio.predioSel.piscina}" layout="responsive" columns="2" disabled="true">
+                                <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="Cisterna:"/>
+                            <p:selectOneRadio value="#{controladorPredio.predioSel.cisterna}" layout="responsive" columns="2" disabled="true">
+                                <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="Ascensor"/>
+                            <p:selectOneRadio value="#{controladorPredio.predioSel.ascensor}" layout="responsive" columns="2" disabled="true">
+                                <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="N° de baños:"/>
+                            <p:inputText value="#{controladorPredio.predioSel.numBanios}" disabled="true" />
+                        </p:panelGrid>
+                    </p:fieldset>
+                </div>  
+
+                <div class="ui-g-12">                    
+                    <p:fieldset legend="LINDEROS" toggleable="true" toggleSpeed="500">                        
+                        <center>
+                            <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                <h:outputText value="Frente 1:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoFrente1}" disabled="true"/>
+                                <h:outputText value="Frente 2:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoFrente2}" disabled="true"/>
+                                <h:outputText value="Frente 3:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoFrente3}" disabled="true"/>
+                                <h:outputText value="Frente 4:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoFrente4}" disabled="true"/>
+                                <h:outputText value="Calle 1:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoCalle1}" disabled="true"/>
+                                <h:outputText value="Calle 2:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoCalle2}" disabled="true"/>
+                                <h:outputText value="Calle 3:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoCalle3}" disabled="true"/>
+                                <h:outputText value="Calle 4:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoCalle4}" disabled="true"/>
+                                <h:outputText value="Alicuota 1:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoAlicuota1}" disabled="true"/>
+                                <h:outputText value="Alicuota 2:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoAlicuota2}" disabled="true"/>
+                                <h:outputText value="Alicuota 3:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoAlicuota3}" disabled="true"/>
+                                <h:outputText value="Alicuota 4:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.linderoAlicuota4}" disabled="true"/>
+                            </p:panelGrid>
+                        </center>
+                    </p:fieldset>
+                </div> 
+
+                <div class="ui-g-12">
+                    <p:fieldset legend="COLINDANTES" toggleable="true" toggleSpeed="500">
+                        <center>
+                            <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                <p:outputLabel value="Norte:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.colindantNorte}" disabled="true"/>
+                                <p:outputLabel value="Sur:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.colindantSur}" disabled="true"/>
+                                <p:outputLabel value="Este:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.colindantEste}" disabled="true"/>
+                                <p:outputLabel value="Oeste:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.colindantOeste}" disabled="true"/>
+                            </p:panelGrid>
+                        </center>                            
+                    </p:fieldset>
+                </div> 
+
+                <div class="ui-g-12">
+                    <p:fieldset legend="REFERENCIAS CARTOGRAFICAS" toggleable="true" toggleSpeed="500">
+                        <center>
+                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                <h:outputText value="Topografía:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.topografiaRefTopog}" disabled="true"/>
+                                <h:outputText value="Otros:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.otraRefTopog}" disabled="true"/>
+                            </p:panelGrid>
+                        </center>
+                        <b>Coordenadas planas de referencia</b>
+                        <center>
+                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                <h:outputText value="Coordenada E:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.coordenadaE}" disabled="true"/>
+                                <h:outputText value="Coordenada N:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.coordenadaN}" disabled="true"/>
+                            </p:panelGrid>
+                        </center>
+                    </p:fieldset>
+                </div> 
+                <div class="ui-g-12">
+                    <p:fieldset legend="OBSERVACIONES" toggleable="true" toggleSpeed="500">
+                        <center>
+                            <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                <h:outputText value="Información proporcionada:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.fuenteInformante}" disabled="true"/>
+                                <h:outputText value="Telef. referencia:"/>
+                                <p:inputText value="#{controladorPredio.predioSel.telfInformante}" disabled="true"/>                                
+                                <h:outputText value="Observaciones:"/>
+                                <p:inputTextarea value="#{controladorPredio.predioSel.observaciones}" disabled="true"/>   
+                            </p:panelGrid>     
+                        </center>
+                    </p:fieldset>
+                </div> 
+
+            </div>
+
+            <center>
+                <b>Esta Seguro de que desea Eliminar el Registro..? </b>
+                <br>
+
+                </br>
+                <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                 action="#{controladorPredio.eliminarPredio()}"
+                                 update=":frmPredios:tblPredios" />
+                <p:commandButton value="Cancelar" icon="ui-icon-close" 
+                                 onclick="PF('dlgEliminar').hide()"/>
+            </center>
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+        <img src="../../resources/gifs/Loading.gif" alt=""/>
+    </p:dialog>
+
+</ui:composition>

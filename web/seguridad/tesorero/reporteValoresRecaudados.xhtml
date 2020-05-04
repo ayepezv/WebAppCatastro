@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"                                
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <p:growl id="msgs" autoUpdate="true"/>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <div class="card">                        
+                        <center>
+                            <h3>Detalle de cobros</h3>
+                            <br/>
+                            <p:selectOneMenu id="cmbRecaudador" value="#{ctValoresRecaudados.idRec}" 
+                                             >
+                                <f:selectItem itemLabel="Todos los Recaudadores" itemValue="#{null}"/>
+                                <f:selectItems value="#{ctValoresRecaudados.lstRecaudadores}" var="rec"
+                                               itemLabel="#{rec.idUsuario.nombres} #{rec.idUsuario.apellidos}" itemValue="#{rec.idUsuario.idPersona}"/>
+                            </p:selectOneMenu>
+                            <br/>
+                            <p:calendar id="fechaIni" value="#{ctValoresRecaudados.fechaInicio}" 
+                                        locale="de" navigator="true" pattern="dd/MM/yyyy" placeholder="Fecha Inicio"
+                                        showOn="button" maxdate="#{ctValoresRecaudados.fechaMax}"/>
+                            <br/>
+                            <p:calendar id="fechaFin" value="#{ctValoresRecaudados.fechaFin}" 
+                                        locale="de" navigator="true" pattern="dd/MM/yyyy" placeholder="Fecha Fin" 
+                                        showOn="button" maxdate="#{ctValoresRecaudados.fechaMax}"/>
+                            <br/>
+
+                            <p:commandButton icon="ui-icon-print"  ajax="false" title="Ver Pdf" value="Reporte"
+                                             actionListener="#{ctValoresRecaudados.verReporteRecaudacion()}"
+                                             onclick="this.form.target = '_blank'"/>
+                        </center> 
+
+                    </div>
+                </div>
+            </div>
+        </h:form>            
+    </ui:define>  
+</ui:composition>

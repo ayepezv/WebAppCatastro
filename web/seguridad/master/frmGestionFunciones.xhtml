@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h:form id="frmFunciones">
+                            <center>
+                                <h1>URL's - Items</h1>
+                            </center>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                            
+                                <p:dataTable id="tblFunciones" var="funcion" value="#{funcionCtrl.funciones}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20,25" reflow="true"
+                                             rowKey="#{funcion.codigoAccion.idAccion}" selectionMode="single" selection="#{funcionCtrl.funcionSel}">
+                                    <p:column headerText="Item Menu" width="8%" style="text-align: center"
+                                              filterBy="#{funcion.codigoMenu.nombre}"  filterMatchMode="contains">
+                                        <h:outputText value="#{funcion.codigoMenu.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Titulo URL" width="8%" style="text-align: center"
+                                              filterBy="#{funcion.codigoAccion.titulo}"  filterMatchMode="contains">
+                                        <h:outputText value="#{funcion.codigoAccion.titulo}"/>
+                                    </p:column>
+                                    <p:column headerText="URL" width="20%" style="text-align: justify"
+                                              >
+                                        <h:outputText value="#{funcion.codigoAccion.url}"/>
+                                    </p:column>                                                                     
+                                    <p:column headerText="Fecha de Registro" width="5%" style="text-align: justify">
+                                        <h:outputText value="#{funcion.fechaRegistro}" >
+                                            <f:convertDateTime type="date" pattern="dd-MMM-YYYY" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <!--
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                                <p:commandButton title="Editar" icon="ui-icon-pencil"/>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    -->
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="3%" style="text-align: center">
+                                                <p:commandButton title="Eliminar" icon="ui-icon-trash"/>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                                 onclick="PF('dlgRegistrar').show();"/>
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>                           
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando"
+                                  showEffect="clip" hideEffect="fold">
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>
+                        </p:dialog>
+
+                        <p:dialog header="Asignar URL a Submenu" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmRegistarFuncion">                           
+                                <p:panel>
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel value="Seleccione el Menu - Módulo"/>
+                                        <p:selectOneMenu id="cmbMenuModulo" value="#{funcionCtrl.menuModuloSel}" required="true" requiredMessage="Seleccione un Submenú">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{funcionCtrl.lstMenusModulos}" var="menuModulo"
+                                                           itemLabel="#{menuModulo.nombre}" itemValue="#{menuModulo.idMenu}"/>
+                                            <p:ajax event="change" listener="#{funcionCtrl.obtenerSubmenus()}" update="cmbSubmenu"/>
+                                        </p:selectOneMenu> 
+                                        <h:outputLabel value="Seleccione el Submenú:"/>
+                                        <p:selectOneMenu id="cmbSubmenu" value="#{funcionCtrl.submenuSel}" required="true" requiredMessage="Seleccione un Submenú">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{funcionCtrl.lstSubmenus}" var="submenu"
+                                                           itemLabel="#{submenu.nombre}" itemValue="#{submenu.idMenu}"/>
+                                            <p:ajax event="change" listener="#{funcionCtrl.obtenerItems()}" update="cmbItems"/>
+                                        </p:selectOneMenu>  
+                                        <h:outputLabel value="Seleccione el item:"/>
+                                        <p:selectOneMenu id="cmbItems" value="#{funcionCtrl.itemSel}" required="true" requiredMessage="Seleccione un Item de un menú">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{funcionCtrl.lstItems}" var="item"
+                                                           itemLabel="#{item.nombre}" itemValue="#{item.idMenu}"/>
+                                        </p:selectOneMenu>                                    
+                                        <h:outputLabel value="Seleccione la URL:"/>
+                                        <p:selectOneMenu id="cmbUrls" value="#{funcionCtrl.accionSel}" required="true" requiredMessage="Seleccione una URL">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{funcionCtrl.lstAcciones}" var="url"
+                                                           itemLabel="#{url.titulo}" itemValue="#{url.idAccion}"/>
+                                        </p:selectOneMenu>
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+                                    <center>
+                                        <p:commandButton value="Aceptar" action="#{funcionCtrl.registarFuncion()}" update="frmFunciones:tblFunciones,frmRegistarFuncion"/>
+                                        <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/>
+                                    </center>  
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+                    </div>                
+                </div> 
+            </c:when>
+        </c:choose>     
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

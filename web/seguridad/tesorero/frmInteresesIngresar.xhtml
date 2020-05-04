@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolTesorero}">
+                <h:form id="frmPrincipal">
+                    <p:growl autoUpdate="true" showDetail="true"/>                    
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card"> 
+                                <center>
+                                    <h1>Tasas de Interés</h1>
+                                    <p:panelGrid columns="5"  styleClass="ui-panelgrid-blank form-group">
+                                        <p:outputLabel value="Año:"/>
+
+                                        <p:selectOneMenu id="cmbAnioPrincipal" value="#{ctIntereses.anio}" 
+                                                         effect="fold"
+                                                         required="true" requiredMessage="EL año es obligatorio">
+                                            <f:selectItem itemLabel="-- Todos los años --" itemValue="0"/>
+                                            <f:selectItems value="#{ctIntereses.lstAnios}" var="anio"
+                                                           itemLabel="#{anio.anio}" itemValue="#{anio.anio}"/>   
+                                            <p:ajax event="change" listener="#{ctIntereses.buscarInteres()}" update="frmPrincipal:tblIntereses"/>
+                                        </p:selectOneMenu>
+
+                                        <p:commandButton value="Limpiar"
+                                                         icon="ui-icon-refresh"
+                                                         action="#{ctIntereses.limpiar()}"
+                                                         update="frmPrincipal:tblIntereses"/>
+                                        <p:commandButton value="Imprimir"
+                                                         icon="ui-icon-print"
+                                                         onclick="PF('dlgReporte').show();"
+                                                         update="frmReporte"
+                                                         process="@this"/>
+                                    </p:panelGrid>
+                                </center>
+                                <p:dataTable id="tblIntereses" var="interes" value="#{ctIntereses.lstIntereses}" rows="12"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="12,18,24,30" reflow="true" rowKey="#{interes.idInteres}"
+                                             editable="true" selection="#{ctIntereses.interesSel}" selectionMode="single">
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Tasas de intereses"/>
+                                    </f:facet>
+                                    <p:column headerText="Año" width="5%" style="text-align: center" 
+                                              filterBy="#{interes.anio}" filterMatchMode="contains">
+                                        <h:outputText value="#{interes.anio}"/>
+                                    </p:column>
+                                    <p:column headerText="Trimestre" width="5%" style="text-align: center"
+                                              filterBy="#{interes.trimestre}" filterMatchMode="contains">
+                                        <h:outputText value="#{interes.trimestre}"/>
+                                    </p:column>
+                                    <p:column headerText="Mes" width="5%" style="text-align: center"
+                                              filterBy="#{interes.mes}" filterMatchMode="contains">
+                                        <h:outputText value="#{interes.mes}"/>
+                                    </p:column>
+                                    <p:column headerText="Tasa de interés Anual" width="7%" style="text-align: center">
+                                        <h:outputText value="#{interes.interesMensual}"/>
+                                    </p:column>
+                                    <p:column headerText="Interes por Mora" width="7%" style="text-align: center">
+                                        <h:outputText value="#{interes.interesMostrar}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Mora Mensual" width="7%" style="text-align: center">
+                                        <h:outputText value="#{interes.interesAcumAnual}%"/>
+                                    </p:column>
+
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" exportable="false" width="5%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-pencil" 
+                                                                 onclick="PF('dlgEditar').show();"
+                                                                 update="frmEditar">
+                                                    <f:setPropertyActionListener value="#{interes}" target="#{ctIntereses.interesSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <f:facet name="footer">
+
+                                        <p:commandButton value="Registrar"
+                                                         icon="ui-icon-plus"
+                                                         onclick="PF('dlgRegistrar').show();" 
+                                                         update="frmRegistrar"/>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                            <p:dataExporter type="xls" target="tblIntereses" fileName="interes" />
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/pdf.png"/>
+                                            <p:dataExporter type="pdf" target="tblIntereses" fileName="interes"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/csv.png"/>
+                                            <p:dataExporter type="csv" target="tblIntereses" fileName="interes" />
+                                        </h:commandLink>
+                                    </f:facet>
+                                </p:dataTable>
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolTesorero}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card"> 
+                                <h1>Permisos Insuficientes</h1>
+                                <b>Consulte con el administrador</b>
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="dlgRegistrarInteres.xhtml"/>
+        <ui:include src="dlgActualizarInteres.xhtml"/>
+        <ui:include src="dlgReporteInteres.xhtml"/>
+    </ui:define>
+</ui:composition>

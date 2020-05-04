@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c81b767-258e-401e-842a-52504095ea59">
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     t_predio2."int_id_predio" AS t_predio2_int_id_predio,
+     t_predio2."int_num_ficha" AS t_predio2_int_num_ficha,
+     t_predio2."int_id_parroquia" AS t_predio2_int_id_parroquia,
+     t_predio2."txt_sustento_delete" AS t_predio2_txt_sustento_delete,
+     t_predio2."txt_sustento_update" AS t_predio2_txt_sustento_update,
+     t_predio2."db_fondo_relativo" AS t_predio2_db_fondo_relativo,
+     t_predio2."planimetria" AS t_predio2_planimetria,
+     t_predio2."observaciones_generales" AS t_predio2_observaciones_generales,
+     t_predio2."bl_legalizado" AS t_predio2_bl_legalizado,
+     t_predio2."id_session_usuario" AS t_predio2_id_session_usuario,
+     t_predio2."chv_colindant_oest" AS t_predio2_chv_colindant_oest,
+     t_predio2."chv_fuente_informant" AS t_predio2_chv_fuente_informant,
+     t_predio2."chv_telf_informant" AS t_predio2_chv_telf_informant,
+     t_predio2."chv_ficha_adjunta" AS t_predio2_chv_ficha_adjunta,
+     t_predio2."ts_fecha_registro" AS t_predio2_ts_fecha_registro,
+     t_predio2."ts_fecha_baja" AS t_predio2_ts_fecha_baja,
+     t_predio2."ch_estado_logico" AS t_predio2_ch_estado_logico,
+     t_predio2."db_porcent_excep" AS t_predio2_db_porcent_excep,
+     t_predio2."ts_fecha_actualizacion" AS t_predio2_ts_fecha_actualizacion,
+     t_predio2."chv_excencion_esp" AS t_predio2_chv_excencion_esp,
+     t_predio2."chv_observaciones" AS t_predio2_chv_observaciones,
+     t_predio2."id_sector_homogeneo" AS t_predio2_id_sector_homogeneo,
+     t_predio2."id_predio_espacial" AS t_predio2_id_predio_espacial,
+     t_predio2."chv_colindant_sur" AS t_predio2_chv_colindant_sur,
+     t_predio2."chv_colindant_este" AS t_predio2_chv_colindant_este,
+     t_predio2."chv_colindant_nort" AS t_predio2_chv_colindant_nort,
+     t_predio2."db_coord_n" AS t_predio2_db_coord_n,
+     t_predio2."db_coord_e" AS t_predio2_db_coord_e,
+     t_predio2."chv_otra_ref_top" AS t_predio2_chv_otra_ref_top,
+     t_predio2."chv_foto_aerea" AS t_predio2_chv_foto_aerea,
+     t_predio2."chv_topografia_ref_top" AS t_predio2_chv_topografia_ref_top,
+     t_predio2."chv_fotografia" AS t_predio2_chv_fotografia,
+     t_predio2."chv_emplazamiento" AS t_predio2_chv_emplazamiento,
+     t_predio2."chv_croquis" AS t_predio2_chv_croquis,
+     t_predio2."db_derechos_acciones" AS t_predio2_db_derechos_acciones,
+     t_predio2."db_lindero_alicuota4" AS t_predio2_db_lindero_alicuota4,
+     t_predio2."db_lindero_alicuota3" AS t_predio2_db_lindero_alicuota3,
+     t_predio2."db_lindero_alicuota2" AS t_predio2_db_lindero_alicuota2,
+     t_predio2."db_lindero_alicuota1" AS t_predio2_db_lindero_alicuota1,
+     t_predio2."chv_lindero_calle4" AS t_predio2_chv_lindero_calle4,
+     t_predio2."chv_lindero_calle3" AS t_predio2_chv_lindero_calle3,
+     t_predio2."chv_lindero_calle2" AS t_predio2_chv_lindero_calle2,
+     t_predio2."chv_lindero_calle1" AS t_predio2_chv_lindero_calle1,
+     t_predio2."db_lindero_frente4" AS t_predio2_db_lindero_frente4,
+     t_predio2."db_lindero_frente3" AS t_predio2_db_lindero_frente3,
+     t_predio2."db_lindero_frente2" AS t_predio2_db_lindero_frente2,
+     t_predio2."db_lindero_frente1" AS t_predio2_db_lindero_frente1,
+     t_predio2."int_num_banios" AS t_predio2_int_num_banios,
+     t_predio2."chv_ascensor" AS t_predio2_chv_ascensor,
+     t_predio2."chv_muros" AS t_predio2_chv_muros,
+     t_predio2."chv_cisterna" AS t_predio2_chv_cisterna,
+     t_predio2."chv_cerramiento" AS t_predio2_chv_cerramiento,
+     t_predio2."chv_piscina" AS t_predio2_chv_piscina,
+     t_predio2."chv_patio" AS t_predio2_chv_patio,
+     t_predio2."db_area_total_terreno" AS t_predio2_db_area_total_terreno,
+     t_predio2."db_area_total_const" AS t_predio2_db_area_total_const,
+     t_predio2."db_area_construc" AS t_predio2_db_area_construc,
+     t_predio2."chv_otros_servicios" AS t_predio2_chv_otros_servicios,
+     t_predio2."chv_internet" AS t_predio2_chv_internet,
+     t_predio2."chv_transp_publico" AS t_predio2_chv_transp_publico,
+     t_predio2."chv_rec_basura" AS t_predio2_chv_rec_basura,
+     t_predio2."chv_red_telefon" AS t_predio2_chv_red_telefon,
+     t_predio2."chv_energ_electric" AS t_predio2_chv_energ_electric,
+     t_predio2."chv_alcantarillado" AS t_predio2_chv_alcantarillado,
+     t_predio2."chv_red_agua" AS t_predio2_chv_red_agua,
+     t_predio2."chv_material_vias" AS t_predio2_chv_material_vias,
+     t_predio2."chv_uso_vias" AS t_predio2_chv_uso_vias,
+     t_predio2."chv_caract_suelo" AS t_predio2_chv_caract_suelo,
+     t_predio2."chv_forma_predio" AS t_predio2_chv_forma_predio,
+     t_predio2."chv_topografia_pedio" AS t_predio2_chv_topografia_pedio,
+     t_predio2."chv_localizacion_predio" AS t_predio2_chv_localizacion_predio,
+     t_predio2."chv_ocupacion_predio" AS t_predio2_chv_ocupacion_predio,
+     t_predio2."chv_us_suel_produc" AS t_predio2_chv_us_suel_produc,
+     t_predio2."chv_us_suel_intercambio" AS t_predio2_chv_us_suel_intercambio,
+     t_predio2."chv_uso_suelo_consumo" AS t_predio2_chv_uso_suelo_consumo,
+     t_predio2."chv_gest_uso_suelo" AS t_predio2_chv_gest_uso_suelo,
+     t_predio2."db_avaluo_prop" AS t_predio2_db_avaluo_prop,
+     t_predio2."chv_prop_anterior" AS t_predio2_chv_prop_anterior,
+     t_predio2."db_area_escritura" AS t_predio2_db_area_escritura,
+     t_predio2."dt_fecha_registro" AS t_predio2_dt_fecha_registro,
+     t_predio2."chv_notaria" AS t_predio2_chv_notaria,
+     t_predio2."dt_fecha_titulo_prop" AS t_predio2_dt_fecha_titulo_prop,
+     t_predio2."chv_forma_adq" AS t_predio2_chv_forma_adq,
+     t_predio2."chv_condicion" AS t_predio2_chv_condicion,
+     t_predio2."int_id_dominio" AS t_predio2_int_id_dominio,
+     t_predio2."int_id_rep_legal" AS t_predio2_int_id_rep_legal,
+     t_predio2."int_id_titular_dom" AS t_predio2_int_id_titular_dom,
+     t_predio2."chv_nombre_edificio" AS t_predio2_chv_nombre_edificio,
+     t_predio2."chv_num_casa" AS t_predio2_chv_num_casa,
+     t_predio2."chv_calle_secund" AS t_predio2_chv_calle_secund,
+     t_predio2."chv_calle_princ" AS t_predio2_chv_calle_princ,
+     t_predio2."chv_barrio" AS t_predio2_chv_barrio,
+     t_predio2."chv_clave_catastral_ant" AS t_predio2_chv_clave_catastral_ant,
+     t_predio2."chv_clave_catastral" AS t_predio2_chv_clave_catastral,
+     t_predio2."int_prop_hor_unidad" AS t_predio2_int_prop_hor_unidad,
+     t_predio2."int_prop_hor_piso" AS t_predio2_int_prop_hor_piso,
+     t_predio2."int_prop_hor_bloque" AS t_predio2_int_prop_hor_bloque,
+     t_predio2."int_num_predio" AS t_predio2_int_num_predio,
+     t_predio2."int_manzana" AS t_predio2_int_manzana,
+     t_predio2."int_sector" AS t_predio2_int_sector,
+     t_predio2."int_zona" AS t_predio2_int_zona
+FROM
+     "catastro"."t_predio2" t_predio2
+ORDER BY
+     chv_clave_catastral ASC]]>
+	</queryString>
+	<field name="t_predio2_int_sector" class="java.lang.Integer"/>
+	<field name="t_predio2_int_zona" class="java.lang.Integer"/>
+	<group name="t_predio2_int_zona">
+		<groupExpression><![CDATA[$F{t_predio2_int_zona}]]></groupExpression>
+	</group>
+	<group name="t_predio2_int_sector">
+		<groupExpression><![CDATA[$F{t_predio2_int_sector}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

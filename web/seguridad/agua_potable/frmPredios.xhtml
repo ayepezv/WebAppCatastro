@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgPredios" widgetVar="dlgPredios" closable="true" modal="true" resizable="true" 
+              header="Predios" showEffect="size" hideEffect="size" width="50%">
+        <h:form id="frmBuscarPredios">   
+            <p:dataTable id="tblPredios" var="predio" value="#{controladorCuentaAP.lstPredios}" rows="5"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" reflow="true"
+                         rowKey="#{predio.idPredio}" selectionMode="single" 
+                         selection="#{controladorCuentaAP.objPredio}">
+
+                <p:column headerText="Clave Catastral" width="5%" style="text-align: center">
+                    <h:outputText value="#{predio.claveCatastral}" />
+                </p:column>
+
+                <p:column headerText="Titular del dominio" width="10%" style="text-align: center">
+                    <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}" />
+                </p:column>
+
+                <p:column width="5%" style="text-align: center">
+                    <p:commandButton value="Seleccionar" icon="ui-icon-send"
+                                     onclick="PF('dlgPredios').hide()"
+                                     update="frmRegistrarCuentaPredio:claveCat,
+                                     frmRegistrarCuentaPredio:titular">
+                        <f:setPropertyActionListener value="#{predio}" target="#{controladorCuentaAP.objPredio}"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>            
+        </h:form>
+    </p:dialog>
+</ui:composition>

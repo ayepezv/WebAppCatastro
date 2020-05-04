@@ -1,0 +1,237 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 21}">
+                <center>
+                    <h1>Gestión de Excenciones Especiales</h1>  
+                </center>
+                <h:form id="frmPrincipal">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <center>
+                                    <b>Buscar: </b>
+                                    <p:selectOneMenu value="#{ctPrediosExcenciones.band}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Por Beneficiario" itemValue="1"/>
+                                        <f:selectItem itemLabel="Por Clave Catastral" itemValue="2"/>
+                                        <p:ajax event="change" update="frmPrincipal:pnlBuscarPorUsuario,
+                                                frmPrincipal:pnlBuscarPorClaveCat" 
+                                                />
+                                    </p:selectOneMenu>
+                                </center>                                
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <div class="card">
+                                <center>
+                                    <p:panel id="pnlBuscarPorUsuario" 
+                                             visible="#{ctPrediosExcenciones.band==1}" 
+                                             style="border: none">
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group" >
+                                            <p:outputLabel value="Cédula/Apellidos"/>
+                                            <p:inputText value="#{ctPrediosExcenciones.parametro}"/>
+                                            <p:commandButton value="Buscar"
+                                                             icon="ui-icon-search"
+                                                             action="#{ctPrediosExcenciones.obtenerExcencionesUsuario()}"
+                                                             update="frmPrincipal:tblExcenciones"/>
+                                            <p:commandButton value="Limpiar"
+                                                             icon="ui-icon-refresh"
+                                                             action="#{ctPrediosExcenciones.limpiar()}"
+                                                             update="frmPrincipal:tblExcenciones,@form" />
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPorClaveCat" 
+                                             visible="#{ctPrediosExcenciones.band==2}" 
+                                             style="border: none">
+                                        <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <p:outputLabel value="Zona"/>
+                                            <p:inputText id="zona" value="#{ctPrediosExcenciones.zona}" style="width: 35%"/>
+                                            <p:outputLabel value="Sector"/>
+                                            <p:inputText id="sector" value="#{ctPrediosExcenciones.sector}" style="width: 35%"/>
+                                            <p:outputLabel value="Manzana"/>
+                                            <p:inputText id="manzana" value="#{ctPrediosExcenciones.manzana}" style="width: 35%"/>
+                                            <p:outputLabel value="Predio"/>
+                                            <p:inputText id="predio" value="#{ctPrediosExcenciones.numPredio}" style="width: 35%"/>                                        
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{ctPrediosExcenciones.obtenerExcencionesClaveCat()}"
+                                                             update="frmPrincipal:tblExcenciones"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{ctPrediosExcenciones.limpiar()}"
+                                                             update="frmPrincipal:tblExcenciones,@form"/>
+                                        </p:panelGrid>
+                                    </p:panel> 
+                                </center>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12">
+                            <p:growl autoUpdate="true" showDetail="true"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                            <center>
+                                <p:dataTable id="tblExcenciones" var="excencion" value="#{ctPrediosExcenciones.lstExcenciones}" rows="50"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="50,100,200,300" reflow="true" 
+                                             selection="#{ctPrediosExcenciones.excencionSel}"
+                                             rowStyleClass="#{excencion.excencion.idExccencion=='1' ?'amber-btn flat':'blue-grey flat'}">
+
+                                    <f:facet name="header">
+                                        <p:commandButton id="toggler" type="button" value="Campos" style="float:right" icon="ui-icon-apps" />
+                                        <p:columnToggler datasource="tblExcenciones" trigger="toggler" />
+                                    </f:facet>
+                                    <p:column filterBy="#{excencion.predio.claveCatastral}" filterMatchMode="contains"
+                                              headerText="Predio" width="6%" style="text-align: center">
+                                        <h:outputText value="#{excencion.predio.claveCatastral}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{excencion.predio.propietario.cedula}" filterMatchMode="contains"
+                                              headerText="Cédula/RUC" width="5%" style="text-align: center">
+                                        <h:outputText value="#{excencion.predio.propietario.cedula}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{excencion.predio.propietario.apellidos} #{excencion.predio.propietario.nombres}" filterMatchMode="contains"
+                                              headerText="Titular" width="7%" style="text-align: center">
+                                        <h:outputText value="#{excencion.predio.propietario.apellidos} #{excencion.predio.propietario.nombres}"/>
+                                    </p:column>
+                                    <p:column filterBy="#{excencion.excencion.excencion}" filterMatchMode="contains"
+                                              headerText="Excención" width="5%" style="text-align: center">
+                                        <h:outputText value="#{excencion.excencion.excencion}"/>
+                                    </p:column>
+                                    
+                                     <p:column filterBy="#{excencion.predio.propietario.edad}" filterMatchMode="contains"
+                                               headerText="Edad" width="5%" style="text-align: center">
+                                         <h:outputText value="#{excencion.predio.propietario.edad}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{excencion.porcentaje}" filterMatchMode="contains"
+                                              headerText="Porcentaje" width="4%" style="text-align: center">
+                                        <h:outputText value="#{excencion.porcentaje}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{excencion.avaluoPredio}" filterMatchMode="contains"
+                                              headerText="Avaluo Predio" width="4%" style="text-align: center">
+                                        <h:outputText value="#{excencion.avaluoPredio}">
+                                            <f:convertNumber maxFractionDigits="2" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column filterBy="#{excencion.dsctoExcencion}" filterMatchMode="contains"
+                                              headerText="Descuento" width="4%" style="text-align: center">
+                                        <h:outputText value="#{excencion.dsctoExcencion}">
+                                            <f:convertNumber maxFractionDigits="2" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column filterBy="#{excencion.avaluoImponible}" filterMatchMode="contains"
+                                              headerText="Avaluo Imponible" width="4%" style="text-align: center">
+                                        <h:outputText value="#{excencion.avaluoImponible}">
+                                            <f:convertNumber maxFractionDigits="2" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column  headerText="Fecha de inicio" width="4%" style="text-align: center"
+                                               visible="false">
+                                        <h:outputText value="#{excencion.fechaInicio}"/>
+                                    </p:column>  
+
+                                    <p:column  headerText="Fecha de finalización" width="4%" style="text-align: center"
+                                               visible="false">
+                                        <h:outputText value="#{excencion.fechaFin}"/>
+                                    </p:column> 
+
+                                    <p:column headerText="Observaciones" width="5%" style="text-align: center"
+                                              visible="false">
+                                        <h:outputText value="#{excencion.observaciones}"/>
+                                    </p:column>   
+
+                                    <p:column headerText="Actualizar" width="3%" 
+                                              exportable="false"
+                                              style="text-align: center"
+                                              visible="false">
+                                        <p:commandButton icon="ui-icon-pencil"
+                                                         title="Editar"
+                                                         onclick="PF('dlgEditar').show();"
+                                                         update="frmEditar">
+                                            <f:setPropertyActionListener value="#{excencion}" 
+                                                                         target="#{ctPrediosExcenciones.excencionSel}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                    <!--<p:column headerText="Dar de baja" width="3%" 
+                                              style="text-align: center"
+                                              exportable="false">
+                                        <p:commandButton icon="ui-icon-delete-forever"
+                                                         title="Eliminar"
+                                                         onclick="PF('dlgEliminar').show();"
+                                                         update="frmEliminar">
+                                            <f:setPropertyActionListener value="#{excencion}" 
+                                                                         target="#{ctPrediosExcenciones.excencionSel}"/>
+                                        </p:commandButton>
+                                    </p:column> -->
+
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Nueva Excención"
+                                                         icon="ui-icon-plus"
+                                                         onclick="PF('dlgRegistrar').show()"/>
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                            <p:dataExporter type="xls" target="tblExcenciones" fileName="Excenciones" />
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/pdf.png"/>
+                                            <p:dataExporter type="pdf" target="tblExcenciones" fileName="Excenciones"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/csv.png"/>
+                                            <p:dataExporter type="csv" target="tblExcenciones" fileName="Excenciones" />
+                                        </h:commandLink>
+                                    </f:facet>
+                                </p:dataTable>
+                            </center>
+                        </div>
+                    </div>     
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != 21}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+        <ui:include src="dlgNuevaExencion.xhtml"/> 
+        <ui:include src="dlgEditarExencion.xhtml"/> 
+        <ui:include src="dlgEliminarExencion.xhtml"/> 
+    </ui:define>
+</ui:composition>

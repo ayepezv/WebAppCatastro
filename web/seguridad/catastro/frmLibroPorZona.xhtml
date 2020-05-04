@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <h:form id="frmPrincipal" >
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <div class="ui-g">
+                        <div class="ui-g-12">                                                        
+                            <div class="card">  
+                                <b>Buscar:</b>
+                                <center>
+                                    <p:panelGrid columns="12" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                        <p:outputLabel value="Año:"/>
+                                        <p:selectOneMenu value="#{ctLibroPredial.anio}">
+                                            <f:selectItem itemValue="#{null}" itemLabel="--Seleccione--" noSelectionOption="true"/>
+                                            <f:selectItems value="#{ctLibroPredial.lstAnios}" var="anio" 
+                                                           itemLabel="#{anio.anioTitulo}" itemValue="#{anio.anioTitulo}"/>                                        
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Zona:"/>
+                                        <p:inputText value="#{ctLibroPredial.numZona}" style="width: 40%"/>
+                                        <p:outputLabel value="Sector:"/>
+                                        <p:inputText value="#{ctLibroPredial.numSector}" style="width: 40%"/>
+                                        <p:outputLabel value="Manzana:"/>
+                                        <p:inputText value="#{ctLibroPredial.numManzana}" style="width: 40%"/>
+                                        <p:outputLabel value="Predio:"/>
+                                        <p:inputText value="#{ctLibroPredial.numPredio}" style="width: 40%"/>
+                                        <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                         action="#{ctLibroPredial.libroPredialPorZona()}" 
+                                                         update="tblTitulos"/> 
+                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                         action="#{ctLibroPredial.libroPredialPorZona()}" 
+                                                         update="tblTitulos"/>
+                                    </p:panelGrid>
+                                </center>
+                            </div> 
+
+                            <div class="card">  
+                                <p:dataTable id="tblTitulos" var="titulo" value="#{ctLibroPredial.lstTitulos}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20,25" reflow="true">  
+                                    <f:facet name="header">
+                                        <b>Títulos</b>
+                                    </f:facet>
+                                    <p:column headerText="Año" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.anioTitulo}"/>
+                                    </p:column>
+                                    <p:column headerText="Número de título" width="8%" style="text-align: center">
+                                        <h:outputText value="#{titulo.tituloNumero}"/>
+                                    </p:column>
+                                    <p:column headerText="Clave Catastral" width="8%" style="text-align: center"
+                                              filterBy="#{titulo.predio.claveCatastral}" filterMatchMode="contains" >
+                                        <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                                    </p:column>                                           
+                                    <p:column filterBy="#{titulo.propietarioIndex.apellidos}"  headerText="Propietario" width="10%" style="text-align: center"
+                                              filterMatchMode="contains">
+                                        <h:outputText value="#{titulo.propietarioIndex.apellidos} #{titulo.propietarioIndex.nombres}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Impuesto predial" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.impuestoPredial}">
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <!--
+                                    <p:column headerText="Procesamiento" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.procesamiento}">
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    -->
+                                    <p:column headerText="No edificado" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.recargo}">
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Bomberos" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.cuerpoBomberos}">
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Total a pagar" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.totalTitulo}">                                    
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>                                   
+
+                                    <f:facet name="footer"> 
+                                        <p:commandButton id="btnReporte" value="Reporte" icon="ui-icon-local-printshop"
+                                                         action="#{ctLibroPredial.reportePorZona()}"
+                                                         ajax="false" onclick="this.form.target = '_blank'"/>
+                                        <h:commandLink title="Exportar a Excel">
+                                            <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                            <p:dataExporter type="xls" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a PDF">                                        
+                                            <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                            <p:dataExporter type="pdf" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a CSV">
+                                            <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                            <p:dataExporter type="xls" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a XML">
+                                            <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                            <p:dataExporter type="xml" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                        </h:commandLink>
+                                    </f:facet>
+                                </p:dataTable>
+                            </div>                        
+                        </div>                        
+                    </div> 
+                </h:form>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

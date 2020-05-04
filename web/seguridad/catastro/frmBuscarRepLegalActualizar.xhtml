@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgBuscarRepLegal1" widgetVar="wdlgBuscarRepLegal1" closable="false" modal="true" resizable="true" 
+              header="Buscar persona" showEffect="size" hideEffect="size" width="85%" >
+        <h:form id="buscarRepLegal1">
+            <p:growl id="msj" globalOnly="false" life="10000" escape="true"/> 
+            <center>
+                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputText value="Apellidos/Cédula Ciudadanía:"/>
+                    <p:inputText value="#{controladorPredio.txtCriterioPersona}" />
+                    <p:commandButton title="Buscar" icon="ui-icon-search" 
+                                     action="#{controladorPredio.buscarPropietarioDadoCriterio()}"
+                                     update="tblRepLegal"/>
+                </p:panelGrid>
+                <p:dataTable id="tblRepLegal" var="rep" value="#{controladorPredio.lstUsuarios}" rows="5"
+                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{rep.idPersona}"
+                             editable="true" selection="#{controladorPredio.repLegal}" selectionMode="single">
+                    <p:column headerText="Apellidos:" width="8%" style="text-align: center">
+                        <h:outputText value="#{rep.apellidos}"/>
+                    </p:column>
+                     <p:column headerText="Nombres:" width="8%" style="text-align: center">
+                         <h:outputText value="#{rep.nombres}" />
+                    </p:column>
+                    <p:column headerText="Acciones" width="8%" style="text-align: center">
+                        <p:commandButton icon="ui-icon-arrow-1-w" title="Seleccionar" 
+                                         update="actualizarPredio:otxtRepLegal"
+                                         onclick="PF('wdlgBuscarRepLegal1').hide()">
+                            <f:setPropertyActionListener value="#{rep}" target="#{controladorPredio.repLegal}"/>
+                        </p:commandButton>                            
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p:commandButton value="Cerrar" icon="ui-icon-close" onclick="PF('wdlgBuscarRepLegal').hide()"/>
+            </center>
+
+        </h:form>
+    </p:dialog>
+</ui:composition>

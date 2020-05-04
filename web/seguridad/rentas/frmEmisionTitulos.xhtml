@@ -1,0 +1,169 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 21}">
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                        <h:form id="frmPrincipal">
+                            <p:growl autoUpdate="true" showDetail="true"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <center>
+                                        <h3>Simular emisión</h3>
+                                    </center>
+                                    <div class="card">    
+                                        <center>
+                                            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Simular emisión"
+                                                                 icon="ui-icon-play-circle-filled"
+                                                                 action="#{ctEmisionTitulos.simularEmision()}"/>
+                                                <p:commandButton value="Consultar valores"
+                                                                 icon="ui-icon-assignment"
+                                                                 action="#{ctEmisionTitulos.obtenerTitulosSimulacion()}"
+                                                                 update="frmPrincipal:tblTitulos"/>
+                                                <p:commandButton value="Generar Notificaciones"
+                                                                 icon="ui-icon-print"
+                                                                 onclick="PF('dlgReporte').show();"
+                                                                 update="frmReporte"/>
+                                                <p:commandButton value="Eliminar valores"
+                                                                 icon="ui-icon-delete-forever"
+                                                                 action="#{ctEmisionTitulos.eliminarSimulacion()}"
+                                                                 update="frmPrincipal:tblTitulos"/>
+
+                                            </p:panelGrid>
+                                        </center>
+                                        <p:dataTable id="tblTitulos" var="titulo" value="#{ctEmisionTitulos.lstTitulosSimulados}" rows="50"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="50,200,500,1000" reflow="true">  
+                                            <f:facet name="header">
+                                                <b>Títulos</b>
+                                            </f:facet>
+                                            <p:column headerText="Año" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.anioTitulo}"/>
+                                            </p:column>
+                                            <p:column headerText="Número de título" width="8%" style="text-align: center">
+                                                <h:outputText value="#{titulo.tituloNumero}"/>
+                                            </p:column>
+                                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                                <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                                            </p:column>                                           
+                                            <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                                <h:outputText value="#{titulo.propietarioIndex.apellidos} #{titulo.propietarioIndex.nombres}"/>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Avaluo Comercial" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.avaluoComercial}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Avaluo Imponible" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.avaluoImponible}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            
+                                            <p:column headerText="Causa Excencion" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.causaExcencion}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            
+
+                                            <p:column headerText="Impuesto predial" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.impuestoPredial}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Procesamiento" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.procesamiento}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="No edificado" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.recargo}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Bomberos" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.cuerpoBomberos}">
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Total a pagar" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.totalPagar}">                                    
+                                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                                </h:outputText>
+                                            </p:column>                                   
+
+                                            <f:facet name="footer">                                                
+                                                <h:commandLink title="Exportar a Excel">
+                                                    <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                                    <p:dataExporter type="xls" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                                </h:commandLink>
+                                                <h:commandLink title="Exportar a PDF">                                        
+                                                    <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                                    <p:dataExporter type="pdf" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                                </h:commandLink>
+                                                <h:commandLink title="Exportar a CSV">
+                                                    <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                                    <p:dataExporter type="xls" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                                </h:commandLink>
+                                                <h:commandLink title="Exportar a XML">
+                                                    <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                                    <p:dataExporter type="xml" target="tblTitulos" fileName="Títulos" pageOnly="false" />
+                                                </h:commandLink>
+                                            </f:facet>
+                                        </p:dataTable>
+                                    </div>  
+
+                                </div>                        
+                            </div> 
+                        </h:form>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                        </p:dialog>
+                    </c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert != VariablesGlobales.privActivo}">
+                        <center>
+                            <div class="ui-g">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <div class="card">  
+                                        <b><h1>Permisos Insuficientes</h1></b>
+                                        <b>Consulte con el administrador</b>                      
+                                    </div>                        
+                                </div>                        
+                            </div>  
+                        </center>
+                    </c:when>
+                </c:choose>                
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != 21}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+          <ui:include src="dlgReporteNotificaciones.xhtml"/>
+    </ui:define>
+</ui:composition>

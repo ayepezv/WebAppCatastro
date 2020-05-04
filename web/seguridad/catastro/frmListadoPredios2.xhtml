@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="frmPredios">
+            <p:growl autoUpdate="true"/>
+            <p:messages autoUpdate="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <div class="ui-g dashboard">
+                <div class="ui-g-12">
+                    <div class="card">                      
+                        <center>
+                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <h:outputLabel value="Criterio de búsqueda:"/>
+                                <p:inputText value="#{listadoPrediosCtrl.txtCriterio}"/>
+                                <p:commandButton icon="ui-icon-search" value="Buscar"
+                                                 action="#{listadoPrediosCtrl.encontrarPredioDadoParametro()}"
+                                                 update="frmPredios:tblPredios"/>
+                                <p:commandButton icon="ui-icon-refresh" value="Limpiar"
+                                                 action="#{listadoPrediosCtrl.obtenerPredios()}"
+                                                 update="frmPredios:tblPredios" />
+                            </p:panelGrid>                            
+                        </center>                            
+                    </div>
+                </div>            
+                <div class="ui-g-12">
+                    <div class="card"> 
+                        <center>                    
+                            <p:dataTable id="tblPredios" var="predio" value="#{listadoPrediosCtrl.lstPredios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                         editable="true" selection="#{listadoPrediosCtrl.objPredio}" selectionMode="single">
+                                <f:facet name="header">
+                                    <p:outputLabel value="Listado de predios"/>
+                                </f:facet>
+                                <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predio.claveCatastral}"/>
+                                </p:column>
+                                <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                </p:column>         
+                                <!--
+                                <p:column headerText="Parroquia" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predio.idParroquia.nombre}"/>
+                                </p:column>
+                                -->
+                                <!--
+                                <p:column headerText="Dominio" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predio.dominio.dominio}"/>
+                                </p:column>
+                                -->
+                                <p:column headerText="Dirección" width="12%">
+                                    <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                </p:column>
+                                <p:column headerText="Bloques" width="5%" style="text-align: center">
+                                    <p:commandButton title="Ver Bloques" icon="ui-icon-folder-open"
+                                                     onclick="PF('wdlgBloques').show()"
+                                                     action="#{listadoPrediosCtrl.obtenerBloquesDadoPredio()}"
+                                                     update="frmBloques">
+                                        <f:setPropertyActionListener value="#{predio}" target="#{listadoPrediosCtrl.objPredio}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column headerText="Fotografia" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-attachment" title="Adjuntar fotografía"
+                                                     onclick="PF('dlgFotografiaPredio').show()"
+                                                     update="frmFotografiaPredio">
+                                        <f:setPropertyActionListener value="#{predio}" target="#{listadoPrediosCtrl.objPredio}"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton icon="ui-icon-crop-original" title="Ver fotografía"
+                                                     onclick="PF('dlgVerFotografia').show()"
+                                                     update="frmVerFotografia">
+                                        <f:setPropertyActionListener value="#{predio}" target="#{listadoPrediosCtrl.objPredio}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column headerText="Planimetría" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-attach-file" title="Subir planimetría"
+                                                     onclick="PF('dlgPlanimetria').show()"
+                                                     update="frmInsertarPlanimetria" >
+                                        <f:setPropertyActionListener value="#{predio}" target="#{ctrlActualizarPlanimetria.objPredio}"/>                                
+                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-insert-drive-file" title="Ver planimetría"
+                                                     onclick="PF('dlgVerPlanimetria').show()"
+                                                     update="frmVerPlanimetria">
+                                        <f:setPropertyActionListener value="#{predio}" target="#{ctrlActualizarPlanimetria.objPredio}"/>   
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column headerText="Reporte" width="5%" style="text-align: center" exportable="false">                           
+                                    <p:commandButton icon="ui-icon-print"  ajax="false" title="Ver Pdf"
+                                                     actionListener="#{listadoPrediosCtrl.verReporteFicha()}"
+                                                     onclick="this.form.target = '_blank'">
+                                        <f:setPropertyActionListener value="#{predio}" target="#{listadoPrediosCtrl.objPredio}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+            <img src="../../resources/gifs/Loading.gif" alt=""/>
+        </p:dialog>
+
+        <ui:include src="frmBloques.xhtml"/>            
+        <ui:include src="frmEliminarPredios.xhtml"/>
+        <ui:include src="frmActualizarFoto.xhtml"/>
+        <ui:include src="frmVerFotografia.xhtml"/>
+        <ui:include src="frmVerPlanimetria.xhtml"/>
+        <ui:include src="frmInsertarPlanimetria.xhtml"/>
+    </ui:define>   
+</ui:composition>

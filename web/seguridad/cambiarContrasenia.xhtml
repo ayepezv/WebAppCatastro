@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/templates/interna/template.xhtml">        
+    <f:metadata> </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g dashboard">
+            <div class="ui-g-12 ui-md-9 ui-lg-12">
+                <div class="card ui-fluid">
+                    <center>                       
+                        <h:form id="frmPrincipal">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                            <p:growl autoUpdate="true" showDetail="true"/>
+                             <h3>Cambiar contraseña</h3>
+                            <p:panelGrid columns="1" rendered="#{controladorPassword.sessionUsuario != null}"  styleClass="ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:password id="claveant" value="#{controladorPassword.passwdActual}" 
+                                                title="Contraseña Anterior" required="true" requiredMessage="La clave anterior es requerida" onblur="anterior()">
+                                    </p:password>
+                                    <label>* Contraseña actual</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:password id="personaclave" value="#{controladorPassword.nuevoPasswd}"
+                                                title="Contraseña Actual" required="true" requiredMessage="La clave actual es requerida">
+                                    </p:password>
+                                    <label >* Nueva Contraseña</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:password id="pass" value="#{controladorPassword.verifPasswd}"
+                                                title="Contraseña Actual" required="true" requiredMessage="La clave actual es requerida" >
+                                    </p:password>
+                                    <label>* Verificar Contraseña </label>
+                                </h:panelGroup>
+                                <p:commandButton value="Actualizar" 
+                                                 icon="ui-icon-pencil"
+                                                 action="/WebAppCatastro/faces/login.xhtml"
+                                                 actionListener="#{controladorPassword.cambairContrasenia()}"/>
+                            </p:panelGrid>
+
+                        </h:form>
+                    </center>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                    </p:dialog>
+
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

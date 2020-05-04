@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgAcabEdificacion" widgetVar="wgAcabEdificacion" modal="true" resizable="false" 
+              appendTo="@(body)" header="Escoja una Opción" showEffect="fade" hideEffect="fade" style="width: 100%">
+
+        <h:form id="frmAcabEdificacion">
+
+            <p:panel id="panelIngresar"  widgetVar="plnAcabEdificacion" closable="true" toggleable="true" style="width: 100%">                     
+
+                <div class="menu-gestion">
+
+                    <div class="opcion-gestion a">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefPisos.xhtml">                            
+                            <span class="gestion-icono">3</span>
+                            <div >
+                                <h2 class="titulo-gestion">Pisos</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefPuertas.xhtml">
+                            <span class="gestion-icono">2</span>
+                            <div >
+                                <h2 class="titulo-gestion">Puertas</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefVentanas.xhtml">
+                            <span class="gestion-icono">1</span>
+                            <div >
+                                <h2 class="titulo-gestion">Ventanas</h2>
+                            </div>
+                        </a>
+                    </div >
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefCubreventanas.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Cubreventanas</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefTumbados.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Tumbados</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefAcCubierta.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Cubierta</h2>
+                            </div>
+                        </a>
+                    </div> 
+
+                </div>
+
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

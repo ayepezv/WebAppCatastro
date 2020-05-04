@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgInsertarDocumento" widgetVar="dlgInsertarDocumento" closable="true" modal="true" resizable="true" 
+              header="Nuevo Documento" showEffect="size" hideEffect="size">
+        <p:outputLabel value="Formatos de documentos aceptados pdf, doc y odt" style="font-weight:bold"/>
+        <h:form id="frmInsertarDocumento" enctype="multipart/form-data">            
+            <center>
+                <p:panel id="displayInsertarDocumento" >
+
+                    <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;" styleClass="ui-panelgrid-blank form-group">
+                        <p:fileUpload fileUploadListener="#{ctRepDocumentos.cargarArchivoDocumento}"
+                                      allowTypes="/(\.|\/)(pdf|doc?x|odt)$/" label="Abrir" mode="advanced"  
+                                      update="displayInsertarDocumento" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                      value="#{ctRepDocumentos.archivoDocumento}"
+                                      required="true" requiredMessage="Cargar Documento!!" />
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="Título"/>
+                        <p:inputText id="txtTituloDocumento" value="#{ctRepDocumentos.objDocumento.titulo}"/>
+
+                        <p:outputLabel value="Ruta"/>
+                        <p:inputText id ="txtRutaDocumento" value="#{ctRepDocumentos.objDocumento.path}"/>
+
+                        <p:outputLabel value="Tipo"/>
+                        <p:inputText id="txtTipoDocumento" value="#{ctRepDocumentos.objDocumento.tipo}"/>
+
+                        <p:outputLabel value="Palabras Clave"/>
+                        <p:inputText id="txtPalabrasClaveDocumento" value="#{ctRepDocumentos.objDocumento.keywords}"/>
+
+                    </p:panelGrid>
+                    
+                    <p:commandButton value="Aceptar" action="#{ctRepDocumentos.registrar()}"
+                                     icon="ui-icon-save"
+                                     update="frmPrincipal:tblDocumentos" process="@this txtTituloDocumento
+                                     txtTipoDocumento txtPalabrasClaveDocumento"/>
+                </p:panel>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

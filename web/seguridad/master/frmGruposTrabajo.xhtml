@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />           
+        <center>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h:form id="frmGrupos">
+                        <div class="card">
+                            <h:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                <h:outputText value="Grupo de trabajo:"/>
+                                <p:inputText value="#{controladorGrupoTrabajo.grupo}" placeholder="Municipio"/>
+                                <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                 title="Buscar"/>
+                                <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                 title="Buscar"/>
+                            </h:panelGrid>
+                        </div>
+                        <div class="card">
+                            <p:dataTable id="tblGruposTrabjo" var="grupo" value="#{controladorGrupoTrabajo.lstGruposTrabajo}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true"
+                                         rowKey="#{grupo.idGrupoTrabajo}" selectionMode="single" selection="#{controladorGrupoTrabajo.grupoTrabajoSel}">
+                                <p:column headerText="Grupo" width="5%">
+                                    <h:outputText value="#{grupo.grupo}" />
+                                </p:column>
+                                <p:column headerText="Descripción" width="5%">
+                                    <h:outputText value="#{grupo.descripcion}" />
+                                </p:column>
+                                
+                                <p:column headerText="Estado" width="5%" style="text-align: center">
+                                    <h:outputText value="#{grupo.estadoLogico=='A' ?'Activo':'Inactivo'}" />                                    
+                                </p:column>
+                                
+                                <p:column headerText="Fecha de Registro" width="5%" style="text-align: center">
+                                    <h:outputText value="#{grupo.fechaRegistro}" />
+                                </p:column>                                
+
+                                <c:choose>                                        
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Editar" width="3%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-pencil" 
+                                                             title="Editar Mejora">
+                                                <f:setPropertyActionListener value="#{grupo}" target="#{controladorGrupoTrabajo.grupoTrabajoSel}"/>
+                                            </p:commandButton>
+                                        </p:column>                                        
+                                    </c:when> 
+                                </c:choose>
+
+                                <c:choose>  
+                                    <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Editar" width="3%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-trash" 
+                                                             title="Eliminar Mejora">
+                                                <f:setPropertyActionListener value="#{grupo}" target="#{controladorGrupoTrabajo.grupoTrabajoSel}"/>
+                                            </p:commandButton>
+                                        </p:column>                                        
+                                    </c:when> 
+                                </c:choose>
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-plusthick" title="Registrar Mejora"
+                                                             onclick="PF('dlgRegistrar').show()"/>
+                                        </c:when> 
+                                    </c:choose>
+                                </f:facet>
+
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+
+                </div>                
+            </div>           
+        </center>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <p:dialog header="Registrar Grupo de trabajo" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                  showEffect="clip" hideEffect="fold">
+            <h:form id="frmRegistrarGrupo">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group"  >
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="input2" value="#{controladorGrupoTrabajo.objGrupoTrabajo.grupo}"  title="Grupo de trabajo" required="true" 
+                                     requiredMessage="Ingrese el nombre del grupo, el campo es obligatorio."/>
+                        <label>* Grupo de Trabajo</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group"  >
+                    <h:outputText value="Descripción"/>
+                    <p:inputTextarea id="input" value="#{controladorGrupoTrabajo.objGrupoTrabajo.descripcion}"  
+                                     title="Descripción de grupo de trabajo" required="true" 
+                                     requiredMessage="Ingrese la descripción del grupo, el campo es obligatorio."/>
+                </p:panelGrid>
+                <p:separator/>
+                <center>
+                    <p:commandButton value="Aceptar" action="#{controladorGrupoTrabajo.insertar()}" 
+                                     update="frmGrupos:tblGruposTrabjo,frmRegistrarGrupo"/>
+                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/> 
+                </center>   
+
+            </h:form>                        
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

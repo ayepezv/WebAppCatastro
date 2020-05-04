@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h:form id="frmRecaudaciones">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                        <p:dataTable id="tblRecaudaciones" var="recaudacion" value="#{controladorRecaudacionPredial.lstRecaudaciones}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{recaudacion.id}"
+                                     editable="true" selection="#{controladorRecaudacionPredial.rp}" selectionMode="single">
+
+                            <p:column headerText="Clave Catastral" width="10%">
+                                <h:outputText value="#{recaudacion.predio.claveCatastral}" />
+                            </p:column>
+                            <p:column headerText="Propietario" width="10%">
+                                <h:outputText value="#{recaudacion.predio.propietario.nombres} #{recaudacion.predio.propietario.apellidos}" />
+                            </p:column>
+                            <p:column headerText="Año de emisión" width="10%">
+                                <h:outputText value="#{recaudacion.anioEmision}" />
+                            </p:column>
+                            <p:column headerText="Valor a cancelar" width="10%">
+                                <h:outputText value="#{recaudacion.total}" />
+                            </p:column>
+                            <p:column headerText="Emitida" width="10%">
+                                <h:outputText value="#{recaudacion.emitida}" />
+                            </p:column>
+                            <p:column headerText="Cancelada" width="10%">
+                                <h:outputText value="#{recaudacion.pagada}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgReporte" widgetVar="dlgReporte" closable="true" modal="true" resizable="false" 
+              header="Gnerar Notificaciones" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmReporte">
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+                    <br/>
+                    <p:outputLabel value="Desde:"/>
+                    <p:outputLabel value="Hasta:"/>
+                </p:panelGrid>
+                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputText value="Zona:"/>
+                    <h:outputText value="Sector:"/>
+                    <h:outputText value="Manzana:"/>
+                    <h:outputText value="Predio:"/>
+                    <h:inputText value="#{ctEmisionTitulos.zona}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.sector}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.manzana}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.predio}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.zonaHasta}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.sectorHasta}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.manzanaHasta}" size="5"/>
+                    <h:inputText value="#{ctEmisionTitulos.predioHasta}" size="5"/>
+                </p:panelGrid>
+            </p:panelGrid>
+            <center>
+                <p:commandButton value="Imprimir" icon="ui-icon-local-printshop" ajax="false"
+                                 actionListener="#{ctEmisionTitulos.verReporteNotificaciones()}"
+                                 onclick="this.form.target = '_blank'"/>
+            </center>
+        </h:form> 
+    </p:dialog>        
+</ui:composition>

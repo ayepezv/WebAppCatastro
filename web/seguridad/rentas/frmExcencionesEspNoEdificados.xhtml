@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 21}">
+                <center>
+                    <h1>Gestión de Predios Sin Multa de No Edificado</h1>  
+                </center>
+                <h:form id="frmPrincipal">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <center>
+                                    <b>Buscar: </b>
+                                    <p:selectOneMenu value="#{ctPrediosNoEdificaciones.band}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Por Beneficiario" itemValue="1"/>
+                                        <f:selectItem itemLabel="Por Clave Catastral" itemValue="2"/>
+                                        <p:ajax event="change" update="frmPrincipal:pnlBuscarPorUsuario,
+                                                frmPrincipal:pnlBuscarPorClaveCat" 
+                                                />
+                                    </p:selectOneMenu>
+                                </center>                                
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <div class="card">
+                                <center>
+                                    <p:panel id="pnlBuscarPorUsuario" 
+                                             visible="#{ctPrediosNoEdificaciones.band==1}" 
+                                             style="border: none">
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group" >
+                                            <p:outputLabel value="Cédula/Apellidos"/>
+                                            <p:inputText value="#{ctPrediosNoEdificaciones.parametro}"/>
+                                            <p:commandButton value="Buscar"
+                                                             icon="ui-icon-search"
+                                                             action="#{ctPrediosNoEdificaciones.obtenerPrediosNoEdificadosUsuario()}"
+                                                             update="frmPrincipal:tblNoEdificados"/>
+                                            <p:commandButton value="Limpiar"
+                                                             icon="ui-icon-refresh"
+                                                             action="#{CtPrediosNoEdificaciones.limpiar()}"
+                                                             update="frmPrincipal:tblNoEdificados,@form" />
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPorClaveCat" 
+                                             visible="#{ctPrediosNoEdificaciones.band==2}" 
+                                             style="border: none">
+                                        <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <p:outputLabel value="Zona"/>
+                                            <p:inputText id="zona" value="#{ctPrediosNoEdificaciones.zona}" style="width: 35%"/>
+                                            <p:outputLabel value="Sector"/>
+                                            <p:inputText id="sector" value="#{ctPrediosNoEdificaciones.sector}" style="width: 35%"/>
+                                            <p:outputLabel value="Manzana"/>
+                                            <p:inputText id="manzana" value="#{ctPrediosNoEdificaciones.manzana}" style="width: 35%"/>
+                                            <p:outputLabel value="Predio"/>
+                                            <p:inputText id="predio" value="#{ctPrediosNoEdificaciones.numPredio}" style="width: 35%"/>                                        
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{ctPrediosNoEdificaciones.obtenerExcencionesClaveCat()}"
+                                                             update="frmPrincipal:tblNoEdificados"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{ctPrediosNoEdificaciones.limpiar()}"
+                                                             update="frmPrincipal:tblNoEdificados,@form"/>
+                                        </p:panelGrid>
+                                    </p:panel> 
+                                </center>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12">
+                            <p:growl autoUpdate="true" showDetail="true"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                            <center>
+                                <p:dataTable id="tblNoEdificados" var="noEdificado" value="#{ctPrediosNoEdificaciones.lstExcPredioNoEdificado}" rows="20"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="20,30,40,50" reflow="true" 
+                                             selection="#{ctPrediosNoEdificaciones.excencionSel}"
+                                             rowStyleClass="#{noEdificado.predioNoEdificado=='20' ?'amber-btn flat':'blue-grey flat'}">
+
+                                    <f:facet name="header">
+                                        <p:commandButton id="toggler" type="button" value="Campos" style="float:right" icon="ui-icon-apps" />
+                                        <p:columnToggler datasource="tblNoEdificados" trigger="toggler" />
+                                    </f:facet>
+                                    <p:column filterBy="#{noEdificado.predio.claveCatastral}" filterMatchMode="contains"
+                                              headerText="Predio" width="6%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.predio.claveCatastral}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{noEdificado.predio.propietario.cedula}" filterMatchMode="contains"
+                                              headerText="Cédula/RUC" width="5%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.predio.propietario.ruc}"/>
+                                    </p:column>
+
+                                    <p:column filterBy="#{noEdificado.predio.propietario.apellidos} #{noEdificado.predio.propietario.nombres}" filterMatchMode="contains"
+                                              headerText="Titular" width="7%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.predio.propietario.apellidos} #{noEdificado.predio.propietario.nombres}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Razón" width="5%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.razon}"/>
+                                    </p:column>
+                                    
+                                     <p:column headerText="Reclamo" width="5%" style="text-align: center">
+                                         <h:outputText value="#{noEdificado.reclamo}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha de Inicio" width="4%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.fechaInicio}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha de Fin" width="4%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.fechaFin}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Temporalidad" width="4%" style="text-align: center">
+                                        <h:outputText value="#{noEdificado.temporalidad}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Valor No Multado" width="5%" style="text-align: center"
+                                              visible="false">
+                                        <h:outputText value="#{noEdificado.descuentoNoEdificado}"/>
+                                    </p:column>   
+                                    <!--
+                                    <p:column headerText="Actualizar" width="3%" 
+                                              exportable="false"
+                                              style="text-align: center"
+                                              visible="false">
+                                        <p:commandButton icon="ui-icon-pencil"
+                                                         title="Editar"
+                                                         onclick="PF('dlgEditar').show();"
+                                                         update="frmEditar">
+                                            <f:setPropertyActionListener value="#{noEdificado}" 
+                                                                         target="#{ctPrediosNoEdificaciones.excencionSel}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                    -->
+                                    <p:column headerText="Eliminar" width="3%" 
+                                              exportable="false"
+                                              style="text-align: center"
+                                              visible="false">
+                                        <p:commandButton icon="ui-icon-pencil"
+                                                         title="Eliminar"
+                                                         onclick="PF('dlgEliminar').show();"
+                                                         update="frmEliminar">
+                                            <f:setPropertyActionListener value="#{noEdificado}" 
+                                                                         target="#{ctPrediosNoEdificaciones.excencionSel}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                    
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Predio No Edificado"
+                                                         icon="ui-icon-plus"
+                                                         onclick="PF('dlgRegistrar').show()"/>
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                            <p:dataExporter type="xls" target="tblNoEdificados" fileName="PrediosAnuladoNoEdificado" />
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/pdf.png"/>
+                                            <p:dataExporter type="pdf" target="tblNoEdificados" fileName="PrediosAnuladoNoEdificado"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/csv.png"/>
+                                            <p:dataExporter type="csv" target="tblNoEdificados" fileName="PrediosAnuladoNoEdificado" />
+                                        </h:commandLink>
+                                    </f:facet>
+                                </p:dataTable>
+                            </center>
+                        </div>
+                    </div>     
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != 21}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+        <ui:include src="dlgNuevaNoEdificado.xhtml"/> 
+        <ui:include src="dlgEditarNoEdificado.xhtml"/> 
+        <ui:include src="dlgEliminarNoEdificado.xhtml"/> 
+    </ui:define>
+</ui:composition>

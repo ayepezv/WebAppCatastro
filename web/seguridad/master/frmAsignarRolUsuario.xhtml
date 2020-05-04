@@ -1,0 +1,287 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <center>
+                    <p:growl id="msgs" autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+
+                    <h:form id="frmRolUsuario">  
+                        <h2>Asignar Roles a los Usuarios</h2>
+                        <div class="ui-g">
+                            <div class="ui-g-4">
+                                <div class="card">
+                                    <b>Buscar:</b>
+                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group"> 
+                                        <p:outputLabel value="Criterio:"/>
+                                        <p:inputText value="#{rolUsuarioCtrl.parametro}" placeholder="Apellido/Cedula"/>
+                                        <p:outputLabel value="Tipo de persona:"/>
+                                        <p:selectOneMenu value="#{rolUsuarioCtrl.idTipoPersona}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{rolUsuarioCtrl.lstTiposPersonas}" var="tipo"
+                                                           itemLabel="#{tipo.tipoPersona}" itemValue="#{tipo.idTipoPersona}"/>                                            
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="Buscar" title="Buscar" action="#{rolUsuarioCtrl.encontrarPersonas()}"
+                                                         icon="ui-icon-search" update="frmRolUsuario:tblUsuarios"/>
+                                        <p:commandButton value="Limpiar" title="Limpiar" action="#{rolUsuarioCtrl.limpirar()}"
+                                                         icon="ui-icon-clear" update="frmRolUsuario:tblUsuarios,
+                                                         frmRolUsuario:tblRolesUsuarios,@form"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>  
+                            <div class="ui-g-8">
+                                <div class="card">
+                                    <p:dataTable id="tblUsuarios" var="usuario" value="#{rolUsuarioCtrl.lstPersonas}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15" reflow="true"
+                                                 rowKey="#{usuario.idPersona}" selectionMode="single" selection="#{rolUsuarioCtrl.usuarioSel}">
+                                        <f:facet name="header">
+                                            <p:outputLabel value="Usuarios"/>
+                                        </f:facet>
+
+                                        <c:choose>
+                                            <c:when  test="#{rolUsuarioCtrl.idTipoPersona==1}">
+                                                <p:column headerText="Cédula" width="5%" style="text-align: center">
+                                                    <h:outputText value="#{usuario.cedula}"/>
+                                                </p:column>
+                                                <p:column headerText="Apellidos" width="8%" style="text-align: center">
+                                                    <h:outputText value="#{usuario.apellidos}"/>
+                                                </p:column>
+                                                <p:column headerText="Nombres" width="8%" style="text-align: center">
+                                                    <h:outputText value="#{usuario.nombres}"/>
+                                                </p:column>                                               
+                                            </c:when>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when  test="#{rolUsuarioCtrl.idTipoPersona==2|| 
+                                                             rolUsuarioCtrl.idTipoPersona==3}">
+                                                <p:column headerText="Razon Social" width="10%" style="text-align: center">
+                                                    <h:outputText value="#{usuario.nombres} #{usuario.apellidos}"/>
+                                                </p:column>
+                                                <p:column headerText="RUC" width="10%" style="text-align: center" >
+                                                    <h:outputText value="#{usuario.ruc}"/>
+                                                </p:column>
+                                            </c:when>
+                                        </c:choose>
+
+                                        <p:column headerText="Nick" width="5%" style="text-align: center">
+                                            <h:outputText value="#{usuario.nick}"/>
+                                        </p:column>
+                                        <p:column headerText="Mail" width="8%" style="text-align: center">
+                                            <h:outputText value="#{usuario.mail}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Roles" width="5%" style="text-align: center">
+                                            <p:commandButton icon="swap-vert" action="#{rolUsuarioCtrl.encontrarRolesUs()}"
+                                                             update="frmRolUsuario:tblRolesUsuarios,frmRegistrar">
+                                                <f:setPropertyActionListener value="#{usuario}" target="#{rolUsuarioCtrl.usuarioSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+
+                                    </p:dataTable>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12">
+                                <div class="card">
+                                    <h3>Roles asignados al Usuario</h3>
+                                    <p:dataTable id="tblRolesUsuarios" var="ru" value="#{rolUsuarioCtrl.lstRolesUsuarios}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20" reflow="true" 
+                                                 rowKey="#{ru.idRol}"
+                                                 selection="#{rolUsuarioCtrl.rolUsuarioSel}" 
+                                                 selectionMode="single">
+
+                                        <p:column headerText="Nick" width="15%" style="text-align: center">
+                                            <h:outputText value="#{ru.idUsuario.nombres} #{ru.idUsuario.apellidos}"/>
+                                        </p:column>
+                                        <p:column headerText="Rol" width="6%" style="text-align: center">
+                                            <h:outputText value="#{ru.idRol.nombre}"/>
+                                        </p:column>                           
+
+                                        <p:column headerText="Nick" width="6%" style="text-align: center">
+                                            <h:outputText value="#{ru.idUsuario.nick}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Priv. Seleccionar" width="5%" style="text-align: center">                                                               
+                                            <p:commandButton id="btnPrivSelect" value="#{ru.seleccionar=='1' ?'Si':'No'}"
+                                                             styleClass="#{ru.seleccionar=='1' ?'amber-btn flat':'blue-grey flat'}"
+                                                             action="#{rolUsuarioCtrl.cambiarPrivSeleccionar()}"
+                                                             update="frmRolUsuario:tblRolesUsuarios">
+                                                <f:setPropertyActionListener value="#{ru}" target="#{rolUsuarioCtrl.rolUsuarioSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+                                        <p:column headerText="Priv. Insertar" width="5%" style="text-align: center">                               
+                                            <p:commandButton value="#{ru.insertar=='1' ?'Si':'No'}"
+                                                             styleClass="#{ru.insertar=='1' ?'amber-btn flat':'blue-grey flat'}"
+                                                             action="#{rolUsuarioCtrl.cambiarPrivInsert()}"
+                                                             update="frmRolUsuario:tblRolesUsuarios">
+                                                <f:setPropertyActionListener value="#{ru}" target="#{rolUsuarioCtrl.rolUsuarioSel}"/>
+                                            </p:commandButton>                                        
+                                        </p:column>
+
+                                        <p:column headerText="Priv. Actualizar" width="5%" style="text-align: center">                               
+                                            <p:commandButton value="#{ru.actualizar=='1' ?'Si':'No'}"
+                                                             styleClass="#{ru.actualizar=='1' ?'amber-btn flat':'blue-grey flat'}"
+                                                             action="#{rolUsuarioCtrl.cambiarPrivUpdate()}"
+                                                             update="frmRolUsuario:tblRolesUsuarios">
+                                                <f:setPropertyActionListener value="#{ru}" target="#{rolUsuarioCtrl.rolUsuarioSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+                                        <p:column headerText="Priv. Eliminar" width="5%" style="text-align: center">                               
+                                            <p:commandButton value="#{ru.eliminar=='1' ?'Si':'No'}"
+                                                             styleClass="#{ru.eliminar=='1' ?'amber-btn flat':'blue-grey flat'}"
+                                                             action="#{rolUsuarioCtrl.cambiarPrivDelete()}"
+                                                             update="frmRolUsuario:tblRolesUsuarios">
+                                                <f:setPropertyActionListener value="#{ru}" target="#{rolUsuarioCtrl.rolUsuarioSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+
+
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                                <p:column headerText="Eliminar" width="5%" style="text-align: center">                               
+                                                    <p:commandButton title="Eliminar" icon="ui-icon-trash"
+                                                                     onclick="PF('dlgEliminar').show()"
+                                                                     update="">
+                                                        <f:setPropertyActionListener value="#{ru}" target="#{rolUsuarioCtrl.rolUsuarioSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </c:when>
+                                        </c:choose>
+
+                                        <f:facet name="footer">
+                                            <c:choose>
+                                                <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo
+                                                                 and rolUsuarioCtrl.band==1}">
+
+                                                    <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                                     onclick="PF('dlgRegistrar').show();"/>
+                                                </c:when>
+                                            </c:choose>
+                                        </f:facet>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                    </p:dialog>
+
+                    <p:dialog header="Asignar Roles al Usuario" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrar">
+                            <center>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Rol:"/>
+                                    <p:selectOneMenu id="cmbRoles" value="#{rolUsuarioCtrl.idRol}" 
+                                                     required="true" requiredMessage="Seleccione un Rol"
+                                                     effect="fade" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="- Seleccione -" itemValue="#{null}"/>
+                                        <f:selectItems value="#{rolUsuarioCtrl.lstRoles}" var="rol"
+                                                       itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}"/>
+                                    </p:selectOneMenu>                                    
+
+                                    <h:outputLabel value="Usuario:"/>
+                                    <p:outputLabel value="#{rolUsuarioCtrl.usuarioSel.nombres} #{rolUsuarioCtrl.usuarioSel.apellidos}"/>
+                                    <!--
+                                    <p:selectOneMenu id="cmbUsuarios" value="#{rolUsuarioCtrl.idUsuario}" 
+                                                     required="true" requiredMessage="Seleccione un Usuario"
+                                                     effect="fade" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="- Seleccione -" itemValue="#{null}"/>
+                                        <f:selectItems value="#{rolUsuarioCtrl.lstUsuarios}" var="us"
+                                                       itemLabel="#{us.nick}" itemValue="#{us.idPersona}"/>
+                                    </p:selectOneMenu>
+                                    -->
+                                </h:panelGrid>
+                                <b>Privilegios</b>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Seleccionar"/>
+                                    <p:selectOneRadio id="seleccioanr" value="#{rolUsuarioCtrl.rolUsuario.seleccionar}">
+                                        <f:selectItem itemLabel="Si" itemValue="1" />                                        
+                                        <f:selectItem itemLabel="No" itemValue="0" />   
+                                    </p:selectOneRadio>
+                                    <h:outputLabel value="Insertar"/>
+                                    <p:selectOneRadio id="insertar" value="#{rolUsuarioCtrl.rolUsuario.insertar}">
+                                        <f:selectItem itemLabel="Si" itemValue="1" />                                        
+                                        <f:selectItem itemLabel="No" itemValue="0" />                                      
+                                    </p:selectOneRadio>
+                                    <h:outputLabel value="Actualizar"/>
+                                    <p:selectOneRadio id="actualizar" value="#{rolUsuarioCtrl.rolUsuario.actualizar}">
+                                        <f:selectItem itemLabel="Si" itemValue="1" />                                        
+                                        <f:selectItem itemLabel="No" itemValue="0" />                                     
+                                    </p:selectOneRadio>
+                                    <h:outputLabel value="Eliminar"/>
+                                    <p:selectOneRadio id="eliminar" value="#{rolUsuarioCtrl.rolUsuario.eliminar}">
+                                        <f:selectItem itemLabel="Si" itemValue="1" />                                        
+                                        <f:selectItem itemLabel="No" itemValue="0" />                                   
+                                    </p:selectOneRadio>
+                                </h:panelGrid>                                
+                                <p:separator/>
+                                <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                 action="#{rolUsuarioCtrl.registrar()}" 
+                                                 update="frmRolUsuario:tblRolesUsuarios,frmRegistrar"/>
+                                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                                 type="button" onclick="PF('dlgRegistrar').hide();"/>
+
+                            </center>
+
+
+                        </h:form>
+                    </p:dialog>
+
+
+                    <p:dialog header="Eliminar" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+                        <h:form id="frmEliminar">
+                            <center>
+                                <b><h3>¿Esta seguro que desea eliminar este registro?</h3></b>
+                                <p:separator/>
+                                <p:commandButton value="Si" icon="ui-icon-check"
+                                                 action="#{rolUsuarioCtrl.eliminar()}"
+                                                 update="frmRolUsuario:tblRolesUsuarios,frmEliminar"/>
+                                <p:commandButton value="No" type="button" 
+                                                 icon="ui-icon-close"
+                                                 onclick="PF('dlgEliminar').hide();"/>
+                            </center>
+                        </h:form>
+                    </p:dialog>
+
+                </center>
+            </c:when>
+        </c:choose>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">                        
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

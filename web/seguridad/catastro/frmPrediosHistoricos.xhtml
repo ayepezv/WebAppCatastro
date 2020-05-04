@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <center>
+                <h3>Predios Históricos</h3>
+                <div class="ui-g">                        
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <div class="card">
+                            <p:dataTable id="tblPredios" var="predioHist" value="#{ctrlPrediosHistoricos.lstpredios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predioHist.predio.idPredio}"
+                                         selection="#{ctrlPrediosHistoricos.predioSel}" selectionMode="single">
+                                <p:column headerText="Clave Catastral" width="5%" style="text-align: center">
+                                    <h:outputText value="#{predioHist.predio.claveCatastral}"/>
+                                </p:column>                                
+                                <p:column headerText="Propietario" width="5%" style="text-align: center">
+                                    <h:outputText value="#{predioHist.predio.propietario.apellidos} #{predioHist.predio.propietario.nombres}"/>
+                                </p:column>
+                                <!--
+                                <p:column headerText="Dirección" width="8%">
+                                    <h:outputText value="#{predioHist.predio.callePrinc} y #{predioHist.predio.calleSecund}, #{predioHist.predio.numCasa}"/>
+                                </p:column>
+                                -->
+                                <p:column headerText="Fecha Eliminacion" width="5%" style="text-align: center">
+                                    <h:outputText value="#{predioHist.fechaRegistro}"/>
+                                </p:column>
+                                <p:column headerText="Motivo Eliminacion" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predioHist.razonEliminacion}"/>
+                                </p:column>
+                                <p:column headerText="Observaciones" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predioHist.observaciones}"/>
+                                </p:column>
+                                <p:column headerText="Autorización" width="5%" style="text-align: center" exportable="false">
+                                    <p:lightBox >  
+                                        <h:outputLink value="#" title="#{predioHist.documento.titulo}">  
+                                            <h:outputText value="#{predioHist.documento.titulo}"/>
+                                        </h:outputLink>
+                                        <f:facet name="inline">
+                                            <p:media value="#{predioHist.documento.path}" height="600" width="800" />                                
+                                        </f:facet>
+                                    </p:lightBox>
+                                </p:column>
+                                
+                                <p:column headerText="Autorizacion" width="8%" style="text-align: center" visible="false">
+                                    <h:outputText value="#{predioHist.documento.titulo}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Responsable" width="5%" style="text-align: center">
+                                    <h:outputText value="#{predioHist.sessionUsuario.nombres} #{predioHist.sessionUsuario.apellidos}"/>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <h:commandLink title="Exportar a Excel">
+                                        <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblPredios" fileName="Predios Historicos" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a PDF">                                        
+                                        <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                        <p:dataExporter type="pdf" target="tblPredios" fileName="Predios Historicos" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a CSV">
+                                        <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblPredios" fileName="Predios Historicos" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a XML">
+                                        <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                        <p:dataExporter type="xml" target="tblPredios" fileName="Predios Historicos" pageOnly="false" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </h:form>
+    </ui:define>
+</ui:composition>

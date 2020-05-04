@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="true"><!--"#{sessionScope.idRol == VariablesGlobales.rolCatastro}"> -->
+                <div class="ui-g">                        
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form id="frmPrincipal">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                                <center>                                    
+                                    <b>Buscar predios</b>
+                                    <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                                        <p:outputLabel value="Zona"/>
+                                        <p:inputText id="zona" value="#{ctRepDocumentos.zona}" style="width: 35%"/>
+                                        <p:outputLabel value="Sector"/>
+                                        <p:inputText id="sector" value="#{ctRepDocumentos.sector}" style="width: 35%"/>
+                                        <p:outputLabel value="Manzana"/>
+                                        <p:inputText id="manzana" value="#{ctRepDocumentos.manzana}" style="width: 35%"/>
+                                        <p:outputLabel value="Predio"/>
+                                        <p:inputText id="predio" value="#{ctRepDocumentos.numPredio}" style="width: 35%"/>                                        
+                                        <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                         action="#{ctRepDocumentos.buscarPredios()}"
+                                                         update="tblDocumentos"/>
+                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                         action="#{ctRepDocumentos.limpiar()}"
+                                                         update="frmPrincipal:tblDocumentos"/>
+                                    </p:panelGrid> 
+                                    <p:dataTable id="tblDocumentos" var="documento" value="#{ctRepDocumentos.lstDocumentos}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15" reflow="true"
+                                                 rowKey="#{documento.predio.idPredio}" selectionMode="single" 
+                                                 selection="#{ctRepDocumentos.repositorioSel}">
+                                        <p:column headerText="Documento" width="15%" style="text-align: center">
+                                            <h:outputText value="#{documento.documento.titulo}" />
+                                        </p:column>
+                                        <p:column headerText="Descripción" width="15%" style="text-align: center">
+                                            <h:outputText value="#{documento.documento.keywords}" />
+                                        </p:column>
+                                        <p:column headerText="Fecha de registro" width="15%" style="text-align: center">
+                                            <h:outputText value="#{documento.documento.fechaRegistro}" />
+                                        </p:column>
+                                        <p:column headerText="Previsualización" width="15%" style="text-align: center">
+                                            <p:lightBox >  
+                                                <h:outputLink value="#" title="#{documento.documento.titulo} #{documento.documento.tipo}">  
+                                                    <h:outputText value="#{documento.documento.titulo}"/>
+                                                </h:outputLink>
+                                                <f:facet name="inline">
+                                                    <p:media value="#{documento.documento.path}" height="600" width="800" />                                    
+                                                </f:facet>
+                                            </p:lightBox>
+                                        </p:column>
+                                        <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-trash"
+                                                             title="Eliminar"
+                                                             onclick="PF('dlgEliminarDocumento').show();"
+                                                             update="frmEliminarDocumento">
+                                                <f:setPropertyActionListener value="#{documento}" target="#{ctRepDocumentos.repositorioSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        <f:facet name="footer">
+                                            <p:commandButton value="Nuevo"
+                                                             icon="ui-icon-plus"
+                                                             onclick="PF('dlgInsertarDocumento').show();"
+                                                             update="frmInsertarDocumento"/>
+                                        </f:facet>
+                                    </p:dataTable>
+                                </center>  
+                            </h:form>
+                        </div>
+                    </div>                    
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>    
+        <ui:include src="frmRegistrarDocumento.xhtml"/> 
+        <ui:include src="frmEliminarDocumento.xhtml"/> 
+    </ui:define>
+</ui:composition>

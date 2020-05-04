@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgInsertarImagen" widgetVar="dlgInsertarImagen" closable="true" modal="true" resizable="true" 
+              header="Nueva imagen" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <p:outputLabel value="Formatos de imagen aceptados png y jpg" style="font-weight:bold"/>
+        <h:form id="frmInsertarImagen"> 
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Acepta formatos de imagen png, jpg"/>
+                <p:outputLabel value="Categoría de imagen"/>
+                <p:selectOneMenu id="cmbCategoria" value="#{ctRepImagenes.bndImagen}"
+                                 effect="fold" required="true" requiredMessage="Ingrese el tipo de fotografía">
+                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItem itemLabel="FACHADA" itemValue="1"/>
+                    <f:selectItem itemLabel="CROQUIS" itemValue="2"/>
+                    <!--<f:selectItem itemLabel="PLANIMETRIA" itemValue="3"/> -->
+                    <f:selectItem itemLabel="FOTO AEREA" itemValue="4"/>
+                    <f:selectItem itemLabel="OTRA" itemValue="5"/>       
+                    <p:ajax event="change" listener="#{ctRepImagenes.categoriaSeleccionada()}" 
+                            update="msjs"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+
+            <p:panel id="displayInsertarImagen" style="border: none" >                
+                <p:panelGrid id="pngSubirArchivo" columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <p:fileUpload id="pnlUpload" fileUploadListener="#{ctRepImagenes.cargarArchivoImagen}"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Abrir" mode="advanced"  
+                                  update="displayInsertarImagen griPrevisualizar cmbCategoria" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                  value="#{ctRepImagenes.archivoImagen}"
+                                  required="true" requiredMessage="Cargar la imagen!!" />
+                </p:panelGrid>
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">                    
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText id="txtTituloImagen" value="#{ctRepImagenes.objImagen.titulo}"/>
+
+                    <p:outputLabel value="Previzualización"/>
+                    <p:graphicImage id="griPrevisualizar" value="#{ctRepImagenes.objImagen.path}" 
+                                    height="80"/>
+
+                    <p:outputLabel value="Tipo"/>
+                    <p:inputText id="txtTipoImagen" value="#{ctRepImagenes.objImagen.tipo}"/>
+
+                    <p:outputLabel value="Palabras Clave"/>
+                    <p:inputText id="txtPalabrasClaveImagen" value="#{ctRepImagenes.objImagen.keywords}"/>
+
+                </p:panelGrid>
+
+                <center>
+                    <p:commandButton value="Aceptar" action="#{ctRepImagenes.registrar()}"
+                                     icon="ui-icon-save"
+                                     update="frmPrincipal:tblImagenes"/>   
+                </center>                         
+
+            </p:panel>            
+        </h:form>
+    </p:dialog>
+</ui:composition>

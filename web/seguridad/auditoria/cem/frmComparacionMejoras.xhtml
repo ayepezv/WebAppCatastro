@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgCompararMejoras" widgetVar="dlgCompararMejoras" closable="false" modal="true" resizable="true" 
+              header="Editar Piso" showEffect="size" hideEffect="size">
+        <h:form id="frmComparacionMejoras">            
+            <p:panel header="Campos Afectados">
+                <h:outputText value="#{ctrlAuditoriaMejoras.contenidoComparacion}" escape="false"/>
+            </p:panel>
+
+            <center>                
+                <br/>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"                                 
+                                 action="#{ctrlAuditoriaMejoras.obtenerMejoras()}"
+                                 update="frmAuditoriaMejoras:tblAudMejoras"
+                                 onclick="PF('dlgCompararMejoras').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

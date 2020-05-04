@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 21}">
+                <h:form id="frmPrincipal">
+                    <p:growl id="msjs" life="3000" autoUpdate="true" showDetail="true"/>                    
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    <center><h1>Recaudaciones</h1></center>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <center>
+                                <div class="card">
+                                    <b>Buscar: </b>
+                                    <p:selectOneMenu value="#{ctRentasRecaudacionesDiarias.band}">
+                                        <f:selectItem itemLabel="Seleccione" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Por fecha" itemValue="1"/>
+                                        <f:selectItem itemLabel="Por rango de fechas" itemValue="2"/>
+                                        <p:ajax event="change" update="pnlBuscarPorFecha,pnlBuscarPorFechas"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </center>
+                        </div> 
+                        
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <center>
+                                <div class="card">
+                                    <p:panel id="pnlBuscarPorFecha" 
+                                             visible="#{ctRentasRecaudacionesDiarias.band==1}" 
+                                             style="border: none">
+                                        <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                            <p:outputLabel value="Fecha:"/>
+                                            <p:calendar id="fecha" value="#{ctRentasRecaudacionesDiarias.fecha}" showOn="button" 
+                                                        placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             title="Buscar"
+                                                             action="#{ctRentasRecaudacionesDiarias.obtenerTransaccionesDadoFecha()}"                                                         
+                                                             update="tblTransacciones,txtTotal"/>                                        
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPorFechas" 
+                                             visible="#{ctRentasRecaudacionesDiarias.band==2}" 
+                                             style="border: none">
+                                        <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                            <p:outputLabel value="Fecha de Inicio:"/>
+                                            <p:calendar id="fechaIni" value="#{ctRentasRecaudacionesDiarias.fechaInicio}" showOn="button" 
+                                                        placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <p:outputLabel value="Fecha de Fin"/>
+                                            <p:calendar id="fechaFin" value="#{ctRentasRecaudacionesDiarias.fechaFin}" showOn="button" 
+                                                        placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             title="Buscar"
+                                                             action="#{ctRentasRecaudacionesDiarias.obtenerTransaccionesDadoRangoFecha()}"                                                         
+                                                             update="tblTransacciones,txtTotal"/>                                        
+                                        </p:panelGrid>
+                                    </p:panel> 
+                                </div>
+                            </center>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-12">
+                            <center>
+                                <h3>Total Recaudado: 
+                                    <p:outputLabel id="txtTotal" value="#{ctRentasRecaudacionesDiarias.total}">
+                                        <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />                                        
+                                    </p:outputLabel> 
+                                </h3>
+                            </center>
+                            <p:dataTable value="#{ctRentasRecaudacionesDiarias.lstTransacciones}" var="transac"
+                                         id="tblTransacciones" rows="15" paginator="true"
+                                         selectionMode="single"
+                                         rowKey="#{transac.idTransaccion}"
+                                         emptyMessage="No se han realizado transacciones."
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="25,30,35,40,45,60" reflow="true" >
+                                <f:facet name="header">
+                                    <b>Recaudaciones</b>
+                                </f:facet>
+                                <p:column headerText="Numero Transacción" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{transac.numTransaccion}"/>
+                                </p:column>
+                                <p:column headerText="Fecha" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{transac.fechaEmision}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Cantidad" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{transac.valorTransaccion}">
+                                        <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Recaudacion" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{transac.recaudacion}"/>
+                                </p:column>
+                                <p:column headerText="Contribuyente" width="10%" style="text-align: center">
+                                    <p:outputLabel value="#{transac.cliente.nombres} #{transac.cliente.apellidos}"/>
+                                </p:column>
+                                <p:column headerText="Recaudador" width="10%" style="text-align: center">
+                                    <p:outputLabel value="#{transac.recaudador.nombres} #{transac.recaudador.apellidos}"/>
+                                </p:column>
+
+                                <f:facet name="footer">                                       
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                        <p:dataExporter type="xls" target="tblTransacciones" fileName="transacciones" />
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/pdf.png"/>
+                                        <p:dataExporter type="pdf" target="tblTransacciones" fileName="transacciones"/>
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/csv.png"/>
+                                        <p:dataExporter type="csv" target="tblTransacciones" fileName="transacciones" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+
+
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <!--<p:graphicImage name="/demo/images/ajaxloadingbar.gif" />-->
+                    <img src="../../resources/gifs/cargando_2.gif" alt=""/>
+                </p:dialog> 
+            </c:when>
+        </c:choose>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != 21}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-4"></div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+    </ui:define>
+</ui:composition>

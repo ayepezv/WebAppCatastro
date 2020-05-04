@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgActPerNat" widgetVar="dlgActPerNat" closable="true" modal="true" resizable="true" 
+              header="Actualizar Información" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmActPerNat">
+            <div class="ui-g"> 
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <b>Llene los campos:</b>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText maxlength="10" value="#{ctContribuyente.usuarioSel.cedula}"
+                                         title="Cedula" required="true" 
+                                         requiredMessage="La Cédula es un campo obligatorio."/>                                         
+                            <label>* Cédula de Identidad </label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtNombre"   value="#{ctContribuyente.usuarioSel.nombres}" title="Nombres Persona" required="true" 
+                                         requiredMessage="El Nombre es requerido!" type="text"  onkeypress="return soloLetras(event)"
+                                         validatorMessage="Nombres, No puede ingresar números..." >
+                                <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                            </p:inputText>
+                            <label>#{AtributosVistas.nombres}</label>
+                        </h:panelGroup>   
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtApellidos"   value="#{ctContribuyente.usuarioSel.apellidos}" title="Nombres Persona" required="true" 
+                                         requiredMessage="Los apellidos son requeridos!" type="text"  onkeypress="return soloLetras(event)"
+                                         validatorMessage="Apellidos, No puede ingresar números..." >
+                                <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                            </p:inputText>
+                            <label>#{AtributosVistas.apellidos}</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup >
+                            <label>Género</label>
+                            <p:selectOneRadio id="radioSexo" value="#{ctContribuyente.usuarioSel.sexo}" required="true" requiredMessage="El sexo del usuario es obligatorio.">
+                                <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                            </p:selectOneRadio>                                     
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">                                                          
+                            <p:calendar id="german" value="#{ctContribuyente.usuarioSel.fechaNacimiento}" locale="de"
+                                        navigator="true" pattern="dd-MM-yyyy"
+                                        placeholder="* Fecha de Nacimiento"/>                             
+                        </h:panelGroup>
+
+                        <h:panelGroup >                                                          
+                            <p:selectOneMenu value="#{ctContribuyente.usuarioSel.estadoCivil}">
+                                <f:selectItem itemLabel="* Estado Civil" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Soltero(a)" itemValue="Soltero(a)"/>
+                                <f:selectItem itemLabel="Casado(a)" itemValue="Casado(a)"/>
+                                <f:selectItem itemLabel="Viudo(a)" itemValue="Viudo(a)"/>
+                                <f:selectItem itemLabel="Divorciado(a)" itemValue="Divorciado(a)"/>
+                                <f:selectItem itemLabel="Unión de hecho" itemValue="Unión de hecho"/>
+                                <p:ajax event="change" listener="#{ctContribuyente.verificarEstadoCivil()}" 
+                                        update="txtCedulaConyuge2,txtNombresConyuge2,txtApellidosConyuge2"/>
+                            </p:selectOneMenu>                            
+                        </h:panelGroup>
+
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtCedulaConyuge2"  
+                                         value="#{ctContribuyente.usuarioSel.cedulaConyuge}"
+                                         disabled="#{ctContribuyente.habilitado}"/>
+                            <label>Cédula Cónyuge</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtNombresConyuge2"  
+                                         value="#{ctContribuyente.usuarioSel.nombresConyuge}"
+                                         disabled="#{ctContribuyente.habilitado}"/>
+                            <label>Nombres Cónyuge</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtApellidosConyuge2"  
+                                         value="#{ctContribuyente.usuarioSel.apellidosConyuge}"
+                                         disabled="#{ctContribuyente.habilitado}"/>
+                            <label>Apellidos Cónyuge</label>
+                        </h:panelGroup>
+
+
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtCelular"  value="#{ctContribuyente.usuarioSel.celular}" title="Celular Persona" required="true" 
+                                         requiredMessage="El Celular es requerido!" maxlength="10" onkeypress="return validar(event)"
+                                         validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >
+                                <f:validateLength minimum="10"/>
+                            </p:inputText>
+                            <label>#{AtributosVistas.celular}</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText  id="txtCorreo"  value="#{ctContribuyente.usuarioSel.mail}" title="Correo Electrónico" required="true" 
+                                          requiredMessage="El Correo Electrónico es requerido!" 
+                                          validatorMessage="Correo Electrónico, formato inválido. Ejm: info@info.com">
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                            <label>#{AtributosVistas.correo}</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.nick}" required="true" 
+                                         requiredMessage="El Nick es obligatorio."/>
+                            <label>Nick</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.direccionDom}"                                         
+                                         title="Direccion domiciliaria"/>                                                 
+                            <label>* Dirección domiciliaria </label>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <center>
+                        <p:commandButton value="Registrar"
+                                         icon="ui-icon-save"
+                                         action="#{ctContribuyente.actualizarUsuario()}"
+                                         update="@form,frmUsuarios:tblUsuarios"/>
+                    </center>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>   
+</ui:composition>    

@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgListadoPisos" widgetVar="wdlgListadoPisos" closable="true" modal="true" resizable="true" 
+              header="Listado de Pisos" showEffect="size" hideEffect="size" width="80%">
+
+        <h:form id="frmListadoPiso">
+            <p:growl id="msj" autoUpdate="true" showDetail="true"/>
+            <p:messages id="msjs" autoUpdate="true" showDetail="true"/>           
+            <p:dataTable id="tblPisos" var="piso" value="#{listadoPrediosCtrl.lstPisos}" rows="5"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{piso.idPiso}"
+                         editable="true" selection="#{listadoPrediosCtrl.pisoSel}" selectionMode="single">
+                <f:facet name="header">
+                    <h:outputText value="BLOQUE: #{listadoPrediosCtrl.bloqueSel.bloque}"/>
+                </f:facet>
+                <p:column headerText="Piso" width="8%" style="text-align: center">                    
+                    <h:outputText value="#{piso.piso}"/>
+                </p:column>
+                <p:column headerText="Estado" width="8%" style="text-align: center">
+                    <h:outputText value="#{piso.estadoPiso}"/>
+                </p:column>
+                <p:column headerText="Año Construc." width="8%" style="text-align: center">
+                    <h:outputText value="#{piso.anioConstruccion}"/>
+                </p:column>
+                <p:column headerText="Area Construc." width="8%" style="text-align: center">
+                    <h:outputText value="#{piso.areaConstruccion}"/>
+                </p:column>
+                <p:column headerText="Ver mas" width="4%" style="text-align: center">
+                    <p:commandButton icon="ui-icon-print" title="Ver mas"
+                                     onclick="PF('dlgVerPiso').show()"
+                                     update="frmVerPiso">
+                        <f:setPropertyActionListener target="#{piso}" value="#{listadoPrediosCtrl.pisoSel}"/>
+                    </p:commandButton>
+                </p:column>
+                <c:choose>
+                    <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                        <p:column headerText="Editar" width="4%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil" title="Editar Piso"
+                                             onclick="PF('wdlgRegistrarPiso').show()"
+                                             update="frmRegistrarPiso">
+                                <f:setPropertyActionListener target="#{piso}" value="#{listadoPrediosCtrl.pisoSel}"/>
+                            </p:commandButton>
+                        </p:column>
+                        <!--
+                        <p:column headerText="Eliminar" width="4%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-trash" title="Eliminar Piso"
+                                             onclick="PF('dlgEliminarPiso').show()"
+                                             update="frmEliminarPiso">
+                                <f:setPropertyActionListener target="#{piso}" value="#{listadoPrediosCtrl.pisoSel}"/>
+                            </p:commandButton>
+                        </p:column>
+                        -->
+                    </c:when>
+                </c:choose>                     
+            </p:dataTable>                                           
+        </h:form>
+    </p:dialog>
+    <ui:include src="frmRegistrarPiso.xhtml"/>
+    <ui:include src="frmEditarPiso.xhtml"/>    
+    <ui:include src="frmEliminarPiso.xhtml"/>    
+    <ui:include src="frmInfoPiso.xhtml"/>    
+</ui:composition>

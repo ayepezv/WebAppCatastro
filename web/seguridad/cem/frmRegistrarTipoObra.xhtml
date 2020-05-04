@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgRegistrar" widgetVar="dlgRegistrar" closable="false" modal="true" resizable="true" 
+              header="Registrar tipo de Obra" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarTipoObra">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="txtMejora"  type="text" value="#{controladorConfigMejoras.objTipoObra.tipoObra}" 
+                                     title="Tipo de obra" required="true" 
+                                     requiredMessage="El Tipo de obra es campo es obligatorio.">                        
+                        </p:inputText>
+                        <label>* Tipo de Obra</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield"> 
+                        <p:inputText id="anioAvaluo"  value="#{controladorConfigMejoras.objTipoObra.descripcion}" 
+                                     title="Descripción" required="true" 
+                                     requiredMessage="La decripción es obligatorio.">                        
+                        </p:inputText>
+                        <label>* Descripción</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+            </p:panelGrid>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorConfigMejoras.registrar()}"
+                                 update="frmTipoObras:tblActivos"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrar').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

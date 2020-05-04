@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgRegistrarMejora" widgetVar="dlgRegistrarMejora" closable="false" modal="true" resizable="true" 
+              header="Registrar Mejora" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarMejora">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="txtMejora"  type="text" value="#{ctCem.objMejora.nombre}" 
+                                     title="Nombre de la mejora" required="true" 
+                                     requiredMessage="El nombre de la mejora es campo es obligatorio.">                        
+                        </p:inputText>
+                        <label>* Mejora</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:calendar value="#{ctCem.objMejora.fechaInicio}" 
+                                    id="txtFechaInicio" requiredMessage="Ingrese la fecha, el campo es obligatorio."
+                                    placeholder="* Fecha de Registro" 
+                                    locale="es"
+                                    pattern="yyyy-MM-dd" required="true" />
+                    </h:panelGroup>
+                </p:panelGrid>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield"> 
+                        <p:inputText id="anioAvaluo"  value="#{ctCem.objMejora.anioAvaluo}" 
+                                     title="Año Avalúo" required="true" 
+                                     requiredMessage="El año de avalúo es obligatorio.">                        
+                        </p:inputText>
+                        <label>* Año Avalúo</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield"> 
+                        <p:inputText id="txtCosto"  value="#{ctCem.objMejora.costo}" 
+                                     title="Costo de la mejora" required="true" 
+                                     requiredMessage="EL costo de la mejora es campo obligatorio.">                        
+                        </p:inputText>
+                        <label>* Valor</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield"> 
+                        <p:inputText id="txtTiempoPago"  value="#{ctCem.objMejora.plazo}" 
+                                     title="Tiempo de pago" >                        
+                        </p:inputText>
+                        <label>* Tiempo de pago</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <p:selectOneMenu style="text-align: left; " id="idFormaPago" 
+                                     value="#{ctCem.objMejora.formaPago.idFormaPago}" effect="fade" filter="true" 
+                                     filterMatchMode="startsWith" requiredMessage="La forma de pago es campo obligatorio." required="true">
+                        <f:selectItem itemLabel="* Forma de pago" itemValue="" />
+                        <f:selectItems value="#{ctCem.lstFormaPago}" 
+                                       var="formaPago"
+                                       itemLabel="#{formaPago.formaPago}"
+                                       itemValue="#{formaPago.idFormaPago}" />                        
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:calendar value="#{ctCem.objMejora.fechaInicialPago}" 
+                                    id="txtFechaInicioPago" requiredMessage="Ingrese la fecha de pago, el campo es obligatorio."
+                                    placeholder="* Fecha inicial pago" 
+                                    locale="es"
+                                    pattern="yyyy-MM-dd" required="true" />
+                    </h:panelGroup>
+                </p:panelGrid>
+                
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield"> 
+                        <p:inputText id="txtObservaciones"  value="#{ctCem.objMejora.observaciones}" 
+                                     title="Observaciones" >                        
+                        </p:inputText>
+                        <label>* Observaciones</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+                
+            </p:panelGrid>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctCem.insertarMejora()}"
+                                 update="frmRegistrarMejora,frmPrincipal:tblMejoras"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarMejora').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

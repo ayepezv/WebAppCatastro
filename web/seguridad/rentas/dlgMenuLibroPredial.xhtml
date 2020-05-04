@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgMenuLibroPredial" widgetVar="wgMenuLibroPredial" modal="true" resizable="false" 
+              appendTo="@(body)" header="Escoja una Opción" showEffect="fade" hideEffect="fade" style="width: 100%">
+
+        <h:form id="frmMenuLibroPredial">
+            <p:panel id="panelIngresar"  widgetVar="pnlMenuLibroPredial" closable="true" toggleable="true" style="width: 100%">                
+                <div class="menu-gestion">
+                    
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/rentas/frmLibroPorAnio.xhtml">                            
+                            <span class="gestion-icono">C</span>
+                            <div >
+                                <h2 class="titulo-gestion">Por años</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/rentas/frmLibroPorParroquia.xhtml">
+                            <span class="gestion-icono">8</span>
+                            <div >
+                                <h2 class="titulo-gestion">Por parroquia</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/rentas/frmLibroPorZona.xhtml">
+                            <span class="gestion-icono">9</span>
+                            <div >
+                                <h2 class="titulo-gestion">Por Zona</h2>
+                            </div>
+                        </a>
+                    </div >
+
+                    <!--
+                    <div class="opcion-gestion">
+                        <a href="#">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Producción</h2>
+                            </div>
+                        </a>
+                    </div>
+                    -->
+
+                </div>
+            </p:panel>
+            
+        </h:form>
+    </p:dialog>
+</ui:composition>

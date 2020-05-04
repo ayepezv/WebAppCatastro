@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolTesorero}">
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                        <h:form id="frmPrincipal">
+                            <p:growl autoUpdate="true" showDetail="true"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <div class="card">
+                                        <b>Buscar:</b>
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Zona: "/>
+                                            <p:inputText id="txtZona" value="#{ctAnularTitulos.numZona}"
+                                                         style="width: 50%"/>
+                                            <p:outputLabel value="Sector: "/>
+                                            <p:inputText id="txtSector" value="#{ctAnularTitulos.numSector}"
+                                                         style="width: 50%"/>
+                                            <p:outputLabel value="Manzana: "/>
+                                            <p:inputText id="txtManzan" value="#{ctAnularTitulos.numManzana}"
+                                                         style="width: 50%"/>
+                                            <p:outputLabel value="Predio: "/>
+                                            <p:inputText id="txtPredio" value="#{ctAnularTitulos.numPredio}"
+                                                         style="width: 50%"/>
+                                            <p:commandButton id="btnBuscar" value="Buscar"
+                                                             icon="ui-icon-search"
+                                                             action="#{ctAnularTitulos.buscarTitulos()}"
+                                                             title="Buscar"
+                                                             update="tblTitulos"
+                                                             process="txtZona, txtSector, txtManzan, txtPredio, btnBuscar"/>
+                                            <p:commandButton value="Limpiar"
+                                                             icon="ui-icon-refresh"
+                                                             title="Limpiar"
+                                                             action="#{ctAnularTitulos.inicializar()}"
+                                                             update="@form"
+                                                             process="@this"/>
+                                        </p:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="ui-g-9">
+                                    <div class="card">
+                                        <p:dataTable id="tblTitulos" var="titulo" value="#{ctAnularTitulos.lstTitulos}" rows="5"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{titulo.idTitulo}"
+                                                     editable="true" selection="#{ctAnularTitulos.titulo}" selectionMode="single">
+                                            <f:facet name="header">
+                                                <p:outputLabel value="Títulos"/>
+                                            </f:facet>
+                                            <p:column headerText="Año" width="3%" style="text-align: center">
+                                                <h:outputText value="#{titulo.anioTitulo}"/>
+                                            </p:column>
+                                            <p:column headerText="N° de Título" width="5%" style="text-align: center">
+                                                <h:outputText value="#{titulo.tituloNumero}"/>
+                                            </p:column>
+                                            <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                                                <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                                            </p:column>
+                                            <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                                <h:outputText value="#{titulo.propietarioIndex.apellidos} #{titulo.propietarioIndex.nombres}"/>
+                                            </p:column>
+                                            <p:column headerText="Estado" width="4%" style="text-align: center">
+                                                <h:outputText value="#{titulo.pagado=='true' ?'Pagado':'Pendiente'}"/>
+                                            </p:column>
+                                            <p:column headerText="Total título" width="4%" style="text-align: center">
+                                                <h:outputText value="#{titulo.totalTitulo}">
+                                                    <f:convertNumber pattern="###,##" currencySymbol="$"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column width="2%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-swap-horiz"
+                                                                 title="Seleccionar" process="@this"
+                                                                 action="#{ctAnularTitulos.seleccionar()}">
+                                                    <f:setPropertyActionListener value="#{titulo}" target="#{ctAnularTitulos.titulo}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12">
+                                    <div class="card">
+                                        <b>Motivos de la eliminación</b>
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Razón por la cual se da de baja:"/>
+                                            <p:inputTextarea value="#{ctAnularTitulos.objTituloHist.razonBaja}"
+                                                             required="true"
+                                                             requiredMessage="Especifique la razón por la cual se elimina el título."/>
+
+                                            <p:outputLabel value="Documento de respaldo:"/>
+                                            <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;" styleClass="ui-panelgrid-blank form-group">
+                                                <p:fileUpload fileUploadListener="#{ctAnularTitulos.cargarRespaldo}"
+                                                              allowTypes="/(\.|\/)(pdf|doc?x|odt)$/" label="Abrir" mode="advanced"  
+                                                              uploadLabel="Subir" cancelLabel="Cancelar"   
+                                                              value="#{ctAnularTitulos.archivoDocumento}"
+                                                              required="true" requiredMessage="Cargar Documento!!" />
+                                            </p:panelGrid>
+
+                                            <p:outputLabel value="Observaciones:"/>
+                                            <p:inputTextarea value="#{ctAnularTitulos.objTituloHist.observaciones}"
+                                                             required="true"
+                                                             requiredMessage="Ingrese las observaciones de la eliminación del título."/>
+                                        </p:panelGrid>
+                                    </div>                        
+                                </div> 
+
+                                <div class="ui-g-12">
+                                    <div class="card">
+                                        <center>
+                                            <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                             action="#{ctAnularTitulos.anularTitulo()}"
+                                                             update="@form"/>
+                                            <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                                             action="#{ctAnularTitulos.inicializar()}"
+                                                             update="@form"
+                                                             process="@this"/>  
+                                        </center>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </h:form>
+
+                    </c:when>
+                </c:choose>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolTesorero}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

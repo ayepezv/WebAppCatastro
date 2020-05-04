@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarCoefMatvial" widgetVar="dlgEditarCoefMatvial" closable="false" modal="true" resizable="true" 
+              header="Editar Coeficientes de Material Víal" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarCoefMatvial">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefMaterialVial.coefmatvialSel.coeficiente}"
+                             required="true"
+                             requiredMessage="Nombre Obligatorio"/>
+                <p:outputLabel value="Codigo: "/>
+                <p:inputText value="#{ctrlCoefMaterialVial.coefmatvialSel.codigo}"
+                             required="true"
+                             requiredMessage="Codigo Obligatorio"/>
+                <p:outputLabel value="Valor del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefMaterialVial.coefmatvialSel.valorCoeficiente}"
+                             required="true"
+                             requiredMessage="Valor Obligatorio"/>
+
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefMaterialVial.actualizar()}"
+                                 update="frmListaCoefMatvial:tblListaCoefMatvial"
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarCoefMatvial').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

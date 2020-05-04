@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgCuotas" widgetVar="dlgCuotas" closable="true" modal="true" resizable="true" 
+              header="Cuotas Cem" showEffect="size" hideEffect="size" width="50%">
+        <h:form id="frmCuotas">     
+            <center>
+                <b>Contribuyente: #{ctEmisionCem.beneficiarioSel.predio.propietario.apellidos} 
+                    #{ctEmisionCem.beneficiarioSel.predio.propietario.nombres}</b>
+            </center>            
+            <p:dataTable id="tblCuotas" var="cuota" value="#{ctEmisionCem.lstCuotas}" rows="5"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="20,25,30,35" reflow="true">
+                <p:column headerText="N°" width="3%" style="text-align: center">
+                    <p:outputLabel value="#{cuota.numCouta}/#{cuota.obra.plazo}"/>
+                </p:column>
+                <p:column headerText="Valor" width="3%" style="text-align: center">
+                    <p:outputLabel value="#{cuota.cuota}"/>
+                </p:column>
+                <p:column headerText="Fecha de pago" width="5%" style="text-align: center">
+                    <p:outputLabel value="#{cuota.fechaPago}"/>
+                </p:column>
+                <p:column headerText="Valor restante" width="3%" style="text-align: center">
+                    <p:outputLabel value="#{cuota.valorRestante}"/>
+                </p:column>
+                <p:column headerText="Estado" width="3%" style="text-align: center">
+                    <p:outputLabel value="#{cuota.pagado=='true' ?'Cancelado':'Pendiente'}"/>
+                </p:column>
+                <f:facet name="footer">
+                    <h:commandLink>
+                        <p:graphicImage name="/imagenes/excel.png"/>                                            
+                        <p:dataExporter type="xls" target="tblCuotas" fileName="detalle_cuotas" />
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <p:graphicImage name="/imagenes/pdf.png"/>
+                        <p:dataExporter type="pdf" target="tblCuotas" fileName="detalle_cuotas"/>
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <p:graphicImage name="/imagenes/csv.png"/>
+                        <p:dataExporter type="csv" target="tblCuotas" fileName="detalle_cuotas" />
+                    </h:commandLink>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+    </p:dialog>
+</ui:composition>

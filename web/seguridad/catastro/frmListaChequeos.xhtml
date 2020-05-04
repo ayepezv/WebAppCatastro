@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <h:form id="frmPrincipal">
+            <center>
+                <h1>Listas para chequeos</h1>
+                <div class="ui-g">
+                    <div class="ui-g-12">                                                        
+                        <div class="card">
+                            <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+                                    <br/>
+                                    <h:outputText value="Desde:" />
+                                    <h:outputText value="Hasta:"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                    <h:outputLabel value="Zona:"/>
+                                    <h:outputLabel value="Sector:"/>
+                                    <h:outputLabel value="Manzana:"/>
+                                    <h:outputLabel value="Predio:"/>
+                                    <h:inputText value="#{ctrlListaChequeo.zona}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.sector}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.manzana}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.predio}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.zonaHasta}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.sectorHasta}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.manzanaHasta}" size="5"/>
+                                    <h:inputText value="#{ctrlListaChequeo.predioHasta}" size="5"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                    <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                     action="#{ctrlListaChequeo.obtenerPredios()}"
+                                                     update="tblPredios"/>
+                                    <p:commandButton value="Reporte" icon="ui-icon-local-printshop" ajax="false"
+                                                     actionListener="#{ctrlListaChequeo.verReporteFicha()}"
+                                                     onclick="this.form.target = '_blank'"/>
+                                    <p:commandButton value="Limpiar" icon="ui-icon-clear"
+                                                     action="#{ctrlListaChequeo.limpiar()}"
+                                                     update="frmPrincipal"/>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+
+                    <div class="ui-g-12">                                                        
+                        <div class="card">
+                            <p:dataTable id="tblPredios" var="predio" value="#{ctrlListaChequeo.lstPredios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                         editable="true" selection="#{ctrlListaChequeo.objPredio}" selectionMode="single">
+                                <f:facet name="header">
+                                    <p:outputLabel value="Listado de predios para chequeo"/>
+                                </f:facet>
+                                <p:column headerText="Clave Catastral" width="2%" style="text-align: center">
+                                    <h:outputText value="#{predio.zona} - #{predio.sector} - #{predio.manzana} - #{predio.numPredio}"/>
+                                </p:column>
+                                <p:column headerText="Propietario" width="5%" style="text-align: center">
+                                    <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                </p:column>
+                                <p:column headerText="Dirección" width="5%">
+                                    <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                </p:column> 
+                                <p:column headerText="Parroquia" width="3%" style="text-align: center">
+                                    <h:outputText value="#{predio.idParroquia.nombre}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+
+                </div>
+            </center>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">            
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>        
+    </ui:define>
+</ui:composition>

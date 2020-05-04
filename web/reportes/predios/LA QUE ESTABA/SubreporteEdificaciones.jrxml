@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubreporteEdificaciones" pageWidth="580" pageHeight="195" whenNoDataType="BlankPage" columnWidth="580" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="cee6bf45-1025-41d6-b031-c5c64c25a1b8">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebAppCatastro"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="codigo_predio" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select * 
+from catastro.v_reporte_ficha_predial_final
+where int_id_predio=$P{codigo_predio}]]>
+	</queryString>
+	<field name="sr_id_piso" class="java.lang.Integer"/>
+	<field name="int_id_bloque" class="java.lang.Integer"/>
+	<field name="int_anio_construc" class="java.lang.Integer"/>
+	<field name="db_area_construcc" class="java.lang.Double"/>
+	<field name="chv_estado_piso" class="java.lang.String"/>
+	<field name="chv_estruct_cimientos" class="java.lang.String"/>
+	<field name="chv_estruct_columnas" class="java.lang.String"/>
+	<field name="chv_estruct_vigas" class="java.lang.String"/>
+	<field name="chv_estruct_entrepisos" class="java.lang.String"/>
+	<field name="chv_estruct_paredes" class="java.lang.String"/>
+	<field name="chv_estruct_cubierta" class="java.lang.String"/>
+	<field name="chv_estruct_escaleras" class="java.lang.String"/>
+	<field name="chv_acab_pisos" class="java.lang.String"/>
+	<field name="chv_acab_puertas" class="java.lang.String"/>
+	<field name="chv_acab_ventanas" class="java.lang.String"/>
+	<field name="chv_acab_cubrevent" class="java.lang.String"/>
+	<field name="chv_acab_tumbados" class="java.lang.String"/>
+	<field name="chv_acab_cubierta" class="java.lang.String"/>
+	<field name="chv_acab_banios" class="java.lang.String"/>
+	<field name="chv_acab_cocina" class="java.lang.String"/>
+	<field name="chv_acab_closets" class="java.lang.String"/>
+	<field name="chv_acab_rev_interior" class="java.lang.String"/>
+	<field name="chv_acab_rev_ext" class="java.lang.String"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="chv_piso" class="java.lang.String"/>
+	<field name="chv_descripcion" class="java.lang.String"/>
+	<field name="bl_actualizado" class="java.lang.Boolean"/>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="chv_bloque" class="java.lang.String"/>
+	<group name="int_id_predio">
+		<groupExpression><![CDATA[$F{int_id_predio}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="194" splitType="Stretch">
+			<rectangle>
+				<reportElement x="4" y="7" width="552" height="183" uuid="1cb9751a-0594-4b41-84d7-3abaedada4eb"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="165" y="11" width="100" height="14" uuid="c4e185c7-ff47-482f-bab7-1f5bef266dd2"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_piso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="11" width="25" height="14" uuid="704bc573-47ec-4ac1-8347-a42ecdf7a1b1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Piso:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="456" y="10" width="100" height="14" uuid="00117165-a5a6-49e1-9d30-bbaf7f0d7716"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{int_anio_construc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="10" width="80" height="14" uuid="ac9380bf-2d2d-4d10-a16c-4e74e23e0762">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Año construc:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00# m2" isBlankWhenNull="true">
+				<reportElement x="456" y="25" width="100" height="14" uuid="bde261a3-36e8-40ff-8b21-370577dea28f"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_area_construcc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="25" width="80" height="14" uuid="471062be-359d-4c57-8195-82a2cca753e7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Área construc:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="199" y="25" width="100" height="14" uuid="8290b7a1-3d2b-4f5d-9b5a-34e0e24af707">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estado_piso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="25" width="60" height="14" uuid="b2201b17-f606-43f3-a2b1-bb459ddcb38d"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Estado piso:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="41" width="279" height="14" uuid="d482008d-1596-44aa-951c-f7ec52111cfd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ESTRUCTURA]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="71" y="57" width="108" height="14" uuid="c052184e-7a94-462e-9684-f986cf8154c3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_cimientos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="57" width="60" height="14" uuid="53c34414-501f-4b96-9f14-f5e0488aabd7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cimientos:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="71" y="71" width="108" height="14" uuid="16a9da5f-8bf2-411d-9fa6-c49a973d1d60">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_columnas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="71" width="60" height="14" uuid="a222cc1a-3f6c-4fb2-804c-607e0b8dff53">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Columnas:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="53" y="86" width="126" height="14" uuid="c8cae653-5099-479a-baf1-8a95f02433e4">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_vigas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="86" width="48" height="14" uuid="bd591dc0-a405-4f91-bb56-2e28afe93c6e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Vigas:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="55" width="114" height="14" uuid="521ed66f-1709-498d-841f-4bfd9d537c1e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_entrepisos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="55" width="70" height="14" uuid="d1eafad5-9923-4b92-9d63-8d4f736417e1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Entrepisos:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="255" y="57" width="100" height="14" uuid="d97e4c4f-34b6-4b4c-b5e9-913acc91ad88"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_paredes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="57" width="64" height="14" uuid="a889d311-fbf1-4b5c-88c2-42e0027148a1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Paredes:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="255" y="71" width="100" height="14" uuid="cddb864d-fab8-4b8a-bc86-d76131f9f91c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_cubierta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="71" width="64" height="14" uuid="8a69eb35-48ee-4858-b664-6a4036738e1e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cubierta:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="438" y="68" width="116" height="14" uuid="c124d4ab-8e8e-444e-a6c8-304987eeec04">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_estruct_escaleras}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="68" width="70" height="14" uuid="2fa62dd0-2bc4-4d6c-9cfd-fd7df3c48c27">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Escaleras:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="104" width="279" height="14" uuid="c0bfc595-8a9f-4f98-8a53-89d5ca1f1dab">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ACABADOS]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="124" width="129" height="14" uuid="2f59f3ad-60ac-4238-9c4d-7e27fc500d17">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_pisos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="124" width="30" height="14" uuid="3832a9f2-20fe-406c-9b47-2aedd659467d"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Pisos:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="59" y="139" width="120" height="14" uuid="e8144f5d-2a9e-413e-9c9e-c0f0c83e688d"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_puertas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="139" width="40" height="14" uuid="c7bf5616-00c8-43ec-b785-165069de3553">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Puertas:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="67" y="153" width="112" height="14" uuid="efb77c44-d90d-4125-adc3-5cf7bc278be8"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_ventanas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="153" width="48" height="14" uuid="6e9447ad-8aca-4127-9756-5dcbba2d1c98">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Ventanas:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="93" y="167" width="86" height="14" uuid="475f1b78-3919-4b95-8153-27afaa9ebfbf"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_cubrevent}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="167" width="80" height="14" uuid="c949f261-7659-4064-9921-fc7cade5719c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cubreventanas:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="264" y="167" width="102" height="14" uuid="038b2aef-fa1f-4c05-8e1a-83e1e8663ce7"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_tumbados}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="167" width="54" height="14" uuid="708b19fe-6ad7-449f-9630-3d8e982a6709">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Tumbados:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="431" y="124" width="120" height="14" uuid="7c37fd51-98d0-4d70-bbdd-67ea2f04a2a5"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_cubierta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="124" width="45" height="14" uuid="ad552bf1-c522-4f11-877b-d2fa847f2ce3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cubierta:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="245" y="124" width="125" height="14" uuid="c42089ab-234c-4288-a95c-633468bd6bf7">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_banios}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="124" width="38" height="14" uuid="abcf53d0-35ca-46fb-b88b-6afcd575aa67">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Baños:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="247" y="139" width="122" height="14" uuid="d323a87e-4338-423c-b279-21fe3456fa60"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_cocina}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="139" width="38" height="14" uuid="5166fc3b-0a43-4b5a-84e7-09fdd003e103">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cocina:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="248" y="153" width="121" height="14" uuid="9e092194-eb9b-4703-bd72-0edc0eab6a67"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_closets}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="153" width="42" height="14" uuid="8ba44959-2621-49d5-bf87-68891d030cc6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Closets:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="139" width="112" height="14" uuid="07c52b10-8b3b-4143-b52f-b410c105fed5"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_rev_interior}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="139" width="54" height="14" uuid="b2dcd688-3de5-443b-91d1-46beca4b2ae0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Rev interior:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="448" y="153" width="106" height="14" uuid="79411463-b440-41c1-b8ee-ebebf93c5525"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_acab_rev_ext}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="386" y="153" width="62" height="14" uuid="9958672a-858e-4697-b62a-54ce81e422da">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Rev. exterior:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="45" y="13" width="85" height="14" uuid="ae8c8b4e-5971-430c-aaac-ac7eeb44ee57"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_bloque}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="9" y="13" width="36" height="14" uuid="4dfea72b-aefc-45d9-840a-e7d6d9ba6bb5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Bloque:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="4" y="38" width="552" height="1" uuid="3d816877-fc2f-4f4f-bc12-ca458b05de6a"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

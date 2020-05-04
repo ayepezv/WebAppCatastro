@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <p:growl autoUpdate="true"/>            
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <div class="card">  
+                        <b>Buscar predio:</b>
+                        <p:panelGrid columns="3"  styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Propietario:"/>
+                            <p:inputText value="#{controladorRecaudacionCem.parametro}" required="true"
+                                         requiredMessage="El criterio de búsqueda es obligatorio"/>
+                            <p:commandButton title="Buscar predio" icon="ui-icon-chrome-reader-mode"
+                                             action="#{controladorRecaudacionCem.obtenerPrediosDadoPropietario()}"
+                                             update="tblPredios"/>
+                        </p:panelGrid>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-8">
+                    <div class="card">                            
+                        <p:dataTable id="tblPredios" var="predio" value="#{controladorRecaudacionCem.lstPredios}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{predio.idPredio}"
+                                     editable="true" selection="#{controladorRecaudacionCem.predioSel}" selectionMode="single">
+                            <f:facet name="header">
+                                <b>Predios asociados</b>
+                            </f:facet>
+                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">                                
+                                <h:outputText value="#{predio.claveCatastral}"/>
+                            </p:column>
+                            <p:column headerText="Parroquia" width="8%" style="text-align: center">
+                                <h:outputText value="#{predio.idParroquia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                <h:outputText value="#{predio.propietario.nombres} #{predio.propietario.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Dirección" width="10%" style="text-align: center">
+                                <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                            </p:column>
+                            <p:column headerText="Consultar titulos" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-search" title="Consultar valores a pagar"
+                                                 action="#{controladorRecaudacionCem.obtenerCuotas()}"
+                                                 update="frmPrincipal:tblValoresPagados">
+                                    <f:setPropertyActionListener value="#{predio}" target="#{controladorRecaudacionCem.predioSel}"/>
+                                </p:commandButton>
+                            </p:column>                            
+                        </p:dataTable>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                    <center>                        
+                        <p:dataTable id="tblValoresPagados" var="cuotaPagada" value="#{controladorRecaudacionCem.lstCuotasPagadas}" rows="10"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{cuotaPagada.codigo}"
+                                     editable="true" selection="#{controladorRecaudacionCem.cuotaSel}" selectionMode="single">
+                            <f:facet name="header">
+                                <b>Valores cancelados</b>
+                            </f:facet>
+                            <p:column headerText="N° Cuota" width="3%" style="text-align: center">                                
+                                <h:outputText value="#{cuotaPagada.numCouta}"/>
+                            </p:column>
+
+                            <p:column headerText="Mejora" width="10%" style="text-align: center">                                
+                                <h:outputText value="#{cuotaPagada.obra.mejora.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Obra" width="10%" style="text-align: center">                                
+                                <h:outputText value="#{cuotaPagada.obra.nombreObra}"/>
+                            </p:column>
+
+                            <p:column headerText="Valor" width="3%" style="text-align: center"> 
+                                <h:outputText value="#{cuotaPagada.cuota}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Intereses" width="3%" style="text-align: center"> 
+                                <h:outputText value="#{cuotaPagada.interes}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Total a pagar" width="3%" style="text-align: center"> 
+                                <h:outputText value="#{cuotaPagada.totalPagar}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Fecha de pago" width="4%" style="text-align: center">                                
+                                <h:outputText value="#{cuotaPagada.fechaCobro}"/>
+                            </p:column>
+
+                            <p:column headerText="Duplicado" width="4%" style="text-align: center">                                                                                                                
+                                <p:commandButton icon="ui-icon-archive"  ajax="false" title="Ver Pdf"
+                                                 actionListener="#{controladorRecaudacionCem.verReporteDuplicado()}"
+                                                 onclick="this.form.target = '_blank'">
+                                    <f:setPropertyActionListener value="#{tit}" target="#{controladorRecaudacionCem.cuotaSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </center>
+                </div>
+            </div>
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                <img src="../../resources/gifs/Loading.gif" alt=""/>
+            </p:dialog>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>

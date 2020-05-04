@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">    
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />    
+        <h:form id="frmLecturas">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <p:dataTable id="tblLecturas" var="lectura" value="#{controladorLecturasAP.lstLecturas}" rows="10"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true"
+                                     rowKey="#{lectura.idLectura}" selectionMode="single" selection="#{controladorLecturasAP.lecturaSel}">
+
+                            <p:column headerText="Medidor" width="15%" style="text-align: center">
+                                <h:outputText value="#{lectura.medidor.numSerie}" />
+                            </p:column>
+
+                            <p:column headerText="Fecha de lectura" width="15%" style="text-align: center">
+                                <h:outputText value="#{lectura.fechaLectura}" />
+                            </p:column>
+
+                            <p:column headerText="Lectura actual" width="15%" style="text-align: center">
+                                <h:outputText value="#{lectura.lecturaActual}" />
+                            </p:column>
+
+                            <p:column headerText="Lectura anterior" width="15%" style="text-align: center">
+                                <h:outputText value="#{lectura.lecturaAnterior}" />
+                            </p:column>
+
+                            <p:column headerText="Consumo" width="15%" style="text-align: center">
+                                <p:outputLabel value="#{lectura.consumo}" 
+                                               styleClass="#{lectura.consumo=='-56' ?'amber-btn flat':'blue-grey flat'}"/>
+                            </p:column>
+
+                            <p:column headerText="Periodo de consumo" width="15%" style="text-align: center">
+                                <h:outputText value="#{lectura.inicioPeriodo} - #{lectura.finPeriodo} " />
+                            </p:column>
+
+                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-edit" title="Editar"/>
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever" title="Eliminar"/>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Registrar" icon="ui-icon-group-add" title="Registrar cuenta"
+                                                 type="button"
+                                                 onclick="PF('dlgRegistrarLectura').show()"/>
+                            </f:facet>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <ui:include src="frmRegistrarLectura.xhtml"/>  
+    </ui:define>
+</ui:composition>

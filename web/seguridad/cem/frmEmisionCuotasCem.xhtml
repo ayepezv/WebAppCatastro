@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCem}">
+                <h:form id="frmPrincipal">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <div class="ui-g">
+                        <div class="ui-g-4">
+                            <center>
+                                <div class="card">  
+                                    <b>Buscar:</b>
+                                    <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                        <p:outputLabel value="Obra:"/>
+                                        <p:inputTextarea value="#{ctEmisionCem.txtBusqueda}"/>
+                                        <p:commandButton title="Buscar"
+                                                         icon="ui-icon-search"
+                                                         action="#{ctEmisionCem.encontrarObras()}"
+                                                         update="frmPrincipal:tblObras"/>
+                                        <p:commandButton title="Limpiar"
+                                                         icon="ui-icon-clear"
+                                                         action="#{ctEmisionCem.limpiar()}"
+                                                         update="@form"/>
+                                    </p:panelGrid>                                        
+                                </div> 
+                            </center>
+                        </div>
+                        <div class="ui-g-8">
+                            <div class="card">
+                                <p:dataTable id="tblObras" var="obra" value="#{ctEmisionCem.lstObras}" rows="5"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{obra.idObra}"
+                                             editable="true" selection="#{ctEmisionCem.obraSel}" selectionMode="single">
+                                    <f:facet name="header">                                        
+                                        <b>Obras</b>
+                                    </f:facet>
+
+                                    <p:column headerText="Código" width="3%" style="text-align: center">
+                                        <p:outputLabel value="#{obra.idObra}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Obra" width="10%" style="text-align: justify">
+                                        <p:outputLabel value="#{obra.nombreObra}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Costo" width="6%" style="text-align: center">
+                                        <p:outputLabel value="#{obra.valorObra} $"/>
+                                    </p:column>
+
+                                    <p:column headerText="Forma de pago" width="5%" style="text-align: center">
+                                        <p:outputLabel value="#{obra.formaPago.formaPago}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Cuotas" width="5%" style="text-align: center">
+                                        <p:outputLabel value="#{obra.plazo}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha inicial pago" width="5%" style="text-align: center">
+                                        <p:outputLabel value="#{obra.fechaInicialPago}"/>
+                                    </p:column>
+
+                                    <p:column exportable="false" headerText="Ver cuotas" width="4%" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-group"
+                                                         action="#{ctEmisionCem.encontrarBeneficiarios()}"
+                                                         update="frmPrincipal:tblBeneficiarios">
+                                            <f:setPropertyActionListener value="#{obra}" target="#{ctEmisionCem.obraSel}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>  
+                        </div> 
+                        <div class="ui-g-12">
+                            <center><h3>Beneficiarios</h3></center>
+                            <p:dataTable id="tblBeneficiarios" var="beneficiario" value="#{ctEmisionCem.lstBeneficiarios}" rows="15"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="20,25,30,35" reflow="true"
+                                         rowKey="#{beneficiario.idBeneficiario}"
+                                         selection="#{ctEmisionCem.beneficiarioSel}" selectionMode="single">
+
+                                <p:column headerText="N°" width="3%" style="text-align: center">
+                                    <p:outputLabel value="#{beneficiario.numBeneficiario}"/>
+                                </p:column>
+
+                                <p:column headerText="Tipo" width="5%" style="text-align: center">                                    
+                                    <h:outputText value="#{beneficiario.tipo=='D' ?'Directo':'Indirecto'}"/>
+                                </p:column>
+
+                                <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                    <p:outputLabel value="#{beneficiario.predio.claveCatastral}"/>
+                                </p:column>
+
+                                <p:column headerText="Propietario" width="15%" style="text-align: justify">
+                                    <p:outputLabel value="#{beneficiario.predio.propietario.apellidos} #{beneficiario.predio.propietario.nombres}"/>
+                                </p:column>
+
+                                <p:column headerText="Valor del Metro/Avalúo" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{beneficiario.factor}">                                        
+                                        <f:convertNumber groupingUsed="true" minFractionDigits="5" />
+                                    </p:outputLabel>
+                                </p:column>
+
+                                <p:column headerText="Frente" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{beneficiario.frente}">                                        
+                                        <f:convertNumber groupingUsed="true" minFractionDigits="3" />
+                                    </p:outputLabel>
+                                </p:column>
+
+                                <p:column headerText="Avalúo predio" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{beneficiario.avaluoTerreno}">
+                                        <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                    </p:outputLabel>
+                                </p:column>
+
+                                <p:column headerText="Valor de la mejora" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{beneficiario.valorMejora}">
+                                        <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                    </p:outputLabel>                                        
+                                </p:column>
+
+                                <p:column exportable="false" headerText="Detalles" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-print"
+                                                     title="Detalles"
+                                                     onclick="PF('dlgCuotas').show();"
+                                                     action="#{ctEmisionCem.obtenerCuotas()}"
+                                                     update="frmCuotas, frmCuotas:tblCuotas">
+                                        <f:setPropertyActionListener value="#{beneficiario}" target="#{ctEmisionCem.beneficiarioSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <f:facet name="footer">                                    
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                        <p:dataExporter type="xls" target="tblBeneficiarios" fileName="beneficiarios" />
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/pdf.png"/>
+                                        <p:dataExporter type="pdf" target="tblBeneficiarios" fileName="beneficiarios"/>
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/csv.png"/>
+                                        <p:dataExporter type="csv" target="tblBeneficiarios" fileName="beneficiarios" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </div>
+                    </div> 
+                </h:form>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCem}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+        <ui:include src="dlgDetallesCuotasCem.xhtml"/>  
+    </ui:define>
+</ui:composition>

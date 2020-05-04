@@ -1,0 +1,195 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../WEB-INF/templates/interna/template.xhtml">            
+            <ui:define name="title">Cobros diarios</ui:define>
+            <ui:define name="content">
+
+                <h:form id="frmEstadisticas">
+                    <p:growl autoUpdate="true"/>                                
+                    <div class="ui-g">                                                    
+                        <div class="ui-g-12 ui-md-6 ui-lg-12">
+                            <div class="card">
+                                <center>
+                                    <h1>Transacciones históricas</h1>
+                                    <p:panelGrid columns="5" styleClass="ui-panelgrid-blank form-group">
+                                        <h:outputText value="Fecha inicio:"/>
+                                        <p:calendar id="fechaInicio" value="#{ctrlTransaccionesHistoricas.fechaInicio}" showOn="button" 
+                                                    required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy" 
+                                                    maxdate="#{ctrlTransaccionesHistoricas.fechaMax}"/>
+                                        <h:outputText value="Fecha fin"/>
+                                        <p:calendar id="fechaFin" value="#{ctrlTransaccionesHistoricas.fechaFin}" showOn="button" 
+                                                    required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"
+                                                    maxdate="#{ctrlTransaccionesHistoricas.fechaMax}"/>
+                                        <p:commandButton value="Generar reporte" icon="ui-icon-assessment"
+                                                         title="Generar reporte"
+                                                         action="#{ctrlTransaccionesHistoricas.graficar()}"
+                                                         ajax="false" 
+                                                         update="frmGraficos"/>
+                                    </p:panelGrid>
+
+                                </center>
+                            </div>
+                        </div>
+                    </div> 
+
+                </h:form>
+
+
+
+                <h:form id="frmGraficos">
+                    <center>                                         
+
+                        <style>
+                            #chartdiv {
+                                width		: 100%;
+                                height		: 400px;
+                            }					
+                        </style>
+
+                        <style>                    
+                            #chartdiv2 {
+                                width: 100%;
+                                height: 400px;                         
+                            }
+
+                            .amcharts-export-menu-top-right {
+                                top: 10px;
+                                right: 0;
+                            }
+                        </style>
+
+                        <script src="../../resources/amcharts/amcharts.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/serial.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/pie.js" type="text/javascript"></script>                        
+                        <script src="../../resources/amcharts/themes/patterns.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/themes/black.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/themes/chalk.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/themes/dark.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/themes/light.js" type="text/javascript"></script>
+
+
+                        <link href="../../resources/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css"/>
+                        <script src="../../resources/amcharts/plugins/export/export.js" type="text/javascript"></script>
+                        <script src="../../resources/amcharts/plugins/export/export.min.js" type="text/javascript"></script>
+
+                        <script>
+                            var chart = AmCharts.makeChart("chartdiv2", {
+                                "type": "serial",
+                                "theme": "light",
+                                "dataProvider": [#{ctrlTransaccionesHistoricas.json}],
+                                "valueAxes": [{
+                                        "gridColor": "#FFFFFF",
+                                        "gridAlpha": 0.2,
+                                        "dashLength": 0
+                                    }],
+                                "gridAboveGraphs": true,
+                                "startDuration": 1,
+                                "graphs": [{
+                                        "balloonText": "[[category]]: <b>$ [[value]]</b>",
+                                        "fillAlphas": 0.8,
+                                        "lineAlpha": 0.2,
+                                        "type": "column",
+                                        "valueField": "total"
+                                    }],
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "rubro",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "gridAlpha": 0,
+                                    "tickPosition": "start",
+                                    "tickLength": 20
+                                },
+                                "export": {
+                                    "enabled": true,
+                                    "libs": {
+                                        "path": "https://www.amcharts.com/lib/3/plugins/export/libs/"
+                                    },
+                                    "menu": [{
+                                            class: "export-main",
+                                            label: "Export",
+                                            menu: [{
+                                                    "format": "JPG",
+                                                    "label": "JPG",
+                                                    "title": "Exportar a JPG",
+                                                }, {
+                                                    "format": "XLSX",
+                                                    "label": "Excel",
+                                                    "title": "Descargar a excel",
+                                                }]
+                                        }]
+                                },
+                                "responsive": {
+                                    "enabled": true
+                                }
+
+                            });
+                        </script>
+
+                        <script>
+                            var chart = AmCharts.makeChart("chartdiv", {
+                                "type": "pie",
+                                "theme": "light",
+                                "dataProvider": [#{ctrlTransaccionesHistoricas.json}],
+                                "valueField": "total",
+                                "titleField": "rubro",
+                                "balloon": {
+                                    "fixedPosition": true
+                                },
+                                "export": {
+                                    "enabled": true,
+                                    "libs": {
+                                        "path": "https://www.amcharts.com/lib/3/plugins/export/libs/"
+                                    },
+                                    "menu": [{
+                                            class: "export-main",
+                                            label: "Export",
+                                            menu: [{
+                                                    "format": "JPG",
+                                                    "label": "JPG",
+                                                    "title": "Exportar a JPG",
+                                                }, {
+                                                    "format": "XLSX",
+                                                    "label": "Excel",
+                                                    "title": "Descargar a excel",
+                                                }]
+                                        }]
+                                },
+                                "responsive": {
+                                    "enabled": true
+                                }
+                            });
+                        </script>
+
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="card">
+                                    <div id="chartdiv"></div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="card">
+                                    <div id="chartdiv2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

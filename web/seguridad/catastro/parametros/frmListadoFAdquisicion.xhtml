@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <f:metadata>
+
+    </f:metadata>
+
+
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form  id="frmListaFAdquisicion">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:messages autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                                <p:dataTable id="tblListaFAdquisicion" value="#{ctrlFormaAdquisicion.lstFAdquisicion}"
+                                             var="coef" reflow="true" rows="10" paginator="true"
+                                             rowKey="#{coef.idFormaAdq}"
+                                             selection="#{ctrlFormaAdquisicion.formaadquisicionSel}"
+                                             selectionMode="single"
+                                             >
+                                    <f:facet name="header">
+                                        <h:outputLabel value="Forma de Adquisición"/>
+                                    </f:facet>
+                                    <p:column headerText="Forma de Adquisición">
+                                        <h:outputLabel value="#{coef.formaAdq}"/>
+                                    </p:column>
+                                    <p:column headerText="Descripción">
+                                        <h:outputLabel value="#{coef.descripcion}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de registro">
+                                        <h:outputLabel value="#{coef.fechaRegistro}"/>
+                                    </p:column>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="11%">
+                                                <p:commandButton value="Editar"
+                                                                 icon="ui-icon-edit" 
+                                                                 onclick="PF('dlgEditarFAdquisicion').show()"
+                                                                 update="frmEditarFAdquisicion">
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlFormaAdquisicion.formaadquisicionSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="11%">
+                                                <p:commandButton value="Eliminar"
+                                                                 icon="ui-icon-trash"
+                                                                 onclick="PF('dlgEliminarFAdquisicion').show()"
+                                                                 update="frmEliminarFAdquisicion"
+                                                                 >
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlFormaAdquisicion.formaadquisicionSel}"/>   
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Nuevo"
+                                                                 icon="ui-icon-plus"
+                                                                 onclick="PF('dlgRegistrarFAdquisicion').show()"
+                                                                 update="frmRegistrarFAdquisicion"
+                                                                 />
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmRegistrarFAdquisicion.xhtml"/>
+        <ui:include src="frmEditarFAdquisicion.xhtml"/>    
+        <ui:include src="frmEliminarFAdquisicion.xhtml"/>      
+    </ui:define>
+
+</ui:composition>

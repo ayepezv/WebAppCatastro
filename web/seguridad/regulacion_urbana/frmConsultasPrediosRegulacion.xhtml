@@ -1,0 +1,182 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolRegulacionPredial}">
+                <p:growl autoUpdate="true" showDetail="true"/>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                <h:form id="frmBusquedas">
+                    <center><h1>Regulación Urbana</h1></center>
+                    <div class="ui-g"> 
+                        <div class="ui-g-12 ui-md-12 ui-lg-3">
+                            <div class="card">
+                                <b>Buscar: </b>                                    
+                                <p:selectOneMenu value="#{liquidacionCtrl.band}">
+                                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>
+                                    <f:selectItem itemLabel="Por Propietario" itemValue="2"/>
+                                    <p:ajax event="change" listener="#{liquidacionCtrl.limpiar()}" 
+                                            update="pnlBuscarClaveCatastral,pnlBuscarPropietario,frmPrincipal:tblPredios"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-9">
+                            <center>
+                                <div class="card">
+                                    <p:panel id="pnlBuscarClaveCatastral" visible="#{liquidacionCtrl.band==1}" style="border: none">
+                                        <p:panelGrid columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <p:outputLabel value="Zona"/>
+                                            <p:inputText id="zona" value="#{liquidacionCtrl.zona}" style="width: 35%"/>
+                                            <p:outputLabel value="Sector"/>
+                                            <p:inputText id="sector" value="#{liquidacionCtrl.sector}" style="width: 35%"/>
+                                            <p:outputLabel value="Manzana"/>
+                                            <p:inputText id="manzana" value="#{liquidacionCtrl.manzana}" style="width: 35%"/>
+                                            <p:outputLabel value="Predio"/>
+                                            <p:inputText id="predio" value="#{liquidacionCtrl.numPredio}" style="width: 35%"/>                                        
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{liquidacionCtrl.buscarPredios2()}"
+                                                             update="frmPrincipal:tblPredios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{liquidacionCtrl.limpiar()}"
+                                                             update="frmPrincipal:tblPredios,@form"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPropietario" visible="#{liquidacionCtrl.band==2}" style="border: none">
+                                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:outputText value="Apellidos/Cédula:"/>
+                                            <p:inputText value="#{liquidacionCtrl.txtCriterio}"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{liquidacionCtrl.buscarPorPropietario()}"
+                                                             update="frmPrincipal:tblPredios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{liquidacionCtrl.limpiar()}"
+                                                             update="frmPrincipal:tblPredios,@form"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+
+                </h:form>
+                <div class="ui-g"> 
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <h:form id="frmPrincipal">                                
+                            <p:dataTable id="tblPredios" var="liquidacion" value="#{liquidacionCtrl.lstLiquidaciones}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{liquidacion.idLiquidacion}"
+                                         editable="true" selection="#{liquidacionCtrl.objLiquidacion}" selectionMode="single">
+                                <f:facet name="header">                                   
+                                    <b>Predios asociados</b>
+                                </f:facet>
+                                <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                                    <h:outputText value="#{liquidacion.predio.claveCatastral}"/>
+                                </p:column>
+                                <p:column headerText="Propietario" width="6%" style="text-align: center">
+                                    <h:outputText value="#{liquidacion.predio.propietario.apellidos} #{liquidacion.predio.propietario.nombres}"/>
+                                </p:column>
+                                <p:column headerText="Dirección" width="10%">
+                                    <h:outputText value="#{liquidacion.predio.callePrinc} y #{liquidacion.predio.calleSecund}"/>
+                                </p:column>
+                                <p:column headerText="Valor construcción (VC)" width="5%" style="text-align: center">
+                                    <h:outputText value="#{liquidacion.totalConstruccion}">
+                                        <f:convertNumber pattern="###.##"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Valor lote de terreno (VT)" width="5%" style="text-align: center">
+                                    <h:outputText value="#{liquidacion.totalUsoSuelo}">
+                                        <f:convertNumber pattern="###.##"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Valor propiedad (VP=VC+VT)" width="5%" style="text-align: center">
+                                    <h:outputText value="#{liquidacion.avaluo}">
+                                        <f:convertNumber pattern="###.##"/>
+                                    </h:outputText>
+                                </p:column>
+                                <!-- <p:column exportable="false" headerText="Certificacion" width="4%" style="text-align: center">                                        
+                                    <p:commandButton icon="ui-icon-local-printshop"  ajax="false" title="Ver Pdf"
+                                                     actionListener="#{liquidacionCtrl.verReporteCertificacion()}"
+                                                     onclick="this.form.target = '_blank'">
+                                        <f:setPropertyActionListener value="#{liquidacion}" target="#{liquidacionCtrl.objLiquidacion}"/>
+                                    </p:commandButton>
+                                </p:column> -->
+                                
+                                 <p:column exportable="false" headerText="Reporte" width="4%" style="text-align: center">                                        
+                                    <p:commandButton icon="ui-icon-local-printshop"  ajax="false" title="Ver Pdf"
+                                                     actionListener="#{liquidacionCtrl.reporteRegulacionUrbana()}"
+                                                     onclick="this.form.target = '_blank'">
+                                        <f:setPropertyActionListener value="#{liquidacion}" target="#{liquidacionCtrl.objLiquidacion}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column exportable="false" headerText="Fachada" width="3%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-image"
+                                                     onclick="PF('dlgVerFotografia').show();"
+                                                     update="frmVerFotografia">
+                                        <f:setPropertyActionListener value="#{liquidacion}" target="#{liquidacionCtrl.objLiquidacion}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <!--
+                                    <p:commandButton value="Reevaluación Global"
+                                                     title="Reevaluación Global"
+                                                     onclick="PF('wldgReevaluacionGlobal').show();"
+                                                     icon="ui-icon-attach-money"/>
+                                    -->
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                        <p:dataExporter type="xls" target="tblPredios" fileName="predios" />
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/pdf.png"/>
+                                        <p:dataExporter type="pdf" target="tblPredios" fileName="predios"/>
+                                    </h:commandLink>
+
+                                    <h:commandLink>
+                                        <p:graphicImage name="/imagenes/csv.png"/>
+                                        <p:dataExporter type="csv" target="tblPredios" fileName="predios" />
+                                    </h:commandLink>                                        
+                                </f:facet>
+                            </p:dataTable>
+
+                        </h:form>
+                    </div>
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolRegulacionPredial}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmVerFotografia.xhtml"/> 
+
+    </ui:define>
+</ui:composition>

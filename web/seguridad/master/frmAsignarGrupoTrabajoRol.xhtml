@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">        
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />           
+        <center>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h:form id="frmPrincipal">
+                        <p:dataTable id="tblGruposTrabjo" var="grupo" value="#{controladorGrupoTrabajoRol.lstGrupos}" rows="10"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,15,20,25" reflow="true"
+                                     rowKey="#{grupo.grupo.idGrupoTrabajo}" 
+                                     selectionMode="single" 
+                                     selection="#{controladorGrupoTrabajoRol.grupoSel}">
+                            <p:column headerText="Grupo" width="5%">
+                                <h:outputText value="#{grupo.grupo.grupo}" />
+                            </p:column>
+                            <p:column headerText="Roles" width="5%">
+                                <h:outputText value="#{grupo.rol.nombre}" />
+                            </p:column>
+                            <p:column headerText="Fecha de registro" width="5%">
+                                <h:outputText value="#{grupo.fechaRegistro}" />
+                            </p:column>
+                            <p:column headerText="Usuario responsable" width="5%" style="text-align: center">
+                                <h:outputText value="#{grupo.sessionUsuario.nick}" />
+                            </p:column>
+                            <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever"
+                                                 title="ELiminar"/>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                        <p:commandButton icon="ui-icon-plusthick" 
+                                                         value="Registrar"
+                                                         title="Registrar"
+                                                         onclick="PF('dlgRegistrar').show()"/>
+                                    </c:when> 
+                                </c:choose>
+                            </f:facet>
+                        </p:dataTable>
+
+                    </h:form>
+
+                </div>                
+            </div>           
+        </center>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <p:dialog header="Registrar Grupo de trabajo" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                  showEffect="clip" hideEffect="fold">
+            <h:form id="frmRegistrarGrupo">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group"  >
+                    <h:outputLabel value="Grupo:"/>
+                    
+                    <p:selectOneMenu id="cmbRoles" value="#{controladorGrupoTrabajoRol.grupo.rol.idRol}" 
+                                     required="true" requiredMessage="Seleccione un Rol"
+                                     effect="fade" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="- Seleccione -" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorGrupoTrabajoRol.lstRoles}" var="rol"
+                                       itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}"/>
+                    </p:selectOneMenu>   
+                    <h:outputLabel value="Rol:"/>
+                    <p:selectOneMenu id="cmbGrupos" value="#{controladorGrupoTrabajoRol.grupo.grupo.idGrupoTrabajo}" 
+                                     required="true" requiredMessage="Seleccione un Grupo de trabajo"
+                                     effect="fade" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="- Seleccione -" itemValue="#{null}"/>
+                        <f:selectItems value="#{controladorGrupoTrabajoRol.lstGruposTrabajo}" var="grupoT"
+                                       itemLabel="#{grupoT.grupo}" itemValue="#{grupoT.idGrupoTrabajo}"/>
+                    </p:selectOneMenu>  
+                </p:panelGrid>                                
+                <center>
+                    <p:commandButton value="Aceptar" action="#{controladorGrupoTrabajoRol.registrar()}" 
+                                     update="frmPrincipal:tblGruposTrabjo,frmRegistrarGrupo"
+                                     icon="ui-icon-save"/>
+                    <p:commandButton value="Cancelar" type="button" 
+                                     icon="ui-icon-close"
+                                     onclick="PF('dlgRegistrar').hide();"/> 
+                </center>   
+
+            </h:form>                        
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

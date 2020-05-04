@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgNuevaCuenta" widgetVar="dlgNuevaCuenta" closable="false" modal="true" resizable="true" 
+              header="Nueva Cuenta" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarCuenta">            
+            <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">   
+                <p:outputLabel value="Abonado:"/>
+                <p:outputLabel value="Medidor:"/>
+                <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="txtCedula"  value="#{controladorCuentaAP.objCuenta.abonado.cedula}" maxlength="10"
+                                     title="Cedula" required="true" requiredMessage="La Cédula es un campo obligatorio."
+                                     onkeypress="return validar(event)" 
+                                     /> 
+                        <label>#{AtributosVistas.cedula}</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="txtNombre"   value="#{controladorCuentaAP.objCuenta.abonado.nombres}" title="Nombres Persona" required="true" 
+                                     requiredMessage="El Nombre es requerido!" type="text"  onkeypress="return soloLetras(event)"
+                                     validatorMessage="Nombres, No puede ingresar números..." >
+                            <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                        </p:inputText>
+                        <label>#{AtributosVistas.nombres}</label>
+                    </h:panelGroup>   
+
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="txtApellidos"   value="#{controladorCuentaAP.objCuenta.abonado.apellidos}" title="Nombres Persona" required="true" 
+                                     requiredMessage="Los apellidos son requeridos!" type="text"  onkeypress="return soloLetras(event)"
+                                     validatorMessage="Apellidos, No puede ingresar números..." >
+                            <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                        </p:inputText>
+                        <label>#{AtributosVistas.apellidos}</label>
+                    </h:panelGroup>
+                    <h:panelGroup >
+                        <label>Sexo</label>
+                        <p:selectOneRadio id="radioSexo" value="#{controladorCuentaAP.objCuenta.abonado.sexo}" required="true" requiredMessage="El sexo del usuario es obligatorio.">
+                            <f:selectItem itemLabel="Masculino" itemValue="M" />
+                            <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                        </p:selectOneRadio>                                     
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText id="txtCelular"  value="#{controladorCuentaAP.objCuenta.abonado.celular}" title="Celular Persona" required="true" 
+                                     requiredMessage="El Celular es requerido!" maxlength="10" onkeypress="return validar(event)"
+                                     validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >
+                            <f:validateLength minimum="10"/>
+                        </p:inputText>
+                        <label>#{AtributosVistas.celular}</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText  id="txtCorreo"  value="#{controladorCuentaAP.objCuenta.abonado.mail}" title="Correo Electrónico" required="true" 
+                                      requiredMessage="El Correo Electrónico es requerido!" 
+                                      validatorMessage="Correo Electrónico, formato inválido. Ejm: info@info.com">
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+                        <label>#{AtributosVistas.correo}</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.abonado.nick}" required="true" 
+                                     requiredMessage="El Nick es obligatorio."/>
+                        <label>Nick</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.abonado.password}" required="true" 
+                                     requiredMessage="El password es obligatorio."/>
+                        <label>Contraseña</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.direccion}" />
+                        <label>Dirección</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <p:panelGrid columns="1"  styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.numSerie}" required="true" 
+                                     requiredMessage="El número de medidor es obligatorio."/>
+                        <label>N° de medidor</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.marca}" required="true" 
+                                     requiredMessage="La marca del medidor es obligatorio."/>
+                        <label>Marca</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.lecturaInicial}" required="true" 
+                                     requiredMessage="La lectura inicial del medidor es obligatorio."/>
+                        <label>Lectura inicial</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.estado}" required="true" 
+                                     requiredMessage="El estado del medidor es obligatorio."/>
+                        <label>Estado</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.tipo}" required="true" 
+                                     requiredMessage="El tipo de medidor es obligatorio."/>
+                        <label>Tipo</label>
+                    </h:panelGroup>
+
+                </p:panelGrid>
+
+            </p:panelGrid>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorCuentaAP.registrarCuenta()}"
+                                 update="frmPrincipal:tblCuentas"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgNuevaCuenta').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

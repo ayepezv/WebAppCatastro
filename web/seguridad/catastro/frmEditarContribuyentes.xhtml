@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <p:dialog id="dlgEditarUsuario" widgetVar="dlgEditarUsuario" closable="false" modal="true" resizable="true" 
+              header="Editar usuario" showEffect="size" hideEffect="size">
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h:form id="frmEditar">
+                    <p:growl id="msj" globalOnly="false" life="10000" escape="true" showDetail="true"/>
+                    <p:messages/>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText maxlength="10" value="#{ctContribuyente.usuarioSel.cedula}"
+                                         title="Cedula" required="true" 
+                                         requiredMessage="La Cédula es un campo obligatorio."/>                                         
+                            <label>* Cédula de Identidad </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText maxlength="13" value="#{ctContribuyente.usuarioSel.ruc}"
+                                         title="RUC" />                                                 
+                            <label>* RUC </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.nombres}"
+                                         required="true" requiredMessage="Los nombres es un campo obligatorio."
+                                         title="Nombres" />                                                 
+                            <label>* Nombres </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.apellidos}"
+                                         required="true" requiredMessage="Los apellidos son obligatorios."
+                                         title="Apellidos" />                                                 
+                            <label>* Apellidos </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.celular}"
+                                         required="true" requiredMessage="El telefono es obligatorio."
+                                         title="Celular" />                                                 
+                            <label>* Telefono </label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">                                                          
+                            <p:calendar id="german" value="#{ctContribuyente.usuarioSel.fechaNacimiento}" locale="de"
+                                        navigator="true" pattern="dd-MM-yyyy"
+                                        placeholder="* Fecha de Nacimiento"/>                             
+                        </h:panelGroup>
+
+                        <h:panelGroup >                                                          
+                            <p:selectOneMenu value="#{ctContribuyente.usuarioSel.estadoCivil}">                                
+                                <f:selectItem itemLabel="Soltero(a)" itemValue="Soltero(a)"/>
+                                <f:selectItem itemLabel="Casado(a)" itemValue="Casado(a)"/>
+                                <f:selectItem itemLabel="Viudo(a)" itemValue="Viudo(a)"/>
+                                <f:selectItem itemLabel="Divorciado(a)" itemValue="Divorciado(a)"/>
+                                <f:selectItem itemLabel="Unión de hecho" itemValue="Unión de hecho"/>
+                            </p:selectOneMenu>                            
+                        </h:panelGroup>
+
+                        <h:panelGroup >                                                          
+                            <p:selectOneMenu value="#{ctContribuyente.usuarioSel.sexo}">                                
+                                <f:selectItem itemLabel="Masculino" itemValue="M"/>                               
+                                <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                            </p:selectOneMenu>                            
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.nick}"
+                                         required="true" requiredMessage="El nombre de usuario es obligatorio."
+                                         title="Nick"/>                                                 
+                            <label>* Nombre de usuario </label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.mail}"
+                                         required="true" requiredMessage="El correo electrónico es obligatorio."
+                                         title="Mail"/>                                                 
+                            <label>* Correo electrónico </label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{ctContribuyente.usuarioSel.direccionDom}"                                         
+                                         title="Direccion domiciliaria"/>                                                 
+                            <label>* Dirección domiciliaria </label>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <center>
+                        <p:commandButton icon="ui-icon-save" value="Aceptar" action="#{ctContribuyente.editarUsuario()}"
+                                         update="frmUsuarios:tblUsuarios,frmEditar"/>
+                        <p:commandButton onclick="PF('dlgEditarUsuario').hide();" value="Cancelar" icon="ui-icon-close"
+                                         process="@this"/>
+                    </center>                    
+                </h:form>
+            </div>
+        </div>
+
+    </p:dialog>
+</ui:composition>

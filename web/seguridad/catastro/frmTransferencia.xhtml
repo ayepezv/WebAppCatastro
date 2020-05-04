@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                        <h:form id="frmPrincipal">
+                            <p:growl autoUpdate="true" showDetail="true"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                             
+                            <center>
+                                <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <div class="card"> 
+                                            <p:panelGrid columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                <h:outputText id="otxtZona" value="Zona:"/>
+                                                <p:inputText id="txtZona" value="#{ctTransferenciaDominio.zona}"/>
+                                                <h:outputText id="otxtSector" value="Sector:"/>
+                                                <p:inputText id="txtSector" value="#{ctTransferenciaDominio.sector}"/>
+                                                <h:outputText id="otxtManzana" value="Manzana:"/>
+                                                <p:inputText id="txtManzana" value="#{ctTransferenciaDominio.manzana}"/>
+                                                <h:outputText id="otxtPredio" value="Predio:"/>
+                                                <p:inputText id="txtpredio" value="#{ctTransferenciaDominio.predio}"/>
+                                                <p:commandButton id="btnBuscar" value="Buscar" icon="ui-icon-search"
+                                                                 action="#{ctTransferenciaDominio.buscarPredios()}"
+                                                                 update="tblPredios"
+                                                                 process="btnBuscar,txtZona,txtSector,txtManzana,txtpredio"/>
+                                                <p:commandButton id="btnLimpiar" value="Limpiar" icon="ui-icon-refresh"
+                                                                 action="#{ctTransferenciaDominio.limpiar()}"
+                                                                 update="tblPredios"
+                                                                 process="btnLimpiar,txtZona,txtSector,txtManzana,txtpredio"/>
+                                            </p:panelGrid>
+                                            <br/>
+                                            <p:dataTable id="tblPredios" var="predio" value="#{ctTransferenciaDominio.lstPredios}" rows="10"
+                                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                                         editable="true" selection="#{ctTransferenciaDominio.objPredio}" selectionMode="single">
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Listado de predios"/>
+                                                </f:facet>
+                                                <p:column headerText="Clave Catastral" width="5%" style="text-align: center">
+                                                    <h:outputText value="#{predio.claveCatastral}"/>
+                                                </p:column>
+                                                <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                                    <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                                </p:column>
+                                                <p:column headerText="Dirección" width="12%">
+                                                    <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                                </p:column>                                           
+                                                <p:column headerText="Seleccionar" width="4%" style="text-align: center">
+                                                    <p:commandButton icon="ui-icon-description"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>                        
+                                    </div>   
+                                    <div class="ui-g-12">
+                                        <div class="card">
+                                            <b>Autorización:</b>
+                                            <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                <h:outputText value="Tipo de documento:"/>
+                                                <p:selectOneMenu value="#{ctTransferenciaDominio.objTransferencia.tipoTocumento}"
+                                                                 effect="fold" filter="true" filterMatchMode="contains"
+                                                                 required="true" requiredMessage="El tipo de documento es obligatorio.">
+                                                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                    <f:selectItem itemLabel="Seco" itemValue="SECO"/>
+                                                    <f:selectItem itemLabel="Húmedo" itemValue="HUMEDO"/>
+                                                    <f:selectItem itemLabel="Inundable" itemValue="INUNDABLE"/>
+                                                    <f:selectItem itemLabel="Cenagoso" itemValue="CENAGOSO"/>
+                                                </p:selectOneMenu>
+                                                <h:outputText value="Número de documento:"/>
+                                                <p:inputText value="#{ctTransferenciaDominio.objTransferencia.numeroDocumento}"
+                                                             placeholder="Ej. UGT-049-GADMA"
+                                                             required="true" requiredMessage="El número de documento es obligatorio."/>
+                                                <h:outputText value="Fecha del documento:"/>
+                                                <p:calendar id="txtDocumento" value="#{ctTransferenciaDominio.objTransferencia.fechaDocumento}" 
+                                                            navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                            required="true" requiredMessage="El número de documento es obligatorio."/>  
+                                            </p:panelGrid>
+                                        </div>                                            
+                                    </div>
+                                    <div class="ui-g-6">
+                                        <div class="card">
+                                            <b>Propietario</b>
+                                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                <p:outputLabel value="Cédula:"/>
+                                                <p:inputText id="txtCedulaProp" value="#{ctTransferenciaDominio.txtCedula}" placeholder="Ej. 0603977224"
+                                                             />
+                                                <p:commandButton id="btnBuscarProp" value="Buscar" icon="ui-icon-search"
+                                                                 onclick="PF('dlgBuscarProp').show();"
+                                                                 update="frmBuscarProp"
+                                                                 process="txtCedulaProp,btnBuscarProp"/>
+                                                <p:commandButton value="Registrar" icon="ui-icon-person-add"/>
+                                            </p:panelGrid>
+                                        </div>                                            
+                                    </div>
+                                    <div class="ui-g-6">
+                                        <div class="card">
+                                            <b>Comprador</b>
+                                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Buscar" icon="ui-icon-search"/>
+                                                <p:commandButton value="Registrar" icon="ui-icon-person-add"/>
+                                            </p:panelGrid>
+                                        </div>                                            
+                                    </div>
+                                </div> 
+                            </center>
+                        </h:form> 
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                        </p:dialog>
+                    </c:when>
+                </c:choose>
+
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert != VariablesGlobales.privActivo}">
+                        <center>
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <div class="card">  
+                                        <b><h1>Permisos Insuficientes</h1></b>
+                                        <b>Consulte con el administrador</b>                      
+                                    </div>                        
+                                </div>                        
+                            </div>  
+                        </center>
+                    </c:when>
+                </c:choose>               
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="dlgBuscarPropietario.xhtml"/>  
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <p:growl autoUpdate="true" showDetail="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />    
+            <center>
+                <h2>Gestión de Cuentas</h2>
+            </center>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <center>
+                            <h:panelGrid columns="4">
+                                <p:outputLabel value="Buscar:"/>
+                                <p:inputText value="#{controladorCuentaAP.claveCatastral}"/>
+                                <p:commandButton value="Buscar"
+                                                 icon="ui-icon-search"
+                                                 action="#{controladorCuentaAP.encontrarCuenta()}"
+                                                 update="frmPrincipal:tblCuentas"/>
+                                <p:commandButton value="Limpiar"
+                                                 icon="ui-icon-refresh"
+                                                 action="#{controladorCuentaAP.obtenerCuentas()}"
+                                                 update="frmPrincipal:tblCuentas"/>
+                            </h:panelGrid>
+                        </center>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="card">
+                        <p:dataTable id="tblCuentas" var="cuenta" value="#{controladorCuentaAP.lstCuentas}" rows="10"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true"
+                                     rowKey="#{cuenta.idCuenta}" selectionMode="single" selection="#{controladorCuentaAP.cuentaSel}">
+
+                            <p:column headerText="N° Cuenta" width="5%" style="text-align: center">
+                                <h:outputText value="#{cuenta.numCuenta}" />
+                            </p:column>
+
+                            <p:column headerText="Abonado" width="15%" style="text-align: center">
+                                <h:outputText value="#{cuenta.abonado.apellidos} #{cuenta.abonado.nombres}" />
+                            </p:column>
+
+                            <p:column headerText="Medidor" width="10%" style="text-align: center">
+                                <h:outputText value="#{cuenta.medidor.numSerie}" />
+                            </p:column>
+
+                            <p:column headerText="Direccion" width="15%" style="text-align: center">
+                                <h:outputText value="#{cuenta.direccion}" />
+                            </p:column>
+
+                            <p:column headerText="Predio" width="10%" style="text-align: center">
+                                <h:outputText value="#{cuenta.predio.claveCatastral}" />
+                            </p:column>
+
+                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-edit" title="Editar"/>
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete-forever" title="Eliminar"/>
+                            </p:column>
+
+                            <f:facet name="footer">
+
+                                <c:choose>  
+                                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                        <p:commandButton value="Registrar" icon="ui-icon-group-add" 
+                                                         title="Registrar cuenta"
+                                                         type="button"
+                                                         onclick="PF('dlgNuevaCuenta').show()"/>
+                                        <p:commandButton value="Registrar mediante predio" icon="ui-icon-group-add" 
+                                                         title="Registrar cuenta"
+                                                         type="button"
+                                                         onclick="PF('dlgNuevaCuentaPredio').show()"/>
+                                    </c:when> 
+                                </c:choose>
+                            </f:facet>
+
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+            </p:dialog>
+        </h:form>
+
+        <ui:include src="frmPredios.xhtml"/>  
+        <ui:include src="frmRegistrarCuenta.xhtml"/>  
+        <ui:include src="frmRegistrarCuentaPredio.xhtml"/>  
+    </ui:define>
+</ui:composition>
+
+

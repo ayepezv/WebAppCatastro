@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgMostrarObras" widgetVar="dlgMostrarObras" closable="false" modal="true" resizable="true" 
+              showEffect="size" hideEffect="size" width="65%">
+        
+        <h:form id="frmMostrarObras">
+            <p:dataTable id="tblObras" var="obra" value="#{controladorMejoras.lstObras}" rows="5"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{obra.idObra}">
+                <f:facet name="header">
+                    <h:outputLabel value="Listado de obras"/>
+                </f:facet>
+                <p:column headerText="Código" width="3%" style="text-align: center">
+                    <p:outputLabel value="#{obra.idObra}"/>
+                </p:column>
+
+                <p:column headerText="Obra" width="10%" style="text-align: center">
+                    <p:outputLabel value="#{obra.nombreObra}"/>
+                </p:column>
+
+                <p:column headerText="Costo" width="5%" style="text-align: center">
+                    <p:outputLabel value="#{obra.valorObra} $"/>
+                </p:column>
+
+                <p:column headerText="Tipo de obra" width="15%" style="text-align: left">
+                    <p:outputLabel value="#{obra.tipoObra.descripcion}"/>
+                </p:column>
+                
+                 <p:column headerText="Plazo" width="5%" style="text-align: left">
+                     <p:outputLabel value="#{obra.mejora.plazo}"/>
+                </p:column>
+                
+                <p:column headerText="Periodo" width="5%" style="text-align: left">
+                     <p:outputLabel value="#{obra.mejora.formaPago.formaPago}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <center>                
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 onclick="PF('dlgMostrarObras').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

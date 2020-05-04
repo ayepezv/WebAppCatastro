@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteFicha" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="8e695087-a3f2-4e7b-a412-b7470b0bed91">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebAppCatastro"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="codigo" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\WebAppCatastro\\web\\reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * 
+from catastro.v_reporte_ficha_predial
+where int_id_predio = $P{codigo}]]>
+	</queryString>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="int_num_ficha" class="java.lang.Integer"/>
+	<field name="int_id_parroquia" class="java.lang.Integer"/>
+	<field name="int_zona" class="java.lang.Integer"/>
+	<field name="int_sector" class="java.lang.Integer"/>
+	<field name="int_manzana" class="java.lang.Integer"/>
+	<field name="int_num_predio" class="java.lang.Integer"/>
+	<field name="int_prop_hor_bloque" class="java.lang.Integer"/>
+	<field name="int_prop_hor_piso" class="java.lang.Integer"/>
+	<field name="int_prop_hor_unidad" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="chv_clave_catastral_ant" class="java.lang.String"/>
+	<field name="chv_barrio" class="java.lang.String"/>
+	<field name="chv_calle_princ" class="java.lang.String"/>
+	<field name="chv_calle_secund" class="java.lang.String"/>
+	<field name="chv_num_casa" class="java.lang.String"/>
+	<field name="chv_nombre_edificio" class="java.lang.String"/>
+	<field name="int_id_titular_dom" class="java.lang.Integer"/>
+	<field name="int_id_rep_legal" class="java.lang.Integer"/>
+	<field name="int_id_dominio" class="java.lang.Integer"/>
+	<field name="chv_condicion" class="java.lang.String"/>
+	<field name="chv_forma_adq" class="java.lang.String"/>
+	<field name="chv_notaria" class="java.lang.String"/>
+	<field name="dt_fecha_titulo_prop" class="java.sql.Date"/>
+	<field name="dt_fecha_registro" class="java.sql.Date"/>
+	<field name="db_area_escritura" class="java.lang.Double"/>
+	<field name="chv_prop_anterior" class="java.lang.String"/>
+	<field name="db_avaluo_prop" class="java.lang.Double"/>
+	<field name="chv_gest_uso_suelo" class="java.lang.String"/>
+	<field name="chv_uso_suelo_consumo" class="java.lang.String"/>
+	<field name="chv_us_suel_intercambio" class="java.lang.String"/>
+	<field name="chv_us_suel_produc" class="java.lang.String"/>
+	<field name="chv_ocupacion_predio" class="java.lang.String"/>
+	<field name="chv_localizacion_predio" class="java.lang.String"/>
+	<field name="chv_topografia_pedio" class="java.lang.String"/>
+	<field name="chv_forma_predio" class="java.lang.String"/>
+	<field name="chv_caract_suelo" class="java.lang.String"/>
+	<field name="chv_uso_vias" class="java.lang.String"/>
+	<field name="chv_material_vias" class="java.lang.String"/>
+	<field name="chv_red_agua" class="java.lang.String"/>
+	<field name="chv_alcantarillado" class="java.lang.String"/>
+	<field name="chv_energ_electric" class="java.lang.String"/>
+	<field name="chv_red_telefon" class="java.lang.String"/>
+	<field name="chv_rec_basura" class="java.lang.String"/>
+	<field name="chv_transp_publico" class="java.lang.String"/>
+	<field name="chv_internet" class="java.lang.String"/>
+	<field name="chv_otros_servicios" class="java.lang.String"/>
+	<field name="db_area_construc" class="java.lang.Double"/>
+	<field name="db_area_total_const" class="java.lang.Double"/>
+	<field name="db_area_total_terreno" class="java.lang.Double"/>
+	<field name="chv_patio" class="java.lang.String"/>
+	<field name="chv_piscina" class="java.lang.String"/>
+	<field name="chv_cerramiento" class="java.lang.String"/>
+	<field name="chv_cisterna" class="java.lang.String"/>
+	<field name="chv_muros" class="java.lang.String"/>
+	<field name="chv_ascensor" class="java.lang.String"/>
+	<field name="int_num_banios" class="java.lang.Integer"/>
+	<field name="db_lindero_frente1" class="java.lang.Double"/>
+	<field name="db_lindero_frente2" class="java.lang.Double"/>
+	<field name="db_lindero_frente3" class="java.lang.Double"/>
+	<field name="db_lindero_frente4" class="java.lang.Double"/>
+	<field name="chv_lindero_calle1" class="java.lang.String"/>
+	<field name="chv_lindero_calle2" class="java.lang.String"/>
+	<field name="chv_lindero_calle3" class="java.lang.String"/>
+	<field name="chv_lindero_calle4" class="java.lang.String"/>
+	<field name="db_lindero_alicuota1" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota2" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota3" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota4" class="java.lang.Double"/>
+	<field name="db_derechos_acciones" class="java.lang.Double"/>
+	<field name="chv_croquis" class="java.lang.String"/>
+	<field name="chv_emplazamiento" class="java.lang.String"/>
+	<field name="chv_fotografia" class="java.lang.String"/>
+	<field name="chv_topografia_ref_top" class="java.lang.String"/>
+	<field name="chv_foto_aerea" class="java.lang.String"/>
+	<field name="chv_otra_ref_top" class="java.lang.String"/>
+	<field name="db_coord_e" class="java.lang.Double"/>
+	<field name="db_coord_n" class="java.lang.Double"/>
+	<field name="chv_colindant_nort" class="java.lang.String"/>
+	<field name="chv_colindant_este" class="java.lang.String"/>
+	<field name="chv_colindant_sur" class="java.lang.String"/>
+	<field name="chv_colindant_oest" class="java.lang.String"/>
+	<field name="chv_fuente_informant" class="java.lang.String"/>
+	<field name="chv_telf_informant" class="java.lang.String"/>
+	<field name="chv_ficha_adjunta" class="java.lang.String"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="db_porcent_excep" class="java.lang.Double"/>
+	<field name="chv_excencion_esp" class="java.lang.String"/>
+	<field name="chv_observaciones" class="java.lang.String"/>
+	<field name="chv_dominio" class="java.lang.String"/>
+	<field name="titular_dominio" class="java.lang.String"/>
+	<field name="rep_legal" class="java.lang.String"/>
+	<field name="chv_nombre" class="java.lang.String"/>
+	<field name="nombre_propietario" class="java.lang.String"/>
+	<field name="apellidos_propietario" class="java.lang.String"/>
+	<field name="chv_celular" class="java.lang.String"/>
+	<field name="ch_estado_civil" class="java.lang.String"/>
+	<field name="chv_ruc" class="java.lang.String"/>
+	<field name="chv_direccion_domiciliaria" class="java.lang.String"/>
+	<field name="chv_cedula" class="java.lang.String"/>
+	<field name="foto_fachada" class="java.lang.String"/>
+	<field name="parroquia" class="java.lang.String"/>
+	<field name="foto_croquis" class="java.lang.String"/>
+	<field name="codigo_predio" class="java.lang.Integer"/>
+	<field name="area_constr" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="819" splitType="Stretch">
+			<image>
+				<reportElement x="10" y="0" width="51" height="50" uuid="cc2eced3-1d6c-436a-b842-6293c8c6082d"/>
+				<imageExpression><![CDATA["http://catastro.archidona.gob.ec/WebAppCatastro/faces/resources/imagenes/escudo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="129" y="1" width="351" height="30" uuid="6d66e2b2-b66f-4513-99c7-295a54035474"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GADM ARCHIDONA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="31" width="352" height="19" uuid="afd878f3-a7b0-4a33-8233-d469fca4bc94"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección de Avalúo y Catastro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="-1" y="498" width="554" height="124" uuid="b2a8cc36-b6e4-4b29-af8f-0fa9d6784c16">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="9" y="519" width="134" height="48" uuid="60032229-572b-4d9f-9933-d8a38e4ffe4e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="143" y="519" width="134" height="48" uuid="a92067cc-d4f8-467b-9841-aca4407b0820">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="277" y="519" width="134" height="48" uuid="fd3dbf28-4292-4195-bbfd-1cb725a91258">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="411" y="519" width="133" height="48" uuid="ebb9191c-d222-4459-9770-88ff3397312c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-1" y="449" width="553" height="42" uuid="778c80c8-b8c8-4226-9a1e-2011b773147d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-2" y="330" width="554" height="111" uuid="264c11e3-e0d7-4365-aff3-9c016f54b0e5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="2" y="398" width="134" height="34" uuid="0f891fa9-5062-4b62-8eb6-c98c3ab5748f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="398" width="134" height="34" uuid="b4cad2a8-ac66-4f0e-9a4d-487b8214e604">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="270" y="398" width="134" height="34" uuid="f9d8f783-10cc-4d72-bce7-efd47a0cda51">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="404" y="398" width="133" height="34" uuid="fc621acf-1284-446a-aa05-7cae7937efe8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="109" y="350" width="107" height="48" uuid="2f9cc7cc-48cf-4168-96c0-06915aeb2877">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="216" y="350" width="107" height="48" uuid="73bb8964-af6f-45cf-8c62-dbed2c4d259a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="323" y="350" width="107" height="48" uuid="5725be7f-f509-4633-9c54-4eecffebaace">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="430" y="350" width="107" height="48" uuid="d2169f64-1080-4bea-b9b2-5785c30e8801">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="2" y="350" width="107" height="48" uuid="f09973a6-c6fb-4ada-9c2b-e8119d33ee91">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-1" y="281" width="553" height="40" uuid="7d808762-3061-4f4f-8f74-acebf3215dcd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-2" y="164" width="555" height="110" uuid="9d92cab9-ae8d-4cc4-91a2-02460b7c5d15">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-2" y="63" width="555" height="94" uuid="5792d961-0f77-43b1-98f6-a5e7ee964fc6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="67" width="264" height="13" uuid="94a0571d-6822-4925-8330-652bc9a338b1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IDENTIFICACIÓN Y LOCALIZACIÓN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="82" width="188" height="14" uuid="8cffb875-109a-4423-b6dd-d84dee779731">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_clave_catastral}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="82" width="76" height="14" uuid="93b44a1a-4edb-4f66-b35c-718727a07cb6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Clave catastral:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="61" y="110" width="208" height="14" uuid="2813d27c-d85d-4c0d-b44b-46bd42a0928a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{chv_calle_princ}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="110" width="47" height="14" uuid="30c0e4c6-f062-409c-b852-1e4eb07103c6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="43" y="124" width="230" height="14" uuid="79bab8ab-68c8-4e59-a1b3-40b627ec5745">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{chv_calle_secund}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="124" width="27" height="14" uuid="2b24b290-1502-444a-908e-e14c49209667">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Entre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="48" y="96" width="230" height="14" uuid="e466e590-c887-4aa5-b891-0ebb45f89bc4"/>
+				<textFieldExpression><![CDATA[$F{chv_barrio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="96" width="34" height="14" uuid="f63dc5b1-54d4-4b25-aa43-a9e8b29e54d0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Barrio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="55" y="138" width="100" height="14" uuid="7c7fb207-c6ff-4241-a86c-45440d6477db"/>
+				<textFieldExpression><![CDATA[$F{chv_num_casa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="138" width="40" height="14" uuid="27b7a6d1-1db3-499a-a3bc-fad2894deee2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Número:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="333" y="82" width="209" height="14" uuid="51bc1e71-368c-4554-b57b-5e6ce415cc44"/>
+				<textFieldExpression><![CDATA[$F{parroquia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="82" width="50" height="14" uuid="7d4c794d-bd3f-4303-ae23-18087f7d202a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Parroquia:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="313" y="96" width="100" height="14" uuid="c184546b-ef23-4c06-99e9-5c2c6f9d5e99"/>
+				<textFieldExpression><![CDATA[$F{int_zona}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="96" width="28" height="14" uuid="3c549995-b071-4ca4-a1dd-8b3644689368">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Zona:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="319" y="110" width="100" height="14" uuid="da997c22-041a-4dfe-93b5-6b713b13ed83">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{int_sector}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="110" width="34" height="14" uuid="dd8ec40a-9034-405a-b625-cf032c7c9d43">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Sector:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="124" width="100" height="14" uuid="73ef0a6a-d007-4347-8cf3-6f6cdcbdd3d1"/>
+				<textFieldExpression><![CDATA[$F{int_manzana}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="124" width="45" height="14" uuid="043f0374-d938-4894-bf06-e2c830cb6864">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Manzana:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="138" width="100" height="14" uuid="fa245280-9c8c-49d9-a322-ef3b161395bf"/>
+				<textFieldExpression><![CDATA[$F{int_num_predio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="138" width="60" height="14" uuid="83b3d0ce-e7df-4896-9aa0-a9d1b3336354">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Num. predio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="169" width="264" height="13" uuid="089426e0-77f2-41be-9804-75b7a0779e47"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROPIETARIO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="58" y="184" width="220" height="14" uuid="5a6cd144-9885-40ff-b392-900c37197b35"/>
+				<textFieldExpression><![CDATA[$F{apellidos_propietario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="184" width="46" height="14" uuid="315540a2-5217-46f4-af78-03f38f20745a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Apellidos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="58" y="198" width="220" height="14" uuid="fb2e07d2-3528-4f36-9100-7d6f8a94d2c3"/>
+				<textFieldExpression><![CDATA[$F{nombre_propietario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="198" width="48" height="14" uuid="3dd7c40e-497c-4776-99eb-c7831f5f316a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Nombres:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="74" y="212" width="204" height="14" uuid="6f1bc2d6-d727-4c95-aa81-f4fc17b4247e"/>
+				<textFieldExpression><![CDATA[$F{chv_cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="212" width="63" height="14" uuid="9c6be9a5-b747-4904-be72-80fc196b160f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Cédula/RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="55" y="226" width="223" height="14" uuid="bf89fa33-72a0-4027-9b5b-96446a1db542"/>
+				<textFieldExpression><![CDATA[$F{chv_dominio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="226" width="43" height="14" uuid="f5f5d0f1-2f82-40d8-b3a1-76f627fa8dbf">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Dominio:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="112" y="240" width="166" height="14" uuid="4ba93ba9-a75d-431c-a2c6-e2600eaab63a"/>
+				<textFieldExpression><![CDATA[$F{chv_direccion_domiciliaria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="240" width="100" height="14" uuid="ea2bd4cd-9f9d-4f14-a619-a0a557ab3a73">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Dirección domiciliaria:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="169" width="256" height="13" uuid="213c5d57-839f-4ef4-9e07-de3a38f6e2dc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOTARÍA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="323" y="184" width="100" height="14" uuid="9d14b80a-f543-4fd2-a1fd-c83025c5cbc7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_notaria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="184" width="40" height="14" uuid="ecb552d5-1365-43e3-a6fe-15cea63d9b7b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Notaría:]]></text>
+			</staticText>
+			<textField pattern="MMMM d, yyyy">
+				<reportElement x="318" y="198" width="151" height="14" uuid="ef8e7ba9-4038-4731-b14d-84fd42ec6e87"/>
+				<textFieldExpression><![CDATA[$F{dt_fecha_titulo_prop}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="198" width="34" height="14" uuid="8d1c21d8-7b5f-4cdf-b54a-7cb0a79b4ad8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="MMMM d, yyyy" isBlankWhenNull="true">
+				<reportElement x="369" y="212" width="100" height="14" uuid="de54b683-5084-4074-bb03-450286cd0a41"/>
+				<textFieldExpression><![CDATA[$F{dt_fecha_registro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="212" width="86" height="14" uuid="96c4fdfb-e2a3-4673-a4ff-14af801b2bfd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Fecha de registro:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00# m2" isBlankWhenNull="true">
+				<reportElement x="353" y="226" width="70" height="14" uuid="bd8df67f-d8d0-4bcd-917c-25f66fb52501"/>
+				<textFieldExpression><![CDATA[$F{db_area_escritura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="226" width="70" height="14" uuid="e8874820-a8cc-48d4-8c7e-405df4093325">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Área escritura:]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="462" y="226" width="80" height="14" uuid="17dbe3c3-4452-47ea-acc6-35aad6ea1165">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{db_avaluo_prop}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="427" y="226" width="38" height="14" uuid="0b4c335f-5882-4b03-a1d5-d57976fe1912">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Avalúo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="351" y="254" width="192" height="14" uuid="1e25b809-2698-473f-9410-93ea212dd7e1"/>
+				<textFieldExpression><![CDATA[$F{chv_prop_anterior}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="254" width="66" height="14" uuid="a148595e-38be-43a4-a928-3a492556b9f1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Prop. anterior:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="92" y="254" width="186" height="14" uuid="65c5a456-31fc-48b3-8266-7d64dc551d0a"/>
+				<textFieldExpression><![CDATA[$F{chv_celular}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="254" width="80" height="14" uuid="307bfd9f-4f8c-4527-9488-5cacec576563">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Teléfono/Celular:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="339" y="240" width="203" height="14" uuid="bd762686-2e76-4bc3-bb7d-2a7e463b9def"/>
+				<textFieldExpression><![CDATA[$F{chv_forma_adq}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="240" width="54" height="14" uuid="d1b59e5d-c8fd-4c24-91b1-ed32f253108d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Forma adq:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="68" width="156" height="14" uuid="b2f99854-899a-4c8b-9f99-bbf29e2fae61">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_condicion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="68" width="96" height="14" uuid="a38fc94a-9cfe-40b4-b434-294e39b30daa">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Condición del predio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="285" width="264" height="13" uuid="9ef332ca-11e3-4a0d-8098-1b8fb28b086d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXCENCIONES ESPECIALES]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="124" y="300" width="114" height="14" uuid="cf394183-4d45-49e1-9f1a-31c96180c0e7"/>
+				<textFieldExpression><![CDATA[$F{chv_excencion_esp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="300" width="112" height="14" uuid="bbdf8815-8c75-4552-8bdc-eda10da3a027">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Excenciones especiales:]]></text>
+			</staticText>
+			<textField pattern="#,##0.##%" isBlankWhenNull="true">
+				<reportElement x="338" y="300" width="100" height="14" uuid="e4935472-4c04-490e-88d9-f0a2960fa873"/>
+				<textFieldExpression><![CDATA[$F{db_porcent_excep}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="286" y="300" width="52" height="14" uuid="2b2aa0bf-d03e-412f-aa0b-a530a682415a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Porcentaje:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="335" width="111" height="13" uuid="414587de-c528-41e7-bc34-5d48a62d59f0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[USO DEL SUELO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="366" width="103" height="28" uuid="262fc7ca-afe2-4cf7-8eb0-5837289eb23d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{chv_gest_uso_suelo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="352" width="74" height="14" uuid="3fccf85f-5558-4809-8c5e-ea1f0261e591">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Gestión:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="113" y="367" width="98" height="28" uuid="d84e1909-190c-4509-9200-c0bd0104202a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_uso_suelo_consumo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="113" y="353" width="48" height="14" uuid="61edd1ca-b212-47d2-ae85-7a6a597a425e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Consumo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="219" y="367" width="99" height="29" uuid="60fdde68-1a6d-46a3-83fa-461f29cc9ddf">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_us_suel_intercambio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="219" y="353" width="62" height="14" uuid="004c85f6-1939-46e9-9499-575cd9aadf2e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Intercambio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="326" y="366" width="101" height="29" uuid="4fbaa2e5-ec6b-42d4-aed9-e5917c71ed98">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_us_suel_produc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="326" y="352" width="60" height="14" uuid="a757b13f-bf78-41a6-ad69-63e16ce92a42">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Producción:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="433" y="367" width="99" height="28" uuid="d8f5b9bf-3b64-4024-a482-68c2ac28dff4">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_ocupacion_predio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="433" y="353" width="56" height="14" uuid="a4af62d1-38c7-48bc-91f8-cbff6862d082">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Ocupación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="415" width="125" height="14" uuid="a56555ae-6e76-44a7-bc44-3d0d33ab0402">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_localizacion_predio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="401" width="69" height="14" uuid="57d27fe1-aa2a-46ae-9480-cb5120530bbd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Localización:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="140" y="415" width="125" height="14" uuid="48f5669d-6656-4267-b04b-1c3f73276c9b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_topografia_pedio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="401" width="100" height="14" uuid="a6c3c488-29e4-477e-bf14-94e5ff0cf4bd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Topografía:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="273" y="415" width="125" height="14" uuid="80d2ce6c-3f57-4c81-ae62-dac446c32154">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_forma_predio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="273" y="401" width="100" height="14" uuid="87971eb2-f24e-41ad-9334-f30245cf2f4a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Forma del predio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="408" y="415" width="125" height="14" uuid="022365a0-013d-4c2e-b936-c48eec8f912b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_caract_suelo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="408" y="401" width="125" height="14" uuid="b3f6f24d-1d1c-4dfd-84a3-f8aabdfca448">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Caract. del suelo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="454" width="264" height="13" uuid="b88d7d6d-2451-4217-a680-b89d4c513a7a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VÍAS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="68" y="471" width="196" height="14" uuid="63f80279-5832-45c8-a1b5-54c0ad509ff4"/>
+				<textFieldExpression><![CDATA[$F{chv_uso_vias}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="471" width="62" height="14" uuid="84e67e90-10b4-4320-97ce-67f8ddb69d3d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Uso de vías:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="339" y="471" width="150" height="14" uuid="7e2527e5-1afe-4cad-91e7-e980e131fd00"/>
+				<textFieldExpression><![CDATA[$F{chv_material_vias}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="471" width="60" height="14" uuid="884f7afd-200f-469c-b15c-136c83e58043">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Material víal:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="504" width="264" height="13" uuid="ce57ac48-d83e-4098-add8-d624c932d418"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFRAESTRUCTURA Y SERVICIOS]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="12" y="535" width="124" height="28" uuid="94b544c7-e004-4d2f-aee1-095b9c5d258f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_red_agua}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="521" width="100" height="14" uuid="9e16c283-06f8-4e4a-b2b6-8194a476a6b1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Red de agua potable:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="148" y="535" width="122" height="27" uuid="9f0e5d24-6d6f-4f75-806d-4df9629a8b0e"/>
+				<textFieldExpression><![CDATA[$F{chv_alcantarillado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="148" y="521" width="100" height="14" uuid="0a0bdb1d-4d49-4274-9934-ef64e5c9f3a7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Alcantarillado]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="281" y="536" width="123" height="26" uuid="27ef39f2-fadf-453c-ba06-2817d1040dda"/>
+				<textFieldExpression><![CDATA[$F{chv_energ_electric}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="281" y="521" width="100" height="14" uuid="38cc6bde-cd26-448f-975e-0bdf339a6ee2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Energía eléctrica:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="415" y="535" width="127" height="26" uuid="3245628c-d808-4b67-ade6-0124fa75d5ff"/>
+				<textFieldExpression><![CDATA[$F{chv_otros_servicios}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="416" y="521" width="100" height="14" uuid="e3c4e425-3e7d-47c5-af8f-c69f392b85ff">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Otros servicios:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="9" y="567" width="134" height="48" uuid="ab2bfab4-9a6a-47d9-89ee-51c5051cbe17">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="143" y="567" width="134" height="48" uuid="a176dc18-65c8-431b-96e7-183829de26e2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="277" y="567" width="134" height="48" uuid="3caaaced-85b3-4856-afa7-b814b7576e98">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="13" y="585" width="127" height="28" uuid="f02f944d-59f4-454d-8d99-e7f3cc732840">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_red_telefon}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="569" width="100" height="14" uuid="d0a0bc2e-1386-4c09-9e6f-3534dd79bf31">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Red telefónica:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="148" y="570" width="100" height="14" uuid="ba46a571-9945-4da2-b3f6-a4983ca13b86">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Rec. basura:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="147" y="584" width="126" height="28" uuid="e33c768c-c305-48a7-8554-f958175a2fce">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_rec_basura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="584" width="121" height="28" uuid="59b30151-a6f7-48a7-982e-69dc3685fd56">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_transp_publico}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="411" y="567" width="133" height="48" uuid="5dfadd22-29d2-4046-9ca0-0b900d457d03">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="283" y="570" width="100" height="14" uuid="32551bca-c28e-4db2-bbfa-d11ae2d79d33">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Transp. público:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="585" width="122" height="28" uuid="9b0135fe-f95f-4f4a-99d0-17da9d9baf8a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_internet}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="416" y="570" width="100" height="14" uuid="f631eac2-f11f-4367-acef-058a31570a53">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Internet]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="23" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:gis="http://gisfaces.com">
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>#{AtributosVistas.titulo}</title>
+        <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/swipe.js" library="ultima-layout" />             
+        <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+    </h:head >
+    <h:body styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}" style="background-color: #fff;" onload="nobackbutton();">
+        <h:form>
+            <p:messages id="messages" showDetail="true"/>  
+            <p:growl id="growl" autoUpdate="true" showDetail="true"/>
+
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="75">
+                    <center>                                           
+                            <p:graphicImage name="/logos_2015/logo_gad_horizontal.png" width="10%" library="resources" />                                                    
+                           <!-- <p:panelGrid columns="9" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Zona:"/>
+                                <p:inputText value="#{ctrlGis.numZona}" style="width: 25%"/>
+                                <p:outputLabel  value="Sector:"/>
+                                <p:inputText value="#{ctrlGis.numSector}" style="width: 25%"/>
+                                <p:outputLabel value="Manzana:"/>
+                                <p:inputText value="#{ctrlGis.numManzana}" style="width: 25%"/>
+                                <p:outputLabel value="Predio:"/>
+                                <p:inputText value="#{ctrlGis.numPredio}" style="width: 25%"/>
+                                <p:commandButton value="Buscar"
+                                                 icon="ui-icon-search"/>
+                            </p:panelGrid>   -->                     
+                    </center>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="30" gutter="1">  
+                    <b>Mapas base:</b>
+                    <p:selectOneMenu id="menu1" value="#{ctrlGis.background}">
+                        <f:selectItems value="#{ctrlGis.backgrounds}"></f:selectItems>
+                        <f:ajax render="mymap"></f:ajax>
+                    </p:selectOneMenu>                    
+                </p:layoutUnit>
+
+                <!--
+                <p:layoutUnit position="east" size="200" resizable="true">  
+                    
+                </p:layoutUnit>  
+                -->
+
+                <p:layoutUnit position="west" size="250" resizable="true" collapsible="true">                   
+                    <p:panel header="Leyenda" toggleable="true" toggleSpeed="0" styleClass="containerPanel">
+                        <p:scrollPanel styleClass="gisfacesLegendPanel" mode="native">
+                            <h:panelGroup id="legend" layout="block"></h:panelGroup>
+                        </p:scrollPanel>
+                    </p:panel>
+
+                    <p:panel header="Miniatura" toggleable="true" toggleSpeed="0" styleClass="containerPanel">
+                        <h:panelGroup styleClass="gisfacesOverviewPanel" layout="block">
+                            <h:panelGroup id="overview" layout="block"></h:panelGroup>
+                        </h:panelGroup>
+                    </p:panel>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" gutter="1" >
+                    <h:panelGroup id="mymapdiv" layout="block" styleClass="gisfacesMapPanel">
+                        <h:panelGroup id="navbar" layout="block" styleClass="gisfacesNavbarPanel"></h:panelGroup>
+                        <h:panelGroup id="loading" layout="block" styleClass="gisfacesLoadingPanel">
+                            <h:panelGroup styleClass="fa fa-refresh fa-spin"></h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="gisfacesGeocoderPanel" layout="block">
+                            <h:panelGroup id="geocoder" layout="block"></h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup id="coordinates" layout="block" styleClass="gisfacesCoordinatesPanel"></h:panelGroup>
+                    </h:panelGroup>
+                </p:layoutUnit>
+            </p:layout>
+
+            <gis:map id="mymap" mapPanel="mymapdiv" 
+                     background="#{ctrlGis.background}" 
+                     latitude="#{ctrlGis.latitude}" 
+                     longitude="#{ctrlGis.longitude}" 
+                     zoom="#{ctrlGis.zoom}" 
+                     overviewPanel="overview" 
+                     geocoderPanel="geocoder" 
+                     legendPanel="legend" 
+                     coordinatesPanel="coordinates" 
+                     loadingPanel="loading" 
+                     navigationPanel="navbar">
+                <gis:service id="zonas" type="graphics" model="#{ctrlGis.graphicsModel}" visible="#{ctrlGis.zonas}"  opacity="1.0"></gis:service>
+                <gis:service id="predios" type="graphics" model="#{ctrlGis.modelPredios}" visible="#{ctrlGis.predios}" opacity="1.0"></gis:service>
+                <gis:service id="radar" type="dynamic" 
+                             url="https://nowcoast.noaa.gov/arcgis/rest/services/nowcoast/radar_meteo_imagery_nexrad_time/MapServer" 
+                             visible="#{ctrlGis.radar}" 
+                             opacity="#{ctrlGis.opacity}"></gis:service>  
+                <gis:service type="dynamic" url="http://maps.bts.dot.gov/services/rest/services/NTAD/Congressional_Districts_114/MapServer"
+                             opacity="0.5"></gis:service>
+                <gis:service type="dynamic" url="http://maps.bts.dot.gov/services/rest/services/NTAD/CoreBasedStatisticalAreas/MapServer"
+                             opacity="0.5"></gis:service>
+                <gis:service type="dynamic" url="http://maps.bts.dot.gov/services/rest/services/NTAD/Border_Crossings/MapServer"></gis:service>                             
+                <f:ajax event="click" listener="#{ctrlGis.doMapClickListener}" render="growl"/>
+                <f:ajax event="extent" listener="#{ctrlGis.doMapExtentListener}" render="growl"/>
+                <f:ajax event="view" listener="#{ctrlGis.doMapGraphicViewListener}" render="growl"/>
+                <f:ajax event="select" listener="#{ctrlGis.doMapGraphicSelectListener}" render="growl"/>
+                <f:ajax event="geolocation" listener="#{ctrlGis.doMapGeoLocationListener}" render="growl"/>
+            </gis:map>
+
+        </h:form>
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />        
+        <h:outputStylesheet name="css/layout-yelou.css" library="ultima-layout" />    
+        <h:outputStylesheet name="css/layout-blue.css" library="ultima-layout" />  
+    </h:body>
+</html>
+

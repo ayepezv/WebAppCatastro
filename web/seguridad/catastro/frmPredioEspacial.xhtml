@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgPredioEspacial" widgetVar="dlgPredioEspacial" closable="true" modal="true" resizable="true" 
+              header="Buscar Predio" showEffect="size" hideEffect="size" width="50%">   
+        <h:form id="frmPredioEspacial">
+            <center>
+                <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Criterio búsqueda:"/>
+                    <p:inputText value="#{registrarPredioCtrl.txtClaveCatastral}"/>
+                    <p:commandButton value="Buscar" icon="ui-icon-search"
+                                     action="#{registrarPredioCtrl.buscarPredioGis()}"
+                                     update="tblPrediosGis"/>                                     
+                </p:panelGrid>
+            </center>
+            <p:separator/>
+            <p:dataTable id="tblPrediosGis" var="predioGis" value="#{registrarPredioCtrl.lstPrediosGis}" rows="4"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="4,8,12,16" reflow="true" rowKey="#{predioGis.gid}"
+                         selection="#{registrarPredioCtrl.objPredioGis}" selectionMode="single">
+                <p:column headerText="Clave Catastral" width="5%">
+                    <h:outputText value="#{predioGis.claveCatastral}"/>
+                </p:column>
+                <p:column headerText="Propietario" width="10%">
+                    <h:outputLabel value="#{predioGis.propietario}"/>
+                </p:column>
+                <p:column headerText="Seleccionar" width="5%">
+                    <p:commandButton icon="ui-icon-check"
+                                     action="#{registrarPredioCtrl.combinarPredios()}"
+                                     update="frmPrincipal:otxtGisPredio,
+                                     frmPrincipal:otxtParroquia,
+                                     frmPrincipal:otxtZona,
+                                     frmPrincipal:otxtSector,
+                                     frmPrincipal:otxtManzana,
+                                     frmPrincipal:otxtPredio,
+                                     frmPrincipal:otxtBloque,
+                                     frmPrincipal:otxtPiso,
+                                     frmPrincipal:otxtUnidad,
+                                     frmInsertar">
+                        <f:setPropertyActionListener value="#{predioGis}" target="#{registrarPredioCtrl.objPredioGis}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>            
+        </h:form>
+    </p:dialog>
+</ui:composition>

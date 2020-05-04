@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:body>
+        <ui:composition template="../WEB-INF/templates/interna/template.xhtml">                         
+            <ui:define name="title">Menú Coeficientes</ui:define>
+            <ui:define name="content">
+                <c:choose>
+                    <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                        <div class="menu-alertas">
+
+                            <div class="opcion-alertas">                                                                            
+                                <a href="#" onclick="PF('wgOcupTerreno').show();">
+                                    <span class="alertas-icono">g</span>
+                                    <div >
+                                        <h2 class="titulo">Descripción del Terreno</h2>
+                                        <!--<h3 class="subtitulo">Descripción del Terreno</h3>-->
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!--<div class="opcion-alertas">                                                                            
+                                <a href="#" onclick="PF('wgUsoSuelo').show();">
+                                    <span class="alertas-icono">%</span>
+                                    <div >
+                                        <h2 class="titulo">Uso del suelo</h2>
+                                        <h3 class="subtitulo">Imágenes pediales</h3>
+                                    </div>
+                                </a>
+                            </div> -->
+
+                            <div class="opcion-alertas">                                                                            
+                                <a href="#" onclick="PF('wgInfrestructura').show();">
+                                    <span class="alertas-icono">$</span>
+                                    <div >
+                                        <h2 class="titulo">Infraestructura y Servicios</h2>
+                                        <!--<h3 class="subtitulo">Imágenes pediales</h3>-->
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="opcion-alertas">                                                                            
+                                <a href="#" onclick="PF('wgEstrucEdificacion').show();">
+                                    <span class="alertas-icono">q</span>
+                                    <div >
+                                        <h2 class="titulo">Estructura de la edificación</h2>
+                                        <!--<h3 class="subtitulo">Material de construcción y Vida Útil</h3>-->
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="opcion-alertas">                                                                            
+                                <a href="#" onclick="PF('wgAcabEdificacion').show();">
+                                    <span class="alertas-icono">j</span>
+                                    <div >
+                                        <h2 class="titulo">Acabados Interiores de la edificación</h2>
+                                        <h3 class="subtitulo">Acabados de construcción</h3>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                            <div class="opcion-alertas">                                                                            
+                                <a href="#" onclick="PF('wgAcabExter').show();">
+                                    <span class="alertas-icono">z</span>
+                                    <div >
+                                        <h2 class="titulo">Acabados Exteriores de la edificación</h2>
+                                        <h3 class="subtitulo">Acabados de construcción</h3>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </c:when>
+                </c:choose>
+
+                <c:choose>
+                    <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                        <center>
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <div class="card"> 
+                                        <h1>Permisos Insuficientes</h1>
+                                        <b>Consulte con el administrador</b>
+                                    </div>                        
+                                </div>                        
+                            </div>  
+                        </center>
+                    </c:when>
+                </c:choose>
+
+                <ui:include src="vCoeficientesUsoSuelo.xhtml"/>
+                <ui:include src="vCoefOcupacionTerreno.xhtml"/>
+                <ui:include src="vInfraestructuraServicios.xhtml"/>
+                <ui:include src="vEstructuraEdificaciones.xhtml"/>
+                <ui:include src="vAcabadosEdificacion.xhtml"/>
+                <ui:include src="vAcabadosExteriores.xhtml"/>
+                <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+                <h:outputStylesheet name="css/layout-yelou.css" library="ultima-layout" />
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgUsoSuelo" widgetVar="dlgUsoSuelo" closable="true" modal="true" resizable="false" 
+              header="Valores Técnicos" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmUsoSuelo">
+            <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                <p:panel>
+                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Superificie predio:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objLiquidacion.predio.areaTotalTerreno}"/>
+                        <p:outputLabel value="Superificie gráfica:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.areaMapInfo}"/>
+                        <p:outputLabel value="Alicuotas:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.sumaAlicuota}"/>
+                        <p:outputLabel value="Frente"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.frente1}"/>
+                        <p:outputLabel value="Fondo"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.fondoRelativo}"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel>
+                    <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Fact Frente/Fondo:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.frenteFondo}" size="4"/> <b>*(0.15)</b>  
+                        <p:outputLabel value="Fact. Localización:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factLocalizacion}"  size="4"/> <b>*(0.20)</b> 
+                        <p:outputLabel value="Fact. Topografía"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factTopografia}" size="4"/> <b>*(0.15)</b> 
+                        <p:outputLabel value="Fact. Constructivo:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factconstruccion}" size="4"/> <b>*(0.50)</b>                                                                        
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Fact. Mat-Vial:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factMatVial}" size="4"/>  
+                        <p:outputLabel value="Fact. Red agua pot.:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factAguaPot}" size="4"/>  
+                        <p:outputLabel value="Fact. Red Energ Electr:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factEnergElect}" size="4"/>
+                        <p:outputLabel value="Fact. Alcantarillado:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factAlcant}" size="4"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel>
+                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Fact. Aceras:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factAceras}" size="4"/>  
+                        <p:outputLabel value="Fact. Bordillos:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.factBordillos}" size="4"/> 
+                        <p:outputLabel value="Valor del metro:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.valorMetro}" size="4"/> 
+
+                    </p:panelGrid>
+                    <b>VSU=Val_Metro*fac_Cons*Sum_fact</b>
+                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Suma Factores:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.total2}" size="4"/>
+
+                        <p:outputLabel value="Valor predio:"/>
+                        <h:inputText disabled="true" value="#{liquidacionCtrl.objUsoSuelo.total1}" size="4"/>
+                    </p:panelGrid>
+                </p:panel>
+            </p:panelGrid> 
+
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <div class="ui-g">
+                    <h:form id="frmBuscarTitulos">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                           
+                        <p:growl autoUpdate="true"/>                                
+                        <div class="ui-g">
+                            <center>
+                                <h3>Titulos Cobrados entre Fechas</h3>
+                            </center>                            
+                            <div class="ui-g-12">
+                                <div class="card">
+                                    <center>                                  
+                                        <p:panelGrid columns="5"  styleClass="ui-panelgrid-blank form-group">
+                                            <h:outputText value="Fecha inicio:"/>
+                                            <p:calendar id="fechaInicio" value="#{ctrlTitulosPagados.fechaIniWS}" showOn="button" 
+                                                        required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <h:outputText value="Fecha fin"/>
+                                            <p:calendar id="fechaFin" value="#{ctrlTitulosPagados.fechaFinWS}" showOn="button" 
+                                                        required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <p:commandButton value="Generar reporte" icon="ui-icon-assessment"
+                                                             title="Generar reporte"
+                                                             action="#{ctrlTitulosPagados.obtenerTitulosPagados()}"
+                                                             update="tblTitulos"/>
+                                        </p:panelGrid>
+                                    </center>
+                                </div>
+                            </div>
+                        </div> 
+
+
+
+                        <div class="ui-g-12">
+                            <center><h3>Titulos Pagados entre Fechas</h3></center>
+                            <p:dataTable id="tblTitulos" var="titulo" value="#{ctrlTitulosPagados.lstTitulosPagadosWS}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,25,30,35,40" reflow="true"
+                                         rowKey="#{titulo.id}" selectionMode="single" >
+
+                                <p:column headerText="Clave Catastral" width="10%" style="text-align: center"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{titulo.claveCatastral}"/>
+                                </p:column>
+                                    <p:column headerText="Propietario" width="7%" style="text-align: center">
+                                        <h:outputText value="#{titulo.propietario}"/>
+                                    </p:column>
+                                    <p:column headerText="Direccion" width="10%" style="text-align: center" >
+                                        <h:outputText value="#{titulo.direccion}"/>
+                                    </p:column>
+                                    <p:column headerText="Numero de Titulo" width="8%" style="text-align: center">
+                                        <h:outputText value="#{titulo.numeroTitulo}"/>
+                                    </p:column>
+                                    <p:column headerText="Valor Predial" width="10%" style="text-align: center">
+                                        <h:outputText value="#{titulo.valorPredial}"/>
+                                    </p:column>
+                                    <p:column headerText="Valor Bomberos" width="10%">
+                                        <h:outputText value="#{titulo.valorBomberos}"/>
+                                    </p:column>
+                                    <p:column headerText="Valo Descuento" width="8%" style="text-align: center">
+                                        <h:outputText value="#{titulo.valorDescuento}"/>
+                                    </p:column>                                
+                                    <p:column headerText="Valor Emision" width="8%" style="text-align: center">
+                                        <h:outputText value="#{titulo.valorEmision}"/>
+                                    </p:column>                                                               
+                                    <p:column headerText="Valor Recargo" width="8%" style="text-align: center">
+                                        <h:outputText value="#{titulo.valorRecargo}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha Pago" width="8%" style="text-align: center">
+                                        <h:outputText value="#{titulo.fechaPago}"/>
+                                    </p:column>
+
+
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">                                            
+                                                <p:commandButton id="btnReporte" value="Reporte" icon="ui-icon-local-printshop"
+                                                                 action="#{ctBuscarPredios.reportePredioPorFechas()}"
+                                                         ajax="false" onclick="this.form.target = '_blank'"/>
+                                            </c:when>
+                                        </c:choose>
+                                        <h:commandLink title="Exportar a Excel">
+                                            <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                            <p:dataExporter type="xls" target="tblTitulos" fileName="TitulosCobrados" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a PDF">                                        
+                                            <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                            <p:dataExporter type="pdf" target="tblTitulos" fileName="TitulosCobrados" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a CSV">
+                                            <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                            <p:dataExporter type="xls" target="tblTitulos" fileName="TitulosCobrados" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a XML">
+                                            <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                            <p:dataExporter type="xml" target="tblTitulos" fileName="TitulosCobrados" pageOnly="false" />
+                                        </h:commandLink>
+                                    </f:facet>
+                            </p:dataTable>
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                </div>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>  
+    </ui:define>
+</ui:composition>

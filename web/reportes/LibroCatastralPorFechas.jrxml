@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="1190" pageHeight="842" orientation="Landscape" columnWidth="1150" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0ca4582-eb23-4cd7-a1f6-e552cdc3ff2b">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="fecha_ini" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_fin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_user_log" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * 
+from catastro.f_consultar_predios_entre_fechas_registrado($P{fecha_ini}, $P{fecha_fin}),
+   catastro.f_obtener_usuario_persona_dado_codigo($P{id_user_log})]]>
+	</queryString>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="int_zona" class="java.lang.Integer"/>
+	<field name="int_sector" class="java.lang.Integer"/>
+	<field name="int_manzana" class="java.lang.Integer"/>
+	<field name="int_num_predio" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="chv_barrio" class="java.lang.String"/>
+	<field name="chv_calle_princ" class="java.lang.String"/>
+	<field name="chv_calle_secund" class="java.lang.String"/>
+	<field name="chv_num_casa" class="java.lang.String"/>
+	<field name="int_id_titular_dom" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="chv_cedula" class="java.lang.String"/>
+	<field name="chv_ruc" class="java.lang.String"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="int_id_usuario" class="java.lang.Integer"/>
+	<field name="sr_id_persona" class="java.lang.Integer"/>
+	<field name="chv_nick" class="java.lang.String"/>
+	<field name="chv_mail" class="java.lang.String"/>
+	<field name="chv_password" class="java.lang.String"/>
+	<field name="chv_nombres" class="java.lang.String"/>
+	<field name="chv_apellidos" class="java.lang.String"/>
+	<field name="chv_celular" class="java.lang.String"/>
+	<field name="chv_foto" class="java.lang.String"/>
+	<field name="ch_sexo" class="java.lang.String"/>
+	<field name="ts_fecha_nacimiento" class="java.sql.Timestamp"/>
+	<field name="ch_estado_civil" class="java.lang.String"/>
+	<field name="chv_direccion_domiciliaria" class="java.lang.String"/>
+	<field name="ts_ultimo_acceso" class="java.sql.Timestamp"/>
+	<field name="chv_ultima_ip" class="java.lang.String"/>
+	<field name="estado_logico_us" class="java.lang.String"/>
+	<field name="fecha_registro_us" class="java.sql.Timestamp"/>
+	<field name="fecha_actualizacion_us" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja_us" class="java.sql.Timestamp"/>
+	<field name="estado_logico_per" class="java.lang.String"/>
+	<field name="fecha_registro_per" class="java.sql.Timestamp"/>
+	<field name="fecha_actualizacion_per" class="java.sql.Timestamp"/>
+	<field name="fecha_baja_per" class="java.sql.Timestamp"/>
+	<field name="nick" class="java.lang.String"/>
+	<title>
+		<band height="102" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="3" width="1146" height="18" uuid="ae6fd09e-cee5-480e-9edc-52838805c969"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN ARCHIDONA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="20" width="1148" height="20" uuid="6881a775-02a0-4d28-9420-09a12f5dc26d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN DE AVALÚOS Y CATASTROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="42" width="1146" height="20" uuid="61ea586b-052c-4488-ad02-401b27c42012"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[LIBRO CATASTRAL DE PREDIOS URBANOS POR FECHAS DE REGISTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="359" y="63" width="100" height="20" uuid="e7084c67-7e0c-4779-86ef-3da1a3c12986"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicial:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="464" y="63" width="100" height="20" uuid="6577656c-f490-407a-b8c5-521167046cdb"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha_ini}.toString()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="99" width="1146" height="1" uuid="a5502f84-897b-4238-bc14-5bef649c45b8"/>
+			</line>
+			<staticText>
+				<reportElement x="564" y="64" width="100" height="20" uuid="27ee1220-5884-4793-b75b-eaa1d68d13d0"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Final:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="666" y="63" width="100" height="20" uuid="552b3734-2c76-435b-b1e6-dcecc6917d89"/>
+				<textElement>
+					<font pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha_fin}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="30" height="18" forecolor="#000000" uuid="9707b47b-3dec-480e-b97e-b5487fd5bd64"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="30" y="0" width="88" height="18" forecolor="#000000" uuid="55c30368-585f-4010-a55b-987a586410fe"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Clave Catastral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="118" y="0" width="193" height="18" forecolor="#000000" uuid="ae74dbee-8801-4417-82da-903ac95b2cd7"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Propietario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="311" y="0" width="70" height="18" forecolor="#000000" uuid="145a467b-5c84-4904-8318-51e25fe419f1"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cédula/RUC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="381" y="0" width="344" height="18" forecolor="#000000" uuid="2d2a767e-9011-464f-a99d-b9de0a8a09c9"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Dirección]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="725" y="0" width="97" height="18" forecolor="#000000" uuid="f485364a-d5db-41b4-bc77-debcc71c111b"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Barrio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="824" y="0" width="60" height="18" forecolor="#000000" uuid="26c7d1e4-d892-45a2-ab9a-f7f6abb56669"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Zona]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="886" y="0" width="60" height="18" forecolor="#000000" uuid="a68d0649-2567-4aa0-99a2-4b012139331a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sector]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="946" y="0" width="56" height="18" forecolor="#000000" uuid="b610875d-6e2c-4872-81bd-73b8d0f8a163"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Manzana]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="1003" y="0" width="134" height="18" forecolor="#000000" uuid="c8c3f76e-2364-4623-9b1b-953e46353e57"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Registro]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="1150" height="18" uuid="4dd7238d-7fb3-4799-a462-c558c40de8d8"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="30" height="18" uuid="c3e9a233-e6be-4dfa-becd-f7f1e41ac780"/>
+					<textElement>
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{int_id_predio}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="30" y="0" width="88" height="18" uuid="58bcb4c9-0e44-4a2e-b7a9-4fb343434012"/>
+					<textElement>
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_clave_catastral}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="118" y="0" width="193" height="18" uuid="12bb7ab1-caf2-4523-a430-c619ad380046"/>
+					<textElement>
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="311" y="0" width="70" height="18" uuid="e7787f56-cf8b-457a-b76f-9c01a43257a8"/>
+					<textElement>
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_ruc}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="381" y="0" width="344" height="18" uuid="6bdc5152-9a9c-4c15-8eef-9217c5cc5484"/>
+					<textElement>
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_calle_princ} +" y " + $F{chv_calle_secund}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="725" y="0" width="97" height="18" uuid="d9bff343-65e8-436c-921c-b63316e9e864"/>
+					<textElement>
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_barrio}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="824" y="0" width="60" height="18" uuid="fcf76f7c-3fba-4721-90c2-e3fe959f6a7a"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{int_zona}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="886" y="0" width="60" height="18" uuid="044f8530-8318-45a0-9ea4-355ae04cde66"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{int_sector}.toString()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="946" y="0" width="56" height="18" uuid="695aeb50-039a-4f06-bf34-e262f3425f98"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{int_manzana}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="1003" y="0" width="134" height="18" uuid="95484794-ef36-4ff8-bbe4-489e8f6a06e7"/>
+				<textElement>
+					<font fontName="Arial" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ts_fecha_registro}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="1150" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="61a91d95-7760-4759-b194-978b2a7662fe"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="1108" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="aa3c54a3-d006-4126-aa2a-9c6552d2b538"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="1028" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="347f024f-7dd0-484e-94e5-ff4ac9666d59"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pág "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="102" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="97cd8e2b-c47c-4e4a-8392-5565669a5e43"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="3" width="100" height="20" forecolor="#FFFFFF" uuid="b3a526a8-d4b1-41ee-8f92-a2e914431d9f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Fecha impresión:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="476" y="2" width="100" height="20" forecolor="#FFFFFF" uuid="25993c35-d809-4b89-bd45-57eab80c88c8"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Impreso por:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="580" y="2" width="100" height="20" forecolor="#FFFFFF" uuid="46727c41-d5ab-4ee5-bbdf-d5572377c276"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nick}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="83">
+			<rectangle>
+				<reportElement x="266" y="7" width="871" height="54" uuid="b9ca47ce-2068-4d73-a1cf-debca0fd03a8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="281" y="24" width="100" height="20" uuid="8e88fb74-5e74-4752-bf1b-3bf541f96b2a"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

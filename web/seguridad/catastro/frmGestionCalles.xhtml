@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <p:growl autoUpdate="true" showDetail="true"/>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />          
+                <h:form id="frmPrincipal">
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">                                  
+                                <p:dataTable id="tblCalles" var="calle" value="#{ctCalles.lstCalles}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="15,20,25,30,35" reflow="true" rowKey="#{calle.idCalle}"
+                                             editable="true" selection="#{ctCalles.calleSel}" selectionMode="single">
+                                    <f:facet name="header">
+                                        <b>Gestión de calles</b>
+                                    </f:facet>
+                                    <p:column filterBy="#{calle.nombre}"  headerText="Calle" width="15%" style="text-align: center"
+                                              filterMatchMode="contains">
+                                        <h:outputText value="#{calle.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de registro" width="10%" style="text-align: center">
+                                        <h:outputText value="#{calle.fechaRegistro}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de actualización" width="10%" style="text-align: center">
+                                        <h:outputText value="#{calle.fechaActualizacion}"/>
+                                    </p:column>
+                                    <p:column headerText="Usuario del Sistema" width="10%" style="text-align: center">
+                                        <h:outputText value="#{calle.sessionUsuario.nombres} #{calle.sessionUsuario.apellidos}"/>
+                                    </p:column>
+
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-pencil"
+                                                                 title="Editar"
+                                                                 onclick="PF('dlgEditarCalle').show()"
+                                                                 update="frmEditarCalle">
+                                                    <f:setPropertyActionListener value="#{calle}" target="#{ctCalles.calleSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-delete-forever"
+                                                                 title="Eliminar"
+                                                                 onclick="PF('dlgEliminarCalle').show()"
+                                                                 update="frmEliminarCalle">
+                                                    <f:setPropertyActionListener value="#{calle}" target="#{ctCalles.calleSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Nueva"
+                                                    icon="ui-icon-add-box"
+                                                                 title="Nueva"
+                                                                 onclick="PF('dlgNuevaCalle').show();"/>
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>
+                            </div>                        
+                        </div>                        
+                    </div> 
+                </h:form> 
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <ui:include src="dlgNuevaCalle.xhtml"/>
+        <ui:include src="dlgActualizarCalles.xhtml"/>
+        <ui:include src="dlgEliminarCalles.xhtml"/>
+    </ui:define>
+</ui:composition>

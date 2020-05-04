@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgBuscarPredioGis" widgetVar="dlgBuscarPredioGis" closable="true" modal="true" resizable="true" 
+              header="Buscar Predio" showEffect="size" hideEffect="size" width="65%">
+        <h:form id="frmBuscarPredioGis">
+            <center>
+                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Clave catastral:"/>
+                    <p:inputText value="#{registrarPredioCtrl.txtClaveCatastral}"/>
+                    <p:commandButton value="Buscar" icon="ui-btn ui-corner-all ui-icon-search ui-btn-icon-notext"
+                                     action="#{registrarPredioCtrl.buscarPredioGis()}"
+                                     update="tblPrediosGis" />
+                </p:panelGrid> 
+            </center>          
+            <p:separator/>
+            <p:dataTable id="tblPrediosGis" var="predioGis" value="#{registrarPredioCtrl.lstPrediosGis}" rows="4"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="4,8,12,16" reflow="true" rowKey="#{predioGis.gid}"
+                         selection="#{registrarPredioCtrl.objPredioGis}" selectionMode="single">
+
+                <p:column headerText="Clave Catastral" width="7%" style="text-align: center">
+                    <h:outputLabel value="#{predioGis.claveCatastral}"/>
+                </p:column>
+                <p:column headerText="Propietario" width="10%" style="text-align: center">
+                    <h:outputLabel value="#{predioGis.propietario}"/>
+                </p:column>
+                
+                <!--
+                <p:column headerText="Área" width="10%" style="text-align: center">
+                    <h:outputLabel value="#{predioGis.area}"/>
+                </p:column>
+                -->
+
+                <p:column headerText="Seleccionar" width="5%" style="text-align: center">
+                    <p:commandButton icon="ui-icon-done-all" 
+                                     action="#{registrarPredioCtrl.combinarPredios()}"
+                                     update="registrarPredio:otxtGisPredio">
+                        <f:setPropertyActionListener value="#{predioGis}" target="#{registrarPredioCtrl.objPredioGis}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>            
+        </h:form>
+    </p:dialog>
+</ui:composition>

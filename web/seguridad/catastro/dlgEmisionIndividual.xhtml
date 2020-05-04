@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+    <p:dialog id="dlgNuevaEmision" widgetVar="dlgNuevaEmision" closable="false" modal="true" resizable="true" 
+              header="Nueva Emisión" showEffect="size" hideEffect="size">
+        <h:form id="frmNuevaEmision">                     
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Clave Catastral:"/>
+                <p:outputLabel value="#{ctEmisionIndividual.objPredio.claveCatastral}"/>
+                <p:outputLabel value="Año:"/>
+                <p:inputText value="#{ctEmisionIndividual.anio}"/>
+                <p:commandButton value="Aceptar"
+                                 icon="ui-icon-save"
+                                 action="#{ctEmisionIndividual.emisionIndividual()}"
+                                 update="frmNuevaEmision, frmPrincipal:tblTitulos"/>
+                <p:commandButton value="Cancelar"
+                                 icon="ui-icon-close"
+                                 update="frmNuevaEmision"
+                                 onclick="PF('dlgNuevaEmision').hide()"/>
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+</ui:composition>

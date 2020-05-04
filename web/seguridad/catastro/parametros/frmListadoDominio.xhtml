@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <f:metadata>
+
+    </f:metadata>
+
+
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form  id="frmListaDominio">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:messages autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                                <p:dataTable id="tblListaDominio" value="#{ctrlDominio.lstDominio}"
+                                             var="coef" reflow="true" rows="10" paginator="true"
+                                             rowKey="#{coef.idDominio}"
+                                             selection="#{ctrlDominio.dominioSel}"
+                                             selectionMode="single"
+                                             >
+                                    <f:facet name="header">
+                                        <h:outputLabel value="Dominio"/>
+                                    </f:facet>
+                                    <p:column headerText="Dominio" width="10%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.dominio}"/>
+                                    </p:column>
+                                    <p:column headerText="Descripción" width="15%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.descripcion}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de registro" width="10%">
+                                        <h:outputLabel value="#{coef.fechaRegistro}"/>
+                                    </p:column>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="10%" style="text-align: center">
+
+                                                <p:commandButton value="Editar" icon="ui-icon-edit" 
+                                                                 onclick="PF('dlgEditarDominio').show()"
+                                                                 update="frmEditarDominio">
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlDominio.dominioSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="10%" style="text-align: center">
+                                                <p:commandButton value="Eliminar" icon="ui-icon-trash" 
+                                                                 onclick="PF('dlgEliminarDominio').show()"
+                                                                 update="frmEliminarDominio"
+                                                                 >
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlDominio.dominioSel}"/>   
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Nuevo"
+                                                                 icon="ui-icon-plus"
+                                                                 onclick="PF('dlgRegistrarDominio').show()"
+                                                                 update="frmRegistrarDominio"
+                                                                 />
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmRegistrarDominio.xhtml"/>
+        <ui:include src="frmEditarDominio.xhtml"/>    
+        <ui:include src="frmEliminarDominio.xhtml"/>      
+    </ui:define>
+
+</ui:composition>

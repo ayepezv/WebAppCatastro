@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgEditar" widgetVar="dlgEditar" closable="false" modal="true" resizable="true" 
+              header="Editar parámetro" showEffect="size" hideEffect="size">
+        <h:form id="frmEditar">            
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <h:outputLabel id="otxtCodigo" for="txtCodigo" value="Código:"/>
+                <p:inputText disabled="true" id="txtCodigo" value="#{ctParametrosAdmin.parametroSel.codigo}"
+                             required="true" requiredMessage="Campo obligatorio"
+                             placeholder="Ej. IVA_MENUSAL"/>
+
+                <h:outputLabel value="Descripción"/>
+                <p:inputText value="#{ctParametrosAdmin.parametroSel.descripcion}"
+                             required="true" requiredMessage="Campo obligatorio"
+                             placeholder="Ej. Valor del IVA"/>
+                
+                 <h:outputLabel value="Valor"/>
+                 <p:inputText value="#{ctParametrosAdmin.parametroSel.valor}"
+                             required="true" requiredMessage="Campo obligatorio"/>
+                 
+                 <h:outputLabel value="Valor en letras"/>
+                 <p:inputText value="#{ctParametrosAdmin.parametroSel.valorTextual}"
+                             required="true" requiredMessage="Campo obligatorio"
+                             placeholder="Ej. Doce por ciento"/>
+            </p:panelGrid>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"                                 
+                                 update="frmPrincipal:tblParametros"
+                                 action="#{ctParametrosAdmin.editar()}"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditar').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

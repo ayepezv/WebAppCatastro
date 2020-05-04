@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgEliminarPredio" widgetVar="dlgEliminarPredio" closable="true" modal="true" resizable="true" 
+              header="Confirmar Eliminación" showEffect="size" hideEffect="size">
+
+        <h:form id="frmEliminar">
+            <center> 
+                <b>Predio Seleccionado</b>
+                <br/>
+                <h1>#{ctrlEliminarPredio.predioSel.claveCatastral}</h1>
+
+                <b><h2>Ingrese los datos de autorización</h2></b>
+                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" >
+                    <p:outputLabel value="Tipo de documento: "/>
+                    <p:selectOneMenu value="#{ctrlEliminarPredio.tipoDocumento}">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{ctrlEliminarPredio.lstTiposDocumento}" var="tipo"
+                                       itemLabel="#{tipo.tipoDocumento}" itemValue="#{tipo.idTipo}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Número del documento: "/>
+                    <h:inputText value="#{ctrlEliminarPredio.objDocumento.titulo}"
+                                 />
+                    <p:outputLabel value="Fecha del documento: "/>
+                    <p:calendar id="button" value="#{ctrlEliminarPredio.objDocumento.fechaDocumento}" 
+                                showOn="button" placeholder="dd/MM/yyyy" pattern="dd/MM/yyyy"
+                                maxdate="#{sessionScope.fechaActual}"/>
+                    <p:outputLabel value="Motivo de la eliminación: "/>
+                    <h:inputTextarea value="#{ctrlEliminarPredio.objPredioHistorico.razonEliminacion}"/>
+                    <p:outputLabel value="Subir documento: "/>
+                    <p:fileUpload fileUploadListener="#{ctrlEliminarPredio.cargarArchivoDocumento}"
+                                  allowTypes="/(\.|\/)(pdf)$/" label="Abrir" mode="advanced"  
+                                  uploadLabel="Subir" cancelLabel="Cancelar"   
+                                  value="#{ctrlEliminarPredio.archivoDocumento}"
+                                  required="true" requiredMessage="Cargar Documento!!" 
+                                  update="txtRutaDocumento,txtTipoDocumento"/>
+                    <p:outputLabel value="Ruta"/>
+                    <h:inputText id ="txtRutaDocumento" value="#{ctrlEliminarPredio.objDocumento.path}" disabled="true"/>
+                    <p:outputLabel value="Tipo de archivo"/>
+                    <h:inputText id="txtTipoDocumento" value="#{ctrlEliminarPredio.objDocumento.tipo}" disabled="true"/>
+                    <p:outputLabel value="Observaciones: "/>
+                    <h:inputTextarea value="#{ctrlEliminarPredio.objPredioHistorico.observaciones}"/>
+                </p:panelGrid>
+
+                <p:commandButton value="Aceptar"
+                                 icon="ui-icon-save"
+                                 action="#{ctrlEliminarPredio.eliminarPredio()}"
+                                 update="frmPrincipal:tblPredios,frmEliminar,frmPrincipal"/>
+            </center> 
+        </h:form>
+    </p:dialog>
+</ui:composition>

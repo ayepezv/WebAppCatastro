@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgRegistrar" widgetVar="dlgRegistrar" closable="false" modal="true" resizable="true" 
+              header="Registrar un nuevo predio con No Edificado" showEffect="size" hideEffect="size" width="65%">
+        <h:form id="frmRegistrar">            
+            <center>
+                <p:selectOneMenu value="#{ctPrediosNoEdificaciones.band}">
+                    <f:selectItem itemLabel="-- Buscar --" noSelectionOption="true"/>
+                    <f:selectItem itemLabel="Por contribuyente" itemValue="1"/>
+                    <f:selectItem itemLabel="Por Clave Catastral" itemValue="2"/>
+                    <p:ajax event="change" 
+                            update="pnlBuscarPorCedula,pnlBuscarPorClaveCat,tblPredios,@form" />
+                </p:selectOneMenu>
+
+                <p:panel id="pnlBuscarPorCedula" 
+                         visible="#{ctPrediosNoEdificaciones.band==1}" 
+                         style="border: none">
+                    <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="C.I./RUC/Apellidos:"/>
+                        <p:inputText value="#{ctPrediosNoEdificaciones.parametro}" placeholder="C.I./RUC/Apellidos"/>
+                        <p:commandButton icon="ui-icon-search" value="Buscar"
+                                         action="#{ctPrediosNoEdificaciones.buscarPrediosPropietario()}"
+                                         update="frmRegistrar:tblPredios"/>  
+                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                         action="#{ctPrediosNoEdificaciones.limpiar()}"
+                                         update="frmRegistrar:tblPredios,@form"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel id="pnlBuscarPorClaveCat" 
+                         visible="#{ctPrediosNoEdificaciones.band==2}" 
+                         style="border: none">
+                    <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                        <p:outputLabel value="Zona"/>
+                        <p:inputText id="zona" value="#{ctPrediosNoEdificaciones.zona}" style="width: 35%"/>
+                        <p:outputLabel value="Sector"/>
+                        <p:inputText id="sector" value="#{ctPrediosNoEdificaciones.sector}" style="width: 35%"/>
+                        <p:outputLabel value="Manzana"/>
+                        <p:inputText id="manzana" value="#{ctPrediosNoEdificaciones.manzana}" style="width: 35%"/>
+                        <p:outputLabel value="Predio"/>
+                        <p:inputText id="predio" value="#{ctPrediosNoEdificaciones.numPredio}" style="width: 35%"/>                                        
+                        <p:commandButton value="Buscar" icon="ui-icon-search"
+                                         action="#{ctPrediosNoEdificaciones.buscarPredios()}"
+                                         update="frmRegistrar:tblPredios"/>
+                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                         action="#{ctPrediosNoEdificaciones.limpiar()}"
+                                         update="frmRegistrar:tblPredios,@form"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:dataTable id="tblPredios" var="predio" value="#{ctPrediosNoEdificaciones.lstPredios}" rows="4"
+                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="4,8,10,12" reflow="true" rowKey="#{predio.idPredio}"
+                             selection="#{ctPrediosNoEdificaciones.objPredio}" selectionMode="single">
+
+                    <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                        <h:outputText value="#{predio.claveCatastral}"/>
+                    </p:column>
+                    <p:column headerText="Propietario" width="6%" style="text-align: center">
+                        <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                    </p:column>
+                    <p:column headerText="Dirección" width="6%">
+                        <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}"/>
+                    </p:column>
+
+                    <p:column headerText="Seleccionar" width="3%">
+                        <p:commandButton icon="ui-icon-check"
+                                         title="Seleccionar"
+                                         update="frmRegistrar:otxtPredioSel">
+                            <f:setPropertyActionListener value="#{predio}" target="#{ctPrediosNoEdificaciones.objPredio}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <b><h:outputLabel id="otxtPredioSel" value="Predio seleccionado: #{ctPrediosNoEdificaciones.objPredio.claveCatastral}"/></b>
+
+            </center>
+
+            <center>
+                <!--<b>
+                    <p:outputLabel id="otxtDetalleExcen" value="#{ctPrediosExcenciones.detalleExcencion}"/>
+                    <br/>
+                    <p:outputLabel id="otxtFormUso" value="#{ctPrediosExcenciones.formaUso}"/>
+                </b> -->
+                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Razón de No Edificado:"/>
+                    <p:selectOneMenu value="#{ctPrediosNoEdificaciones.objPredioNoEdificado.razon}" effect="fold"
+                                     filter="true" filterMatchMode="contains" requiredMessage="Seleccione la razón">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="Seleccione" noSelectionOption="false"/>
+                        <f:selectItem itemLabel="AREA VERDE" itemValue="AREA VERDE" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="CONSTRUCCION OBSOLETA" itemValue="CONSTRUCCION OBSOLETA" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="ELIMINACION" itemValue="ELIMINACION" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="ESTACIONAMIENTO" itemValue="ESTACIONAMIENTO" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="EXPLOTACION AGRICOLA" itemValue="EXPLOTACION AGRICOLA" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="LOTIZACION AUTORIZADA" itemValue="LOTIZACION AUTORIZADA" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="SINIESTRO" itemValue="SINIESTRO" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="TRANSFERENCIA" itemValue="TRANSFERENCIA" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="TRANSFERENCIA CON CONSTRUCCION" itemValue="TRANSFERENCIA CON CONSTRUCCION" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="VIVIENDA INTERES SOCIAL" itemValue="VIVIENDA INTERES SOCIAL" noSelectionOption="true"/>
+                        <!--
+                        <f:selectItems value="#{ctPrediosExcenciones.lstExencionesEsp}" var="excencion" 
+                                       itemLabel="#{excencion.excencion}" itemValue="#{excencion.idExccencion}"/>
+                        <f:selectItems value="#{ctPrediosExcenciones.lstExencionesEsp}" var="excencion" 
+                                       itemLabel="#{excencion.excencion}" itemValue="#{excencion.idExccencion}"/> -->
+                        <!--<p:ajax event="change" 
+                                listener="#{ctPrediosExcenciones.obtenerExcencionDadoId()}"
+                                update="otxtDetalleExcen,otxtFormUso" /> -->
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Reclamo:"/>
+                    <p:inputText value="#{ctPrediosNoEdificaciones.objPredioNoEdificado.reclamo}" required="false" 
+                                 requiredMessage="Ingrese el motivo del reclamo"/>
+<!--
+                    <p:outputLabel value="Fecha de inicio:"/>
+                    <p:calendar id="txtFechaInicio" value="#{ctPrediosNoEdificaciones.objPredioNoEdificado.fechaInicio}" showOn="button" />
+
+                    <p:outputLabel value="Fecha de finalización:"/>
+                    <p:calendar id="txtFechaFin" value="#{ctPrediosNoEdificaciones.objPredioNoEdificado.fechaFin}" showOn="button" />
+-->
+                    <p:outputLabel value="Observaciones:" /> 
+                    <p:inputTextarea value="#{ctPrediosNoEdificaciones.objPredioNoEdificado.observaciones}"/>
+
+                    <!-- <p:outputLabel  value="Valor Capital (BIESS):"/>
+                    <p:inputText  id="txtCapital" disabled="#{ctPrediosExcenciones.idExencion!=4}" value="#{ctPrediosExcenciones.objExcencion.capitalBiess}"
+                                  requiredMessage="Ingrese el capital pendiente del préstamo"/>
+                                  -->
+                </p:panelGrid>
+            </center>
+
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"                                 
+                                 update="frmPrincipal:tblNoEdificados"
+                                 action="#{ctPrediosNoEdificaciones.insertar()}"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrar').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

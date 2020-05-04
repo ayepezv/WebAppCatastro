@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarCoefTopografia" widgetVar="dlgRegistrarCoefTopografia" closable="false" modal="true" resizable="true" 
+              header="Registrar Coeficiente de Topografía" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarCoefTopografia">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefTopografia.objCoefTopografia.coeficiente}"
+                                 required="true"
+                                 requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Codigo: "/>
+                    <p:inputText value="#{ctrlCoefTopografia.objCoefTopografia.codigo}"
+                                 required="true"
+                                 requiredMessage="Codigo Obligatorio"/>             
+                    <p:outputLabel value="Valor del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefTopografia.objCoefTopografia.valorCoeficiente}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+                    <p:outputLabel value="Descripción: "/>
+                    <p:inputTextarea value="#{ctrlCoefTopografia.objCoefTopografia.descripcion}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+                    
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefTopografia.insertar()}"
+                                 update="frmListaCoefTopografia:tblListaCoefTopografia"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarCoefTopografia').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

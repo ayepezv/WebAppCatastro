@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarCoefColumnas" widgetVar="dlgEditarCoefColumnas" closable="false" modal="true" resizable="true" 
+              header="Editar Coeficientes de Columnas" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarCoefColumnas">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefColumnas.coefcolumnasSel.coeficiente}"
+                             required="true"
+                             requiredMessage="Nombre Obligatorio"/>
+                <p:outputLabel value="Codigo: "/>
+                <p:inputText value="#{ctrlCoefColumnas.coefcolumnasSel.codigo}"
+                             required="true"
+                             requiredMessage="Codigo Obligatorio"/>
+                <p:outputLabel value="Valor del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefColumnas.coefcolumnasSel.valorCoeficiente}"
+                             required="true"
+                             requiredMessage="Valor Obligatorio"/>
+
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefColumnas.actualizar()}"
+                                 update="frmListaCoefColumnas:tblListaCoefColumnas"
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarCoefColumnas').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgRegistrarUsuario" widgetVar="dlgRegistrarUsuario" closable="false" modal="true" resizable="true" 
+              header="Registrar Usuario dado Rol" showEffect="size" hideEffect="size">
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h:form id="buscarPersona">
+                    <p:growl id="msj" globalOnly="false" life="10000" escape="true" showDetail="true"/>
+                    <p:messages/>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText maxlength="10" value="#{usuarioCtrl.rolUsuario.idUsuario.cedula}"
+                                         title="Cedula" required="true" 
+                                         requiredMessage="La Cédula es un campo obligatorio."/>                                         
+                            <label>* Cédula de Identidad </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText maxlength="13" value="#{usuarioCtrl.rolUsuario.idUsuario.ruc}"
+                                         title="RUC" />                                                 
+                            <label>* RUC </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{usuarioCtrl.rolUsuario.idUsuario.nombres}"
+                                         required="true" requiredMessage="Los nombres es un campo obligatorio."
+                                         title="Nombres" />                                                 
+                            <label>* Nombres </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{usuarioCtrl.rolUsuario.idUsuario.apellidos}"
+                                         required="true" requiredMessage="Los apellidos son obligatorios."
+                                         title="Apellidos" />                                                 
+                            <label>* Apellidos </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{usuarioCtrl.rolUsuario.idUsuario.celular}"
+                                         required="true" requiredMessage="El celular es obligatorio."
+                                         title="Celular" />                                                 
+                            <label>* Celular </label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">                                                          
+                            <p:calendar id="german" value="#{usuarioCtrl.rolUsuario.idUsuario.fechaNacimiento}" locale="de"
+                                        navigator="true" pattern="dd-MM-yyyy"
+                                        placeholder="* Fecha de Nacimiento"/>                             
+                        </h:panelGroup>
+
+                        <h:panelGroup >                                                          
+                            <p:selectOneMenu value="#{usuarioCtrl.rolUsuario.idUsuario.estadoCivil}">
+                                <f:selectItem itemLabel="* Estado Civil" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Soltero(a)" itemValue="Soltero(a)"/>
+                                <f:selectItem itemLabel="Casado(a)" itemValue="Casado(a)"/>
+                                <f:selectItem itemLabel="Viudo(a)" itemValue="Viudo(a)"/>
+                                <f:selectItem itemLabel="Divorciado(a)" itemValue="Divorciado(a)"/>
+                                <f:selectItem itemLabel="Unión de hecho" itemValue="Unión de hecho"/>
+                            </p:selectOneMenu>                            
+                        </h:panelGroup>
+                        
+                         <h:panelGroup >                                                          
+                             <p:selectOneMenu value="#{usuarioCtrl.rolUsuario.idUsuario.sexo}">
+                                <f:selectItem itemLabel="* Sexo" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="Masculino" itemValue="M"/>                               
+                                <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                            </p:selectOneMenu>                            
+                        </h:panelGroup>
+                        
+                         <h:panelGroup styleClass="md-inputfield">
+                             <p:inputText value="#{usuarioCtrl.rolUsuario.idUsuario.nick}"
+                                         required="true" requiredMessage="El nombre de usuario es obligatorio."
+                                         title="Nick"/>                                                 
+                            <label>* Nombre de usuario </label>
+                        </h:panelGroup>
+                        
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText value="#{usuarioCtrl.rolUsuario.idUsuario.mail}"
+                                         required="true" requiredMessage="El correo electrónico es obligatorio."
+                                         title="Mail"/>                                                 
+                            <label>* Correo electrónico </label>
+                        </h:panelGroup>
+
+                        <h:panelGroup >                                                          
+                            <p:selectOneMenu value="#{usuarioCtrl.idRol}" required="true" requiredMessage="El Rol es obligatorio.">
+                                <f:selectItem itemLabel="* Rol" itemValue="#{null}"/>     
+                                <f:selectItems value="#{usuarioCtrl.lstRoles}" var="rol"
+                                               itemLabel="#{rol.nombre}" itemValue="#{rol.idRol}"/>
+                            </p:selectOneMenu>                            
+                        </h:panelGroup>
+                        
+                         <h:panelGroup styleClass="md-inputfield">
+                             <p:inputText value="#{usuarioCtrl.rolUsuario.idUsuario.direccionDom}"                                         
+                                         title="Direccion domiciliaria"/>                                                 
+                            <label>* Dirección domiciliaria </label>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <center>
+                        <p:commandButton icon="ui-icon-check" value="Registrar" action="#{usuarioCtrl.insertarUsuarioDadoRol()}"
+                                         update="frmUsuarios:tblUsuarios,frmRegistrar"/>
+                        <p:commandButton onclick="PF('dlgRegistrarUsuario').hide();" value="Cancelar" icon="ui-icon-close"
+                                         process="@this"/>
+                    </center>                    
+                </h:form>
+            </div>
+        </div>
+
+    </p:dialog>
+</ui:composition>

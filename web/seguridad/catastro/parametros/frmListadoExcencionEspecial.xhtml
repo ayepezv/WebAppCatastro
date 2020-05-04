@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <f:metadata>
+
+    </f:metadata>
+
+
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form  id="frmListaExEspecial">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:messages autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                                <p:dataTable id="tblListaExEspecial" value="#{ctrlExcencionEspecial.lstExcencionEspecial}"
+                                             var="coef" reflow="true" rows="10" paginator="true"
+                                             rowKey="#{coef.idExccencion}"
+                                             selection="#{ctrlExcencionEspecial.excencionespecialSel}"
+                                             selectionMode="single"
+                                             >
+                                    <f:facet name="header">
+                                        <h:outputLabel value="Excención Especial"/>
+                                    </f:facet>
+                                    <p:column headerText="Excencion">
+                                        <h:outputLabel value="#{coef.excencion}"/>
+                                    </p:column>
+                                    <p:column headerText="Descripción">
+                                        <h:outputLabel value="#{coef.descripcion}"/>
+                                    </p:column>
+                                    <p:column headerText="Porcentaje(Textual)">
+                                        <h:outputLabel value="#{coef.porcentajeTexto}"/>
+                                    </p:column>
+                                    <p:column headerText="Porcentaje(Numérico)">
+                                        <h:outputLabel value="#{coef.porcentajeNumerico}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de registro">
+                                        <h:outputLabel value="#{coef.fechaRegistro}"/>
+                                    </p:column>
+                                     <p:column headerText="Forma de Uso">
+                                         <h:outputLabel value="#{coef.formaUso}"/>
+                                    </p:column>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="10%">
+                                                <p:commandButton value="Editar"
+                                                    icon="ui-icon-edit" 
+                                                                 onclick="PF('dlgEditarExEspecial').show()"
+                                                                 update="frmEditarExEspecial">
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlExcencionEspecial.excencionespecialSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="10%">
+                                                <p:commandButton value="Eliminar"
+                                                    icon="ui-icon-trash"
+                                                                 onclick="PF('dlgEliminarExEspecial').show()"
+                                                                 update="frmEliminarExEspecial"
+                                                                 >
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlExcencionEspecial.excencionespecialSel}"/>   
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Nuevo"
+                                                                 icon="ui-icon-plus"
+                                                                 onclick="PF('dlgRegistrarExEspecial').show()"
+                                                                 update="frmRegistrarExEspecial"
+                                                                 />
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmRegistrarExcencionEspecial.xhtml"/>
+        <ui:include src="frmEditarExcencionEspecial.xhtml"/>    
+        <ui:include src="frmEliminarExcencionEspecial.xhtml"/>      
+    </ui:define>
+
+</ui:composition>

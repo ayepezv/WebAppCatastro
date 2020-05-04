@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
+    <f:metadata>
+
+    </f:metadata>
+
+
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form  id="frmListaCoefOcupacion">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:messages autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                                <p:dataTable id="tblListaCoefOcupacion" value="#{ctrlCoefLocalizacion.lstCoeficientes}"
+                                             var="coef" reflow="true" rows="10" paginator="true"
+                                             rowKey="#{coef.idCoeficiente}"
+                                             selection="#{ctrlCoefLocalizacion.coeflocalizacionSel}"
+                                             selectionMode="single"
+                                             >
+                                    <f:facet name="header">
+                                        <h:outputLabel value="Gestion Coeficientes de Ocupación"/>
+                                    </f:facet>
+                                   <p:column headerText="Código" width="6%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.codigo}"/>
+                                    </p:column>
+                                    <p:column headerText="Coeficiente" width="6%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.coeficiente}"/>
+                                    </p:column>                                     
+                                     <p:column headerText="Valor coeficiente" width="6%" style="text-align: center">
+                                         <h:outputLabel value="#{coef.valorCoeficiente}"/>
+                                    </p:column>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="4%" style="text-align: center">
+
+                                                <p:commandButton icon="ui-icon-edit" value="Editar"
+                                                                 onclick="PF('dlgEditarCoefLocalizacion').show()"
+                                                                 update="frmEditarCoefLocalizacion">
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlCoefLocalizacion.coeflocalizacionSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="4%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-trash" value="Eliminar"
+                                                                 onclick="PF('dlgEliminarCoefLocalizacion').show()"
+                                                                 update="frmEliminarCoefLocalizacion"
+                                                                 >
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlCoefLocalizacion.coeflocalizacionSel}"/>   
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Nuevo"
+                                                                 icon="ui-icon-plus"
+                                                                 onclick="PF('dlgRegistrarCoefLocalizacion').show()"
+                                                                 update="frmRegistrarCoefLocalizacion"
+                                                                 />
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmRegistrarCoefLocalizacion.xhtml"/>
+        <ui:include src="frmEditarCoefLocalizacion.xhtml"/>    
+        <ui:include src="frmEliminarCoefLocalizacion.xhtml"/>      
+    </ui:define>
+
+</ui:composition>

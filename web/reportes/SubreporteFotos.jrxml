@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-08-01T21:38:45 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubreporteFotos" pageWidth="475" pageHeight="842" columnWidth="435" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="17006fff-88f5-47be-8d6c-c5ce8205d61d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebAppCatastro"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="id" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select *
+from catastro.v_reporte_ficha_predial 
+where int_id_predio=$P{id}]]>
+	</queryString>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="int_num_ficha" class="java.lang.Integer"/>
+	<field name="int_id_parroquia" class="java.lang.Integer"/>
+	<field name="int_zona" class="java.lang.Integer"/>
+	<field name="int_sector" class="java.lang.Integer"/>
+	<field name="int_manzana" class="java.lang.Integer"/>
+	<field name="int_num_predio" class="java.lang.Integer"/>
+	<field name="int_prop_hor_bloque" class="java.lang.Integer"/>
+	<field name="int_prop_hor_piso" class="java.lang.Integer"/>
+	<field name="int_prop_hor_unidad" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="chv_clave_catastral_ant" class="java.lang.String"/>
+	<field name="chv_barrio" class="java.lang.String"/>
+	<field name="chv_calle_princ" class="java.lang.String"/>
+	<field name="chv_calle_secund" class="java.lang.String"/>
+	<field name="chv_num_casa" class="java.lang.String"/>
+	<field name="chv_nombre_edificio" class="java.lang.String"/>
+	<field name="int_id_titular_dom" class="java.lang.Integer"/>
+	<field name="int_id_rep_legal" class="java.lang.Integer"/>
+	<field name="int_id_dominio" class="java.lang.Integer"/>
+	<field name="chv_condicion" class="java.lang.String"/>
+	<field name="chv_forma_adq" class="java.lang.String"/>
+	<field name="chv_notaria" class="java.lang.String"/>
+	<field name="dt_fecha_titulo_prop" class="java.sql.Date"/>
+	<field name="dt_fecha_registro" class="java.sql.Date"/>
+	<field name="db_area_escritura" class="java.lang.Double"/>
+	<field name="chv_prop_anterior" class="java.lang.String"/>
+	<field name="db_avaluo_prop" class="java.lang.Double"/>
+	<field name="chv_gest_uso_suelo" class="java.lang.String"/>
+	<field name="chv_uso_suelo_consumo" class="java.lang.String"/>
+	<field name="chv_us_suel_intercambio" class="java.lang.String"/>
+	<field name="chv_us_suel_produc" class="java.lang.String"/>
+	<field name="chv_ocupacion_predio" class="java.lang.String"/>
+	<field name="chv_localizacion_predio" class="java.lang.String"/>
+	<field name="chv_topografia_pedio" class="java.lang.String"/>
+	<field name="chv_forma_predio" class="java.lang.String"/>
+	<field name="chv_caract_suelo" class="java.lang.String"/>
+	<field name="chv_uso_vias" class="java.lang.String"/>
+	<field name="chv_material_vias" class="java.lang.String"/>
+	<field name="chv_red_agua" class="java.lang.String"/>
+	<field name="chv_alcantarillado" class="java.lang.String"/>
+	<field name="chv_energ_electric" class="java.lang.String"/>
+	<field name="chv_red_telefon" class="java.lang.String"/>
+	<field name="chv_rec_basura" class="java.lang.String"/>
+	<field name="chv_transp_publico" class="java.lang.String"/>
+	<field name="chv_internet" class="java.lang.String"/>
+	<field name="chv_otros_servicios" class="java.lang.String"/>
+	<field name="db_area_construc" class="java.lang.Double"/>
+	<field name="db_area_total_const" class="java.lang.Double"/>
+	<field name="db_area_total_terreno" class="java.lang.Double"/>
+	<field name="chv_patio" class="java.lang.String"/>
+	<field name="chv_piscina" class="java.lang.String"/>
+	<field name="chv_cerramiento" class="java.lang.String"/>
+	<field name="chv_cisterna" class="java.lang.String"/>
+	<field name="chv_muros" class="java.lang.String"/>
+	<field name="chv_ascensor" class="java.lang.String"/>
+	<field name="int_num_banios" class="java.lang.Integer"/>
+	<field name="db_lindero_frente1" class="java.lang.Double"/>
+	<field name="db_lindero_frente2" class="java.lang.Double"/>
+	<field name="db_lindero_frente3" class="java.lang.Double"/>
+	<field name="db_lindero_frente4" class="java.lang.Double"/>
+	<field name="chv_lindero_calle1" class="java.lang.String"/>
+	<field name="chv_lindero_calle2" class="java.lang.String"/>
+	<field name="chv_lindero_calle3" class="java.lang.String"/>
+	<field name="chv_lindero_calle4" class="java.lang.String"/>
+	<field name="db_lindero_alicuota1" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota2" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota3" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota4" class="java.lang.Double"/>
+	<field name="db_derechos_acciones" class="java.lang.Double"/>
+	<field name="chv_croquis" class="java.lang.String"/>
+	<field name="chv_emplazamiento" class="java.lang.String"/>
+	<field name="chv_fotografia" class="java.lang.String"/>
+	<field name="chv_topografia_ref_top" class="java.lang.String"/>
+	<field name="chv_foto_aerea" class="java.lang.String"/>
+	<field name="chv_otra_ref_top" class="java.lang.String"/>
+	<field name="db_coord_e" class="java.lang.Double"/>
+	<field name="db_coord_n" class="java.lang.Double"/>
+	<field name="chv_colindant_nort" class="java.lang.String"/>
+	<field name="chv_colindant_este" class="java.lang.String"/>
+	<field name="chv_colindant_sur" class="java.lang.String"/>
+	<field name="chv_colindant_oest" class="java.lang.String"/>
+	<field name="chv_fuente_informant" class="java.lang.String"/>
+	<field name="chv_telf_informant" class="java.lang.String"/>
+	<field name="chv_ficha_adjunta" class="java.lang.String"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="db_porcent_excep" class="java.lang.Double"/>
+	<field name="chv_excencion_esp" class="java.lang.String"/>
+	<field name="chv_observaciones" class="java.lang.String"/>
+	<field name="chv_dominio" class="java.lang.String"/>
+	<field name="titular_dominio" class="java.lang.String"/>
+	<field name="rep_legal" class="java.lang.String"/>
+	<field name="chv_nombre" class="java.lang.String"/>
+	<field name="nombre_propietario" class="java.lang.String"/>
+	<field name="apellidos_propietario" class="java.lang.String"/>
+	<field name="chv_celular" class="java.lang.String"/>
+	<field name="ch_estado_civil" class="java.lang.String"/>
+	<field name="chv_ruc" class="java.lang.String"/>
+	<field name="chv_direccion_domiciliaria" class="java.lang.String"/>
+	<field name="chv_cedula" class="java.lang.String"/>
+	<field name="foto_fachada" class="java.lang.String"/>
+	<field name="parroquia" class="java.lang.String"/>
+	<field name="foto_croquis" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="443" splitType="Stretch">
+			<image>
+				<reportElement stretchType="ContainerHeight" x="60" y="30" width="290" height="160" uuid="ee65a163-a3b5-4dd0-8836-7dca1fc59d82"/>
+				<imageExpression><![CDATA[$F{foto_fachada}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="10" y="10" width="100" height="14" uuid="246ff30b-614f-427f-82f3-0f595743bca6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACHADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="200" width="100" height="14" uuid="d2f24287-da29-45f3-b9dd-5782d694b963">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CROQUIS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="60" y="220" width="290" height="210" uuid="208db02a-a5b1-40df-a19e-56c668f80b1f"/>
+				<imageExpression><![CDATA[$F{foto_croquis}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h:form id="frmAcciones">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                            <p:dataTable id="tblAcciones" var="accion" value="#{accionCtrl.lstAcciones}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,25" reflow="true"
+                                         rowKey="#{accion.idAccion}" selectionMode="single" selection="#{accionCtrl.accionSel}">
+
+                                <p:column headerText="Id" width="3%" style="text-align: center">
+                                    <h:outputText value="#{accion.idAccion}" />
+                                </p:column>
+
+                                <p:column headerText="Titulo" width="8%" style="text-align: center"
+                                          filterBy="#{accion.titulo}"  filterMatchMode="contains">
+                                    <h:outputText value="#{accion.titulo}" />
+                                </p:column>
+
+                                <p:column headerText="URL" width="20%" style="text-align: justify">
+                                    <h:outputText value="#{accion.url}" />
+                                </p:column>
+
+                                <p:column headerText="Descripción" width="10%" style="text-align: center">
+                                    <h:outputText value="#{accion.descripcion}" />
+                                </p:column>
+                                
+                                <p:column headerText="Fecha de Registro" width="5%" style="text-align: center">
+                                    <h:outputText value="#{accion.fechaRegistro}" >
+                                        <f:convertDateTime type="date" pattern="dd-MMM-YYYY" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Editar" width="3%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-pencil" onclick="PF('dlgActualizar').show();"
+                                                             title="Editar URL" update="frmActualizarAccion">    
+                                                <f:setPropertyActionListener value="#{accion}" 
+                                                                             target="#{accionCtrl.accionSel}"/>
+                                            </p:commandButton>                                                                  
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Eliminar" width="3%" style="text-align: center">                                                                 
+                                            <p:commandButton icon="ui-icon-trash" onclick="PF('dlgEliminar').show();"
+                                                             title="Eliminar URL" update="frmEliminarAccion">
+                                                <f:setPropertyActionListener value="#{accion}" 
+                                                                             target="#{accionCtrl.accionSel}"/>      
+                                            </p:commandButton>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <p:commandButton value="Registrar" icon="ui-icon-plusthick" title="Registrar una acción"
+                                                             type="button" onclick="PF('dlgRegistrar').show();" />
+                                        </c:when>
+                                    </c:choose>
+
+                                </f:facet>
+                            </p:dataTable>                        
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                        </p:dialog>
+
+                        <p:dialog header="Registrar URL" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmRegistrarAccion">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Titulo:"/>
+                                    <p:inputText value="#{accionCtrl.accion.titulo}" required="true" requiredMessage="El Título es un campo obligatorio"/>
+                                    <p:outputLabel value="URL:"/>
+                                    <p:inputText value="#{accionCtrl.accion.url}" required="true" requiredMessage="La URL es un campo obligatorio"/>
+                                    <p:outputLabel value="Descripción:"/>
+                                    <p:inputTextarea value="#{accionCtrl.accion.descripcion}" required="true" requiredMessage="La Descripcion es un campo obligatorio"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                     action="#{accionCtrl.registrar()}" update="frmAcciones:tblAcciones,frmRegistrarAccion"/>
+                                    <p:commandButton value="Cancelar" type="button" icon="ui-icon-close"
+                                                     onclick="PF('dlgRegistrar').hide();"/> 
+                                </center>   
+
+                            </h:form>                        
+                        </p:dialog>
+
+
+                        <p:dialog header="Actualizar URL" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold" >
+                            <h:form id="frmActualizarAccion">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Titulo:"/>
+                                    <p:inputText value="#{accionCtrl.accionSel.titulo}" required="true" requiredMessage="El Título es un campo obligatorio"
+                                                 style="width:250px"/>
+                                    <p:outputLabel value="URL:"/>
+                                    <p:inputText value="#{accionCtrl.accionSel.url}" required="true" requiredMessage="La URL es un campo obligatorio"
+                                                 style="width:250px"/>
+                                    <p:outputLabel value="Descripción:"/>
+                                    <p:inputTextarea value="#{accionCtrl.accionSel.descripcion}" required="true" requiredMessage="La Descripcion es un campo obligatorio"
+                                                     style="width:250px"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                     action="#{accionCtrl.actualizar()}" update="frmAcciones:tblAcciones,frmActualizarAccion"/>
+                                    <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                                     type="button" onclick="PF('dlgActualizar').hide();"/> 
+                                </center>   
+                            </h:form>  
+                        </p:dialog>
+
+                        <p:dialog header="Eliminar" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmEliminarAccion">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                <p:panel>
+                                    <h3>¿Está seguro que desea eliminar esta URL?</h3>  
+                                    <center>
+                                        <h:panelGrid columns="1">
+                                            <p:outputLabel value="#{accionCtrl.accionSel.titulo}"/>                                
+                                            <p:outputLabel value="URL: #{accionCtrl.accionSel.url}"/> 
+                                        </h:panelGrid>
+                                        <p:separator/>
+                                        <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                         action="#{accionCtrl.eliminar()}" update="frmAcciones:tblAcciones,frmEliminarAccion"/>
+                                        <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                                         type="button" 
+                                                         onclick="PF('dlgEliminar').hide();"/> 
+                                    </center>
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+                    </div>                
+                </div>  
+            </c:when>
+        </c:choose>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

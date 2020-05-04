@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEliminarPiso" widgetVar="dlgEliminarPiso" closable="false" modal="true" resizable="true" 
+              header="Eliminar Piso" showEffect="size" hideEffect="size">
+        <h:form id="frmEliminarPiso">
+            <h3>¿Está seguro de eliminar el #{listadoPrediosCtrl.pisoSel.piso}?</h3>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{listadoPrediosCtrl.eliminarPiso()}"
+                                 update="frmListadoPiso:tblPisos"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEliminarPiso').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

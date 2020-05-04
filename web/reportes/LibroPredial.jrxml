@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9ba913d5-833b-405f-8871-69a8ce602476">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="1300"/>
+	<property name="ireport.y" value="238"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="anio_consulta" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from catastro.f_reporte_libro_predial($P{anio_consulta})]]>
+	</queryString>
+	<field name="_orden" class="java.lang.Integer"/>
+	<field name="_anio" class="java.lang.Integer"/>
+	<field name="_chv_titulo_numero" class="java.lang.String"/>
+	<field name="_id_predio" class="java.lang.Integer"/>
+	<field name="_chv_clave_catastral" class="java.lang.String"/>
+	<field name="_int_id_predio" class="java.lang.Integer"/>
+	<field name="_int_id_titular_dom" class="java.lang.Integer"/>
+	<field name="_titular" class="java.lang.String"/>
+	<field name="_chv_cedula" class="java.lang.String"/>
+	<field name="_direccion" class="java.lang.String"/>
+	<field name="_uso_suelo" class="java.lang.Double"/>
+	<field name="_valor_construccion" class="java.lang.Double"/>
+	<field name="_avaluo" class="java.lang.Double"/>
+	<field name="_excenciones" class="java.lang.Double"/>
+	<field name="_impuesto" class="java.lang.Double"/>
+	<field name="_bomberos" class="java.lang.Double"/>
+	<field name="_recargo" class="java.lang.Double"/>
+	<field name="_total" class="java.lang.Double"/>
+	<field name="_pagado" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="65" splitType="Stretch">
+			<staticText>
+				<reportElement x="234" y="40" width="342" height="20" uuid="31303989-9e7e-44ef-b3c8-5d72c836339d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[LIBRO PREDIAL URBANO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="757" y="44" width="45" height="20" uuid="23ff542e-b2e2-4ecd-aef4-da1fdf992c5e"/>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anio_consulta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="732" y="44" width="25" height="20" uuid="cea90145-c6d1-4063-ad5a-7d1960c67eaa"/>
+				<textElement>
+					<font fontName="Arial" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="20" width="800" height="19" uuid="ceba64bc-20e5-4c8d-8c92-cdba4ead4d92"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN DE AVALÚOS Y CATASTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="792" height="26" uuid="18a6b48b-ceb8-4d8c-a51e-e9c713c20586"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="16" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL DE ARCHIDONA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="31" height="18" forecolor="#000000" uuid="98d3606e-2d8a-4672-ace7-ec162a4c6856"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="31" y="0" width="75" height="18" forecolor="#000000" uuid="f361d3b9-50ef-441a-acd6-9643bd88df48"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[CLAVE CAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="108" y="0" width="163" height="18" forecolor="#000000" uuid="bc734c5f-e528-4610-a4cd-16662f97c05e"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[PROPIETARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="271" y="0" width="56" height="18" forecolor="#000000" uuid="2bac3946-9eac-4051-8637-34595be87297"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[CEDULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="329" y="0" width="56" height="18" forecolor="#000000" uuid="3870a2ea-6032-4c45-ad8d-d378dfdc92e9"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[AV. SUELO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="385" y="0" width="56" height="18" forecolor="#000000" uuid="29f2a88e-b2d6-43e8-9313-dd780f55cb4f"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[AV. CONST]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="441" y="0" width="56" height="18" forecolor="#000000" uuid="f9a0048e-518d-49fb-94a4-786cbc4db2a7"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[AVALUO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="497" y="0" width="56" height="18" forecolor="#000000" uuid="24271912-c058-41f7-8de2-0087b71821f8"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[EXCEN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="553" y="0" width="56" height="18" forecolor="#000000" uuid="476780b1-99e1-4fe5-91a4-fed2d694a337"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[IMP.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="609" y="0" width="56" height="18" forecolor="#000000" uuid="46e7aa19-67aa-47d9-8752-7aa7ad92ea32"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[BOMB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="665" y="0" width="56" height="18" forecolor="#000000" uuid="edf08097-cfd2-4edb-bf5c-5b7173a95979"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[NO. ED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="721" y="0" width="56" height="18" forecolor="#000000" uuid="fe755476-49ec-4ab3-8181-1e8d021a0ed6"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="779" y="0" width="17" height="18" forecolor="#000000" uuid="3e34104f-9be3-40a8-bd57-6d91980bfb31"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[R/D]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="35a0cd46-ee9c-48d7-a515-8b803d7243e3"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="31" height="18" uuid="964e9b02-3925-49c1-b5a0-9413305915bf"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_orden}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="31" y="0" width="75" height="18" uuid="830e413b-2539-438b-9f27-4ad2250d5275"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_chv_clave_catastral}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="108" y="0" width="163" height="18" uuid="cf29fbb6-3894-4883-b9ac-2422ee74759c"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_titular}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="271" y="0" width="56" height="18" uuid="d3bdcddb-5fe1-492d-90e6-b51c57082268"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_chv_cedula}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="329" y="0" width="56" height="18" uuid="4affb0b4-e132-4b83-aaa3-98d8d5207ab3"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_uso_suelo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="385" y="0" width="56" height="18" uuid="c125ca76-645b-4f35-94b1-acf2a9b3c238"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_valor_construccion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="441" y="0" width="56" height="18" uuid="3f334091-bd59-48ae-a8d2-af38ec137df9"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_avaluo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="497" y="0" width="56" height="18" uuid="4d02a503-c8db-43c7-a0f5-77087a403d63"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_excenciones}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="553" y="0" width="56" height="18" uuid="aa3c278e-b0db-4640-8a84-9baaba1ffd34"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_impuesto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="609" y="0" width="56" height="18" uuid="bdd92597-f00b-4603-980c-62f169457044"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_bomberos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="665" y="0" width="56" height="18" uuid="adca70fd-b86c-4ce3-a17b-1d178aa6e3f0"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_recargo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="721" y="0" width="56" height="18" uuid="c3a39c57-b890-41cb-8d7c-a28dfa13ee5a"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_total}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+					<reportElement style="Detail" positionType="Float" x="779" y="0" width="17" height="18" uuid="4c012eba-3ef8-4f1f-8233-3ae8629ba0b4"/>
+					<textElement>
+						<font fontName="Arial" size="5" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{_pagado}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="70e4a20b-4a5c-459a-ac65-55e8e6420e75"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="501b92fe-f1e0-403b-9a28-c88384dfc3d1"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="b9e3e40d-0510-43ca-9d45-a9c2dffce98c"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="4" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="6f487cac-553c-46e3-a7fb-56079ad2c91d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="4" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pág "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="be835167-d86f-4dfa-a9f5-1b08218b359f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="4" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

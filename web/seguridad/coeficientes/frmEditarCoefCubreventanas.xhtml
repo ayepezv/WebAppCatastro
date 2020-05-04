@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarCoefCubreventanas" widgetVar="dlgEditarCoefCubreventanas" closable="false" modal="true" resizable="true" 
+              header="Editar Coeficientes de Cubreventanas" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarCoefCubreventanas">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefAcabCubreVentanas.coefcubreventanasSel.coeficiente}"
+                             required="true"
+                             requiredMessage="Nombre Obligatorio"/>
+                <p:outputLabel value="Codigo: "/>
+                <p:inputText value="#{ctrlCoefAcabCubreVentanas.coefcubreventanasSel.codigo}"
+                             required="true"
+                             requiredMessage="Codigo Obligatorio"/>
+                <p:outputLabel value="Valor del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefAcabCubreVentanas.coefcubreventanasSel.valorCoeficiente}"
+                             required="true"
+                             requiredMessage="Valor Obligatorio"/>
+
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefAcabCubreVentanas.actualizar()}"
+                                 update="frmListaCoefCubreventanas:tblListaCoefCubreventanas"
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarCoefCubreventanas').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

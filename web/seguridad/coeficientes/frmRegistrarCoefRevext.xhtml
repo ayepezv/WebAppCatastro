@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarCoefRevext" widgetVar="dlgRegistrarCoefRevext" closable="false" modal="true" resizable="true" 
+              header="Registrar Coeficiente de Rev. Exterior" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarCoefRevext">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefRevExt.objCoefRevexterior.coeficiente}"
+                                 required="true"
+                                 requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Codigo: "/>
+                    <p:inputText value="#{ctrlCoefRevExt.objCoefRevexterior.codigo}"
+                                 required="true"
+                                 requiredMessage="Codigo Obligatorio"/>             
+                    <p:outputLabel value="Valor del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefRevExt.objCoefRevexterior.valorCoeficiente}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefRevExt.insertar()}"
+                                 update="frmListaCoefRevext:tblListaCoefRevext"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarCoefRevext').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

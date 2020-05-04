@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgNuevaCuentaPredio" widgetVar="dlgNuevaCuentaPredio" closable="false" modal="true" resizable="true" 
+              header="Nueva Cuenta" showEffect="size" hideEffect="size" width="40%">
+        <h:form id="frmRegistrarCuentaPredio">                                    
+            <center>
+                <p:panelGrid columns="3"  styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Clave Catastral/Cédula Ciudadanía:"/>
+                    <p:inputText value="#{controladorCuentaAP.claveCatastral}"                                
+                                 requiredMessage="Ingrese la Clave catastral o la cédula"/>
+                    <p:commandButton value="Buscar predio" icon="ui-icon-search"
+                                     onclick="PF('dlgPredios').show()"
+                                     action="#{controladorCuentaAP.buscarPredio()}"
+                                     update="frmBuscarPredios"/>
+                </p:panelGrid>
+                <h:outputText id="claveCat" value="Clave catastral: #{controladorCuentaAP.objPredio.claveCatastral}"/>
+                <br/>
+                <h:outputText id="titular" value="Titular: #{controladorCuentaAP.objPredio.propietario.apellidos} #{controladorCuentaAP.objPredio.propietario.nombres}" />
+                <br/>
+                <b>Datos del medidor:</b>
+                <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.numSerie}" 
+                                     requiredMessage="El número de medidor es obligatorio."/>
+                        <label>N° de medidor</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.marca}" 
+                                     requiredMessage="La marca del medidor es obligatorio."/>
+                        <label>Marca</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.lecturaInicial}"
+                                     requiredMessage="La lectura inicial del medidor es obligatorio."/>
+                        <label>Lectura inicial</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.estado}"
+                                     requiredMessage="El estado del medidor es obligatorio."/>
+                        <label>Estado</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText value="#{controladorCuentaAP.objCuenta.medidor.tipo}"
+                                     requiredMessage="El tipo de medidor es obligatorio."/>
+                        <label>Tipo</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorCuentaAP.registrarCuentaDadoPredio()}"
+                                 update="frmPrincipal:tblCuentas"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgNuevaCuentaPredio').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+
+    </p:dialog>
+</ui:composition>

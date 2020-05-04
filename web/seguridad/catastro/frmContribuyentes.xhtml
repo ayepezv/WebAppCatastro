@@ -1,0 +1,199 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <div class="ui-g">
+                    <h:form id="frmUsuarios">
+                        <center><h3>Gestión de Contribuyentes</h3></center>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />    
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-3">
+                            <div class="card">
+                                <b>Tipo de búsqueda:</b>
+                                <p:selectOneMenu value="#{ctContribuyente.band}">
+                                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Global" itemValue="1"/>
+                                    <f:selectItem itemLabel="Específica" itemValue="2"/>
+                                    <p:ajax event="change" listener="#{ctContribuyente.limpiar()}"
+                                            update="pnlBuscarGlobal,pnlBuscarEspecifico,frmUsuarios:tblUsuarios"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-9">
+                            <div class="card">
+                                <p:panel id="pnlBuscarGlobal" visible="#{ctContribuyente.band==1}" style="border: none">
+                                    <b>Buscar por:</b>
+                                    <p:selectOneMenu value="#{ctContribuyente.idTipoPersona}">
+                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItems value="#{ctContribuyente.lstTiposPersonas}" var="tipo"
+                                                       itemLabel="#{tipo.tipoPersona}" itemValue="#{tipo.idTipoPersona}"/>
+                                        <p:ajax event="change" listener="#{ctContribuyente.obtenerContribuyentesDadoTipo()}"
+                                                update="frmUsuarios:tblUsuarios"/>
+                                    </p:selectOneMenu>
+
+                                </p:panel>
+                                <center>
+                                    <p:panel id="pnlBuscarEspecifico" visible="#{ctContribuyente.band==2}" style="border: none">
+                                        <b>Buscar por: </b>
+                                        <p:selectOneMenu value="#{ctContribuyente.idTipoPersona}">
+                                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                            <f:selectItems value="#{ctContribuyente.lstTiposPersonas}" var="tipo"
+                                                           itemLabel="#{tipo.tipoPersona}" itemValue="#{tipo.idTipoPersona}"/>                                        
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Criterio de búsqueda: "/>
+                                        <p:inputText id="criterio" value="#{ctContribuyente.strCriterio}" />
+                                        <p:commandButton icon="ui-icon-search"
+                                                         action="#{ctContribuyente.obtenerContribuyentesDadoTipoParametro()}"
+                                                         update="frmUsuarios:tblUsuarios"/>
+                                    </p:panel>
+                                </center>
+                            </div>
+                        </div>                        
+
+                        <div class="ui-g-12">                            
+                            <p:dataTable id="tblUsuarios" var="usuario" value="#{ctContribuyente.lstUsuarios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,25,30,35,40" reflow="true"
+                                         rowKey="#{usuario.idPersona}" selectionMode="single" selection="#{ctContribuyente.usuarioSel}">
+
+                                <c:choose>
+                                    <c:when  test="#{ctContribuyente.idTipoPersona==1}">
+                                        <p:column filterBy="#{usuario.cedula}"  headerText="Cédula" width="5%" style="text-align: center"
+                                                  filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.cedula}"/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{usuario.apellidos}"  headerText="Apellidos" width="8%" style="text-align: center"
+                                                  filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.apellidos}"/>
+                                        </p:column>
+                                        <p:column headerText="Nombres" width="8%" style="text-align: center"
+                                                  filterBy="#{usuario.nombres}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.nombres}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Sexo" width="3%" style="text-align: center">
+                                            <h:outputText value="#{usuario.sexo}"/>
+                                        </p:column>  
+                                    </c:when>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when  test="#{ctContribuyente.idTipoPersona==2|| 
+                                                     ctContribuyente.idTipoPersona==3}">
+                                        <p:column headerText="Razon" width="10%" style="text-align: center"
+                                                  filterBy="#{usuario.nombres}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.nombres} #{usuario.apellidos}" />
+                                        </p:column>
+
+                                        <!--
+                                        <p:column headerText="Social" width="10%" style="text-align: center"
+                                                  filterBy="#{usuario.apellidos}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.apellidos}"/>
+                                        </p:column>
+                                        -->
+
+                                        <p:column headerText="RUC" width="8%" style="text-align: center"
+                                                  filterBy="#{usuario.ruc}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.ruc}"/>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <p:column headerText="Mail" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.mail}"/>
+                                </p:column>                                                               
+                                <p:column headerText="Teléfono" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.celular}"/>
+                                </p:column>
+                                <p:column headerText="Dirección" width="15%">
+                                    <h:outputText value="#{usuario.direccionDom}"/>
+                                </p:column>
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <c:choose>
+                                            <c:when  test="#{ctContribuyente.idTipoPersona==1}">
+                                                <p:column headerText="Editar" width="5%" style="text-align: center">
+                                                    <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                                     onclick="PF('dlgActPerNat').show();"
+                                                                     update="frmActPerNat">
+                                                        <f:setPropertyActionListener value="#{usuario}" target="#{usuarioCtrl.usuarioSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </c:when>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when  test="#{ctContribuyente.idTipoPersona==2|| 
+                                                             ctContribuyente.idTipoPersona==3}">
+                                                <p:column headerText="Editar" width="3%" style="text-align: center">
+                                                    <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                                     onclick="PF('dlgActPerJur').show();"
+                                                                     update="frmActPerJur">
+                                                        <f:setPropertyActionListener value="#{usuario}" target="#{usuarioCtrl.usuarioSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </c:when>
+                                        </c:choose>                                        
+                                    </c:when>
+                                </c:choose>                               
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">                                            
+                                            <p:commandButton value="Nuevo" icon="ui-icon-person"
+                                                             onclick="PF('dlgNuevoUsuario').show();"/>
+                                        </c:when>
+                                    </c:choose>
+                                    <h:commandLink title="Exportar a Excel">
+                                        <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a PDF">                                        
+                                        <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                        <p:dataExporter type="pdf" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a CSV">
+                                        <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a XML">
+                                        <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                        <p:dataExporter type="xml" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                </div>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmEditarContribuyentes.xhtml"/>  
+        <ui:include src="frmNuevoContribuyente.xhtml"/>  
+        <ui:include src="dlgEditarPersonaNatural.xhtml"/>
+        <ui:include src="dlgEditarPersonaJuridica.xhtml"/>
+    </ui:define>
+</ui:composition>

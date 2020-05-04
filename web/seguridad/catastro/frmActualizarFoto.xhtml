@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgFotografiaPredio" widgetVar="dlgFotografiaPredio" closable="false" modal="true" resizable="true" 
+              header="Fotografia Predio" showEffect="size" hideEffect="size">
+        <h:form id="frmFotografiaPredio">            
+            <center>
+                <p:panel id="displayInsertarImagen">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Previzualización"/>
+                        <p:graphicImage id="griPrevisualizar" value="#{listadoPrediosCtrl.objPredio.fotografia}" 
+                                        height="80"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;">
+                        <p:fileUpload fileUploadListener="#{listadoPrediosCtrl.cargarArchivoImagen}"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Abrir" mode="advanced"  
+                                      update="displayInsertarImagen griPrevisualizar" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                      value="#{listadoPrediosCtrl.archivoImagen}"
+                                      required="true" requiredMessage="Cargar la imagen!!" />
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{listadoPrediosCtrl.insertarImagen()}"
+                                 update="frmPredios:tblPredios, displayInsertarImagen,griPrevisualizar"
+                                 process="@this"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgFotografiaPredio').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

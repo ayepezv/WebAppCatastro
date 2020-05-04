@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarCoefClosets" widgetVar="dlgRegistrarCoefClosets" closable="false" modal="true" resizable="true" 
+              header="Registrar Coeficiente de Closets" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarCoefClosets">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefAcabClosets.objCoefClosets.coeficiente}"
+                                 required="true"
+                                    requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Codigo: "/>
+                    <p:inputText value="#{ctrlCoefAcabClosets.objCoefClosets.codigo}"
+                                 required="true"
+                                 requiredMessage="Codigo Obligatorio"/>             
+                    <p:outputLabel value="Valor del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefAcabClosets.objCoefClosets.valorCoeficiente}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefAcabClosets.insertar()}"
+                                 update="frmListaCoefClosets:tblListaCoefClosets"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarCoefClosets').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

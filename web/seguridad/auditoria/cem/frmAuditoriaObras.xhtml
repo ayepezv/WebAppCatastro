@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h:form id="frmAuditoriaObras">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />       
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:dataTable id="tblAudObras" var="obra" value="#{ctrlAuditoriaObras.lstObras}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true"
+                                     rowKey="#{obra.idAudObras}" selectionMode="single"
+                                     selection="#{ctrlAuditoriaObras.obrasSel}">
+                            <p:column headerText="Código Audit. Obra" width="8%" style="text-align: center">
+                                <p:outputLabel value="#{obra.idAudObras}"/>
+                            </p:column>
+                            <p:column headerText="Código Obra" width="8%" style="text-align: center"
+                                      filterBy="#{obra.idObra}" filterMatchMode="startsWith" sortBy="#{obra.idObra}">
+                                <p:outputLabel value="#{obra.idObra}"/>
+                            </p:column>
+
+                            <p:column headerText="Nombre" width="12%"
+                                      filterBy="#{obra.nombreObra}" filterMatchMode="startsWith" sortBy="#{obra.nombreObra}">
+                                <p:outputLabel value="#{obra.nombreObra}"/>
+                            </p:column>
+
+                            <p:column headerText="Acción realizada" width="8%"
+                                      filterBy="#{obra.accionEjecutada}" filterMatchMode="startsWith" sortBy="#{obra.accionEjecutada}">
+                                <p:outputLabel value="#{obra.accionEjecutada}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha registro" width="7%">
+                                <p:outputLabel value="#{obra.fechaRegistro}"/>
+                            </p:column>
+
+                            <p:column headerText="Usuario logueado" width="10%"
+                                      filterBy="#{obra.usuarioSistema.apellidos}" filterMatchMode="startsWith" sortBy="#{obra.usuarioSistema.apellidos}">
+                                <p:outputLabel value="#{obra.usuarioSistema.nombres} #{obra.usuarioSistema.apellidos}"/>
+                            </p:column>
+
+                            <p:column headerText="Detalles" width="5%" style="text-align: center">
+                                <p:commandButton icon="fa-file-text" title="Ver Detalles"
+                                                 onclick="PF('dlgCompararObras').show()"
+                                                 action="#{ctrlAuditoriaObras.compararObras()}"
+                                                 update="frmComparacionObras">
+                                    <f:setPropertyActionListener value="#{obras}" target="#{ctrlAuditoriaObras.obraSel}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">            
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>
+        </p:dialog>
+
+
+        <ui:include src="frmComparacionObras.xhtml"/>          
+    </ui:define>
+
+</ui:composition>

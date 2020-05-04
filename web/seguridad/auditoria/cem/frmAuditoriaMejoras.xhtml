@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-8">
+                <h:form id="frmAuditoriaMejoras">
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />       
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:dataTable id="tblAudMejoras" var="mejora" value="#{ctrlAuditoriaMejoras.lstMejoras}" rows="10"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" reflow="true"
+                                 rowKey="#{mejora.idAudMejoras}" selectionMode="single"
+                                 selection="#{ctrlAuditoriaMejoras.mejoraSel}">
+                        <f:facet name="header">
+                            <b>Auditoría</b>
+                        </f:facet>
+                        <p:column headerText="Código Mejora" width="8%" style="text-align: center">
+                            <p:outputLabel value="#{mejora.idAudMejoras}"/>
+                        </p:column>
+
+                        <p:column headerText="Código Mejora" width="8%" style="text-align: center"
+                                  filterBy="#{mejora.idMejora}" filterMatchMode="contains" sortBy="#{mejora.idMejora}">
+                            <p:outputLabel value="#{mejora.idMejora}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre" width="12%"
+                                  filterBy="#{mejora.nombre}" filterMatchMode="startsWith" sortBy="#{mejora.nombre}">
+                            <p:outputLabel value="#{mejora.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Acción realizada" width="8%"
+                                  filterBy="#{mejora.accionRealizada}" filterMatchMode="startsWith" sortBy="#{mejora.accionRealizada}">
+                            <p:outputLabel value="#{mejora.accionRealizada}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha registro" width="7%">
+                            <p:outputLabel value="#{mejora.fechaEvento}"/>
+                        </p:column>
+
+                        <p:column headerText="Detalles" width="5%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-web" title="Ver Detalles"                                                 
+                                             action="#{ctrlAuditoriaMejoras.comparacionMejoras()}"
+                                             update="comparacion">
+                                <f:setPropertyActionListener value="#{mejora}" target="#{ctrlAuditoriaMejoras.mejoraSel}"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+
+
+            <div class="ui-g-4">       
+                <p:panel header="Datos variantes">
+                    <h:outputLabel id="comparacion" value="#{ctrlAuditoriaMejoras.comparacion}" escape="false"/>      
+                </p:panel>
+
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">            
+            <img src="../../../resources/gifs/Loading.gif" alt=""/>
+        </p:dialog>
+
+
+        <ui:include src="frmComparacionMejoras.xhtml"/>          
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgRegistrarObras" widgetVar="dlgRegistrarObras" closable="false" modal="true" resizable="true" 
+              header="Registro de obra" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarObra">
+            <center>
+                <h:outputLabel value="#{controladorMejoras.mejoraSel.nombre}"/>
+            </center>            
+
+            <p:fieldset legend="Datos de la obra" toggleable="true" toggleSpeed="500">
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtMejora"  type="text" value="#{controladorMejoras.objObra.nombreObra}" 
+                                         title="Nombre de la obra" required="true" 
+                                         requiredMessage="El nombre de la obra es campo es obligatorio.">                        
+                            </p:inputText>
+                            <label>* Nombre</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+
+                    <p:selectOneMenu style="text-align: justify; " id="idFormaPago" 
+                                     value="#{controladorMejoras.idTipoObra}" effect="fade" filter="true" 
+                                     filterMatchMode="contains" requiredMessage="El tipo de obra es campo obligatorio." required="true">
+                        <f:selectItem itemLabel="* Tipo de obra" itemValue="" />
+                        <f:selectItems value="#{controladorMejoras.lstTipoObras}" 
+                                       var="tipObra"
+                                       itemLabel="#{tipObra.tipoObra}"
+                                       itemValue="#{tipObra.idTipoObra}" />                        
+                    </p:selectOneMenu>
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtObservaciones"  value="#{controladorMejoras.objObra.valorObra}" 
+                                         title="Costo de la Obra" required="true" 
+                                         requiredMessage="El costo de la obra es campo es obligatorio.">                        
+                            </p:inputText>
+                            <label>* Costo</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText id="txtRangoAfect"  type="text" value="#{controladorMejoras.objObra.rangoAfectacion}" 
+                                         title="Rango de afectacion" required="true" 
+                                         requiredMessage="El Rango de la afectación es campo es obligatorio.">                        
+                            </p:inputText>
+                            <label>* Rango de afectación</label>
+                        </h:panelGroup>
+                    </p:panelGrid>                   
+                </p:panelGrid>
+            </p:fieldset>
+
+            <br/>
+            <p:fieldset legend="Términos de pago" toggleable="true" toggleSpeed="500">
+                <p:accordionPanel dynamic="true">
+                    <p:tab title="Municipio">
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Municipio (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.porctMunicipio}" style="width: 50%"/>                     
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Beneficiarios Directos">
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Beneficiarios directos (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.porctBenefDirect}" style="width: 50%"/>  
+                        </p:panelGrid>
+                        <p:separator/>
+                        <h:outputLabel value="Basado en: "/>
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Frente (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.frenteBenefDirect}" style="width: 50%"/>
+                            <h:outputLabel value="Avalúo (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.avaluoBenefDirect}" style="width: 50%"/>
+                            <h:outputLabel value="Valor metro lineal:"/>
+                            <p:inputText value="#{controladorMejoras.objObra.valorMetroDirecto}" style="width: 50%"/>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Beneficiarios Indirectos">
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Beneficiarios indirectos (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.porctBenefIndirect}" style="width: 50%"/>  
+                        </p:panelGrid>
+                        <p:separator/>
+                        <h:outputLabel value="Basado en: "/>
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Frente (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.frentBenefIndirect}" style="width: 50%"/>
+                            <h:outputLabel value="Avalúo (%):"/>
+                            <p:inputText value="#{controladorMejoras.objObra.avaluoBenefIndirect}" style="width: 50%"/>
+                            <h:outputLabel value="Valor metro lineal:"/>
+                            <p:inputText value="#{controladorMejoras.objObra.valorMetroIndirecto}" style="width: 50%"/>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>
+            </p:fieldset>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{controladorMejoras.registrarObra()}"
+                                 update="frmPrincipal:tblObras"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 process="@this"
+                                 onclick="PF('dlgRegistrarObras').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

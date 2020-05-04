@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarExEspecial" widgetVar="dlgRegistrarExEspecial" closable="false" modal="true" resizable="true" 
+              header="Registrar Excención Especial" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarExEspecial">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre Excención: "/>
+                    <p:inputText value="#{ctrlExcencionEspecial.objExcencionEspecial.excencion}"
+                                 required="true"
+                                 requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Descripción: "/>
+                    <p:inputText value="#{ctrlExcencionEspecial.objExcencionEspecial.descripcion}"
+                                 required="true"
+                                 requiredMessage="Descripción Obligatoria"/>             
+                    <p:outputLabel value="Porcentaje(Textual): "/>
+                    <p:inputText value="#{ctrlExcencionEspecial.objExcencionEspecial.porcentajeTexto}"
+                                 required="true"
+                                 requiredMessage="Porcentaje(Textual) Obligatorio"/>
+                    <p:outputLabel value="Porcentaje(Numérico): "/>
+                    <p:inputText value="#{ctrlExcencionEspecial.objExcencionEspecial.porcentajeNumerico}"
+                                 required="true"
+                                 requiredMessage="Porcentaje(Numérico) Obligatorio"/>
+                    <p:outputLabel value="Forma de Uso: "/>
+                    <p:inputText value="#{ctrlExcencionEspecial.objExcencionEspecial.formaUso}"
+                                 required="true"
+                                 requiredMessage="Forma de Uso(Texto) Obligatorio"/>
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlExcencionEspecial.insertar()}"
+                                 update="frmListaExEspecial:tblListaExEspecial"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarExEspecial').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

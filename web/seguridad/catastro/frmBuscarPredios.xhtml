@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <div class="ui-g">                        
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form id="frmPrincipal">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                                <center>                                    
+                                    <b>Buscar predios</b>
+                                    <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                                        <p:outputLabel value="Zona"/>
+                                        <p:inputText id="zona" value="#{buscarPrediosCtrl.zona}" style="width: 35%"/>
+                                        <p:outputLabel value="Sector"/>
+                                        <p:inputText id="sector" value="#{buscarPrediosCtrl.sector}" style="width: 35%"/>
+                                        <p:outputLabel value="Manzana"/>
+                                        <p:inputText id="manzana" value="#{buscarPrediosCtrl.manzana}" style="width: 35%"/>
+                                        <p:outputLabel value="Predio"/>
+                                        <p:inputText id="predio" value="#{buscarPrediosCtrl.numPredio}" style="width: 35%"/>                                        
+                                        <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                         action="#{buscarPrediosCtrl.buscarPredios()}"
+                                                         update="tblPredios"/>
+                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                         action="#{buscarPrediosCtrl.limpiar()}"
+                                                         update="tblPredios, @form"/>
+                                    </p:panelGrid>   
+                                </center>
+                                <p:dataTable id="tblPredios" var="predio" value="#{buscarPrediosCtrl.lstPredios}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{liquidacionCtrl}"
+                                             editable="true" selection="#{buscarPrediosCtrl.objPredio}" selectionMode="single">
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Listado de predios"/>
+                                    </f:facet>
+                                    <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.claveCatastral}"/>
+                                    </p:column>
+                                    <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                    </p:column>
+                                    <p:column headerText="Dirección" width="12%">
+                                        <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                    </p:column>
+                                    <p:column headerText="Certificaciones" width="4%" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-local-printshop"/>
+                                    </p:column>
+                                    <p:column headerText="Regularicación Urbana" width="4%" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-description"/>
+                                    </p:column>
+                                </p:dataTable>
+
+
+                                <p:commandButton icon="ui-icon-archive"  ajax="false" title="Ver Pdf"
+                                                 actionListener="#{cTitulosEmitidosAnualmente.verReporteLibroPredial()}"
+                                                 onclick="this.form.target = '_blank'"/>                                                                    
+                                
+                            </h:form>
+                        </div>
+                    </div>
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+    </ui:define>
+</ui:composition>

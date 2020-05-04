@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="420" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b8d716be-6f96-43e2-bb4b-bbabc2b4ff3a">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="69"/>
+	<parameter name="id_titulo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+                    *
+                    FROM
+                    "catastro"."v_reporte_titulo_anulado" v_reporte_titulo_anulado
+                    WHERE
+                    sr_id_titulo = $P{id_titulo}]]>
+	</queryString>
+	<field name="sr_id_titulo" class="java.lang.Integer"/>
+	<field name="int_anio_titulo" class="java.lang.Integer"/>
+	<field name="int_num_titulo" class="java.lang.Integer"/>
+	<field name="chv_titulo_numero" class="java.lang.String"/>
+	<field name="ts_fecha_emision" class="java.sql.Timestamp"/>
+	<field name="id_predio" class="java.lang.Integer"/>
+	<field name="id_propietario_index" class="java.lang.Integer"/>
+	<field name="db_valor_terreno" class="java.lang.Double"/>
+	<field name="db_valor_construccion" class="java.lang.Double"/>
+	<field name="db_avaluo_comercial" class="java.lang.Double"/>
+	<field name="db_excenciones" class="java.lang.Double"/>
+	<field name="chv_causa_excencion" class="java.lang.String"/>
+	<field name="db_avaluo_imponible" class="java.lang.Double"/>
+	<field name="db_impuesto_predial" class="java.lang.Double"/>
+	<field name="db_recolect_basura" class="java.lang.Double"/>
+	<field name="db_cuerpo_bomberos" class="java.lang.Double"/>
+	<field name="db_recargo" class="java.lang.Double"/>
+	<field name="db_total_titulo" class="java.lang.Double"/>
+	<field name="db_intereses_mora" class="java.lang.Double"/>
+	<field name="db_total_pagar" class="java.lang.Double"/>
+	<field name="bl_pagado" class="java.lang.Boolean"/>
+	<field name="usuario_sistema" class="java.lang.Integer"/>
+	<field name="int_id_transacion" class="java.lang.Long"/>
+	<field name="db_descuento" class="java.lang.Double"/>
+	<field name="db_iva" class="java.lang.Double"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="txt_observaciones" class="java.lang.String"/>
+	<field name="db_procesamiento" class="java.lang.Double"/>
+	<field name="db_recargo_semestral" class="java.lang.Double"/>
+	<field name="id_session_usuario" class="java.lang.Integer"/>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="int_id_parroquia" class="java.lang.Integer"/>
+	<field name="int_zona" class="java.lang.Integer"/>
+	<field name="int_sector" class="java.lang.Integer"/>
+	<field name="int_manzana" class="java.lang.Integer"/>
+	<field name="int_num_predio" class="java.lang.Integer"/>
+	<field name="int_prop_hor_bloque" class="java.lang.Integer"/>
+	<field name="int_prop_hor_piso" class="java.lang.Integer"/>
+	<field name="int_prop_hor_unidad" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="chv_calle_princ" class="java.lang.String"/>
+	<field name="chv_calle_secund" class="java.lang.String"/>
+	<field name="sr_id_persona" class="java.lang.Integer"/>
+	<field name="chv_cedula" class="java.lang.String"/>
+	<field name="chv_nombres" class="java.lang.String"/>
+	<field name="chv_apellidos" class="java.lang.String"/>
+	<field name="chv_ruc" class="java.lang.String"/>
+	<field name="chv_direccion_domiciliaria" class="java.lang.String"/>
+	<field name="chv_nick" class="java.lang.String"/>
+	<field name="propietario" class="java.lang.String"/>
+	<field name="direccion_predio" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="parroquia" class="java.lang.String"/>
+	<field name="chv_razon_baja" class="java.lang.String"/>
+	<field name="chv_observaciones" class="java.lang.String"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<image>
+				<reportElement x="2" y="0" width="134" height="71" uuid="34bee907-330f-43c9-b343-64f39fa94ac3"/>
+				<imageExpression><![CDATA["http://catastro.archidona.gob.ec/media/faces/reportes/imagenes/escudo_archidona_2.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="85" y="36" width="391" height="20" uuid="0551138d-ec08-4930-85d5-60c3e1d3b213"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TITULO PREDIAL URBANO DADO DE BAJA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="4" width="391" height="20" uuid="3c363f3d-9651-4c6d-aa86-7893015d1fcc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="16" width="391" height="20" uuid="abfe4a7c-8805-4943-a719-823c71745c70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPAL DEL CANTÓN ARCHIDONA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="277" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="240" width="554" height="37" uuid="82188702-2b43-4ea7-9b50-1014ddd21332"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="198" width="554" height="42" uuid="fe70be20-ed5d-4de2-8edb-f9cdb5986f20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="367" y="1" width="88" height="20" uuid="3e131898-382f-4059-9025-bc04234cd798"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA EMISIÓN:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="455" y="1" width="100" height="20" uuid="a1c8a51e-6ec2-4a7d-acd9-113698b35a71"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ts_fecha_emision}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="17" width="553" height="1" uuid="5bb0f242-3083-46ee-826c-7a7c8c723ec1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="18" width="100" height="20" uuid="4205e15e-d155-4640-b8c0-2961b7ae91ff"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRIBUYENTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="102" y="18" width="247" height="20" uuid="6654071d-8141-4c94-95a4-ea3d029a069e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{propietario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="368" y="18" width="71" height="20" uuid="dad54dd9-d284-4a64-8589-a70e357157f1"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CEDULA/RUC:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="439" y="18" width="116" height="20" uuid="78cb08dc-3cfc-4b47-bb7f-40581b2f5281"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_ruc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="32" width="65" height="20" uuid="b3484b7a-82fd-4bf6-a45c-500527e76ffc"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="66" y="32" width="489" height="20" uuid="48ee2c89-8ec7-4a68-b0a9-f2d44473c02c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion_predio}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="46" width="553" height="1" uuid="10b5d6cd-1deb-4d59-8a20-177d3fa64e57"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="48" width="114" height="20" uuid="3cd38ace-da29-4a37-9d39-a6bd52fc6778"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAVE CATASTRAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="105" y="48" width="94" height="20" uuid="c540fb0f-45a1-4e4a-bbd2-be120ef1888d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_clave_catastral}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="203" y="47" width="100" height="20" uuid="d2103e96-ba44-481a-9019-022ed4ea7f6d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TITULO NÚMERO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="296" y="47" width="100" height="20" uuid="4906718d-0611-4f41-99d7-f54f7f420a04"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_titulo_numero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="387" y="47" width="29" height="20" uuid="9bd3142b-62a8-47b8-b614-5e642e42ffea"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AÑO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="47" width="100" height="20" uuid="9448e478-4afb-41e7-ba9d-33fdfd176786"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{int_anio_titulo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="355" y="92" width="121" height="14" uuid="a4b124e4-687a-4351-8d1b-af07bffa069d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AVALÚO CATASTRAL:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="477" y="91" width="77" height="15" uuid="4339c600-0140-4fd6-9c62-3d11fc82b013"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_avaluo_comercial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="73" width="172" height="20" uuid="439a695d-b306-4b62-9404-24d5ad31ba8b"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXCENCIONES/REBAJAS:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="174" y="73" width="100" height="20" uuid="99b651ad-0760-48f5-a33d-445fee0d97ac"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_excenciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="355" y="106" width="121" height="20" uuid="557446d6-b657-4126-8319-4f73e2ae98a8"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BASE TRIBUTARIA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="115" width="212" height="20" uuid="25f3692d-c21b-477e-a4ce-4e18603e6564"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[IMPUESTOS Y TASAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="132" width="173" height="20" uuid="38ebd5ec-4639-4c0c-a003-ea59fa1d73d7"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPUESTO PREDIAL:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="155" y="132" width="100" height="20" uuid="8715d5b9-3cd7-420e-9503-bce7c9de3ea8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_impuesto_predial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="146" width="173" height="20" uuid="eeb94e43-1258-411b-946c-5954287b3e38"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUERPO BOMBEROS:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="155" y="146" width="100" height="20" uuid="5aeb761d-4844-4fcd-9dd0-cd7179a82a06"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_cuerpo_bomberos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="257" y="131" width="159" height="20" uuid="02214c35-745d-47aa-8c41-4a377f45ca17"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCUENTO / RECARGO:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="416" y="131" width="97" height="20" uuid="3bb1ce27-5f96-41c0-bf4a-85607e2dce6a"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_descuento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="258" y="144" width="158" height="20" uuid="088588f1-5f1f-46d2-ad90-8c48f69deb66"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INTERESES MORA:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="416" y="144" width="97" height="20" uuid="8eb99e84-81dd-41bc-a06e-c86026faacb9"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_intereses_mora}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="257" y="176" width="130" height="20" uuid="0951fb86-e13c-493e-b816-3fb809d65a05"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL VALOR:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="387" y="176" width="100" height="20" uuid="a3f0f7be-26c7-4051-86a9-c765a7b91dad"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_total_titulo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="161" width="172" height="20" uuid="30558452-5bf2-479c-8f73-986fc0eef6e9"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLAR NO EDIFICADO:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="155" y="161" width="100" height="20" uuid="9dddfc25-3d6d-4e68-8a50-2511708c41b4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_recargo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="477" y="106" width="77" height="14" uuid="01341963-294a-4f03-bd86-e444c24ffe7f"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_avaluo_imponible}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="175" width="172" height="20" uuid="6a42a3f8-39ff-466b-87ee-d6b402e03f23"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROCESAMIENTO:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="155" y="176" width="100" height="20" uuid="a6e9e839-05b0-4304-a1e4-5df1c9f4cd4b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_procesamiento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="355" y="64" width="121" height="13" uuid="8cd6cdf0-40df-4ef6-bd1e-a53448415df5"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR TERRENO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="77" width="121" height="14" uuid="36bd9a7c-c687-4814-bd67-852d92c27637"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR CONSTRUCCIÓN:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="477" y="63" width="77" height="14" uuid="7d363e42-1890-4c77-8d4e-30cac32f94cf"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_valor_terreno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="477" y="77" width="77" height="14" uuid="af90a1fd-1e5e-4b7c-816f-35dd31529828"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_valor_construccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="199" width="172" height="20" uuid="5ea0cfca-a5c6-429a-bd0f-5085d9fb7f7b"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RAZON ELIMINACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="240" width="172" height="20" uuid="91846116-5f14-41fa-bd04-6c857a14349c"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACION:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="174" y="199" width="381" height="41" uuid="a117e3a8-1242-49e5-b177-b3d2cff3c63f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_razon_baja}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="173" y="240" width="381" height="20" uuid="50aec9fa-4afd-4f8c-9825-843b2f67a642"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_observaciones}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="97" width="172" height="20" uuid="ac9e1a02-f0c3-4eab-a954-fd1c51811e49"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA BAJA TITULO:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="172" y="97" width="100" height="20" uuid="8f4bc81d-b106-4f38-9fe8-e9d090a9bf84"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ts_fecha_registro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="474" y="259" width="59" height="14" uuid="8e294174-07ac-42c5-9ec0-599c499c838d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sistema SigCat ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="260" width="388" height="13" uuid="b9a2be21-23c1-4a28-88eb-f8c91ae9c311"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Juntos construimos el Cantón que nos merecemos.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15"/>
+	</pageFooter>
+</jasperReport>

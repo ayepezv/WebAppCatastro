@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a9ea6a1f-e8eb-4837-a568-edd436bc5324">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="644"/>
+	<parameter name="id_predio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_usuario" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from catastro.f_certificacion_predial_dado_predio_v2wfs($P{id_predio},$P{id_usuario})]]>
+	</queryString>
+	<field name="out_num_certif" class="java.lang.Long"/>
+	<field name="out_predio" class="java.lang.Integer"/>
+	<field name="out_total_costruccion" class="java.lang.Double"/>
+	<field name="out_total_uso_suelo" class="java.lang.Double"/>
+	<field name="out_impuesto_predial" class="java.lang.Double"/>
+	<field name="out_avaluo" class="java.lang.Double"/>
+	<field name="out_clave_catastral" class="java.lang.String"/>
+	<field name="out_id_titular_dom" class="java.lang.Integer"/>
+	<field name="out_cedula" class="java.lang.String"/>
+	<field name="out_propietario" class="java.lang.String"/>
+	<field name="out_direccion" class="java.lang.String"/>
+	<field name="out_chv_barrio" class="java.lang.String"/>
+	<field name="out_area_terreno" class="java.lang.Double"/>
+	<field name="out_usuario_logueado" class="java.lang.String"/>
+	<field name="out_chv_croquis" class="java.lang.String"/>
+	<field name="out_path_croquis" class="java.lang.String"/>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="45" y="0" width="462" height="45" uuid="59b5efc6-282d-44bd-a21d-dd489f899aed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL DE ARCHIDONA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="36" width="461" height="31" uuid="7b0b788f-95bd-45f3-b48b-4e9322c00490"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN DE AVALÚOS Y CATASTRO]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="73" height="67" uuid="174a5fda-b05b-4a0c-ab45-146c30ac3144"/>
+				<imageExpression><![CDATA["http://catastro.archidona.gob.ec/WebAppCatastro/faces/resources/imagenes/escudo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="671" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="123" width="555" height="548" uuid="8b73c2b7-e053-40eb-92ed-852416f9889b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="35" width="555" height="39" uuid="b5fc722a-09f6-4b89-a48a-79d409041975"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="455" y="9" width="100" height="20" uuid="942f90da-cbf4-4261-895f-e45e21cc0713"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="10" width="175" height="19" uuid="c657aca4-bfb9-4359-8b4e-ae0311f9a24c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="12" width="100" height="20" uuid="a1e2618e-66c2-4446-9179-2a3585af7d19"/>
+				<textElement>
+					<font fontName="SansSerif" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Archidona, a ]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="69" y="12" width="100" height="20" uuid="ffc377e5-0677-4343-8479-5c995a72e941"/>
+				<textElement>
+					<font fontName="SansSerif" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="460" y="12" width="47" height="20" uuid="7b1ea097-77e6-47dc-a7e0-f03d18f51ca5"/>
+				<textElement>
+					<font fontName="SansSerif" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Número:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="40" width="540" height="37" uuid="b3a5c532-efe2-454c-a036-39fcb0d6988a"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[El suscrito Coordinador de Avalúos y Catastros del Gobierno Autónomo de Descentralizado Municipal del Cantón Archidona]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="142" width="100" height="20" uuid="b82af5fe-5003-4971-b3aa-e0c495e89b26"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SansSerif" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Que a favor de ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="89" y="142" width="250" height="20" uuid="4394ccd9-dd63-4d0f-9898-80ae16524cb1"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_propietario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="339" y="142" width="136" height="20" uuid="91628545-e246-4055-a765-ebc409181a58"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SansSerif" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[con Cédula de Ciudadanía]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="465" y="143" width="90" height="20" uuid="9243891a-0a53-4dba-b138-ab97b9113146"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="162" width="329" height="20" uuid="d98e5fd0-f494-4d7b-97a2-2f010dd87fcc"/>
+				<textElement>
+					<font fontName="SansSerif" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[se encuentra catastrado un lote de terreno URBANO, ubicado en el Barrio]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="339" y="162" width="215" height="20" uuid="0725b33f-2fe5-4983-889d-3269607d7e89"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_chv_barrio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="182" width="130" height="20" uuid="df3ffe3b-f5cd-4d69-83b1-7d7173a9360d"/>
+				<textElement>
+					<font fontName="SansSerif" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[con los siguientes datos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="507" y="12" width="43" height="20" uuid="3d147239-ee10-4da7-891d-ad3d3089b1e4"/>
+				<textElement>
+					<font fontName="SansSerif" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_num_certif}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="208" width="129" height="20" uuid="4043baee-2b9c-45b6-a997-cb40eb110626"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLAVE CATASTRAL:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="136" y="208" width="164" height="20" uuid="abfb9ad7-16bb-47a6-8243-aa93d023453c"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_clave_catastral}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="228" width="65" height="20" uuid="58e055b8-6d46-46b2-8256-bdd0fc2d920a"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="73" y="228" width="464" height="20" uuid="420b9fc2-f26a-4831-920d-f5c63d0a4c82"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="248" width="185" height="20" uuid="ccff2e04-2994-45bb-996b-bb373744bbcd"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ÁREA GRÁFICA DEL TERRENO:]]></text>
+			</staticText>
+			<textField pattern="###0.00 m2" isBlankWhenNull="true">
+				<reportElement x="193" y="248" width="238" height="20" uuid="370386c8-2817-48b8-9d20-022405402576"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_area_terreno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="268" width="185" height="20" uuid="f80e86f5-195a-449c-818d-6cbbb435fbe3"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AVALÚO DE LA PROPIEDAD:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="193" y="268" width="238" height="20" uuid="fec3ccea-c1e8-4f20-99ee-73c1ba48f099"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_avaluo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="288" width="185" height="20" uuid="491ea91d-011f-4f37-aaf3-49bb77d8b0a2"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AVALÚO DEL LOTE DE TERRENO:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="193" y="288" width="238" height="20" uuid="c0e41a0d-185b-4c73-9e94-582d98c107ad"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_total_uso_suelo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="308" width="185" height="20" uuid="88e86b97-6549-461e-9d54-7b770209525d"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AVALÚO CONSTRUCCIÓN:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="193" y="308" width="238" height="20" uuid="2b841b5f-8c73-4329-b6af-fabecdb80d19"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_total_costruccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="228" y="567" width="100" height="20" uuid="81ab84ec-54d6-47a5-9ba4-4ad9beffa89e"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Lo certifico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="635" width="235" height="20" uuid="f7a342f2-107a-44fe-a166-1f204831914d"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[COORDINADOR DE AVALÚOS Y CATASTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="648" width="298" height="20" uuid="6599b0f9-a58d-4a56-a451-a168b035270f"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO MUNICIPAL DE ARCHIDONA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="161" y="634" width="233" height="1" uuid="6c52a6eb-b2a6-410c-8ee3-dff3d75251a0"/>
+			</line>
+			<staticText>
+				<reportElement x="166" y="77" width="154" height="38" uuid="1d6a1932-0f46-4fac-b538-6e802c200b7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICA]]></text>
+			</staticText>
+			<image hAlign="Center">
+				<reportElement stretchType="RelativeToTallestObject" x="4" y="344" width="551" height="210" uuid="a925232d-2acd-4303-a451-6861a3749401"/>
+				<imageExpression><![CDATA[$F{out_path_croquis}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="67" y="-1" width="137" height="20" uuid="2da28a41-ecd4-4d5f-b152-21a3739eea78"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_usuario_logueado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="-1" width="67" height="20" uuid="488e37ca-3caa-4f27-91d8-929d551e645c"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Generado por:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="-1" width="123" height="19" uuid="ee7b1585-3294-4d66-95d6-44e17c20ba61"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ING. JAIME SHIGUANGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="8" width="123" height="19" uuid="fb26e522-fd50-4fba-a088-a4b9ced6a10f"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ALCALDE 2014 - 2019]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="12" width="45" height="15" uuid="f448883b-eca5-43b4-bbbb-106c5f334a77"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Hora imp:]]></text>
+			</staticText>
+			<textField pattern="HH:mm:ss">
+				<reportElement x="45" y="12" width="106" height="15" uuid="e62a657a-c2ee-4b5b-8080-013cec231f5b"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="151" y="12" width="59" height="13" uuid="f456e4cb-3f29-468a-bc63-4757698f3427"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isItalic="true" pdfFontName="Helvetica-Oblique" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Sistema SigCat ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

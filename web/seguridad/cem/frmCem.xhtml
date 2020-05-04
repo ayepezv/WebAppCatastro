@@ -1,0 +1,237 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCem}">
+                <h:form id="frmPrincipal">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <div class="ui-g">
+                        <div class="ui-g-6">
+                            <p:dataTable id="tblMejoras" var="mejora" value="#{controladorMejoras.lstMejoras}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{mejora.idMejora}"
+                                         editable="true" selection="#{controladorMejoras.mejoraSel}" selectionMode="single">
+
+                                <f:facet name="header">
+                                    <b>Listado de Mejoras</b> 
+                                </f:facet>
+
+                                <p:column headerText="Nombre" width="10%">
+                                    <p:outputLabel value="#{mejora.nombre}"/>
+                                </p:column>
+
+                                <p:column headerText="Costo" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{mejora.costo} $"/>
+                                </p:column>
+
+                                <p:column headerText="Acciones" width="5%" style="text-align: center">
+                                    <c:choose>                                        
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-pencil" onclick="PF('dlgEditarMejora').show()"
+                                                             update="frmEditarMejora"
+                                                             title="Editar Mejora">
+                                                <f:setPropertyActionListener value="#{mejora}" target="#{controladorMejoras.mejoraSel}"/>
+                                            </p:commandButton>
+                                        </c:when> 
+                                    </c:choose>
+                                    <c:choose>  
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-trash" onclick="PF('dlgEliminarMejora').show()"
+                                                             update="frmEliminarMejora"
+                                                             title="Eliminar Mejora">
+                                                <f:setPropertyActionListener value="#{mejora}" target="#{controladorMejoras.mejoraSel}"/>
+                                            </p:commandButton>
+                                        </c:when> 
+                                    </c:choose>
+                                    <p:commandButton icon="ui-icon-folder-special"
+                                                     title="Ver Obras"
+                                                     action="#{controladorMejoras.obtenerObrasDadoMejora()}"
+                                                     update="frmPrincipal:tblObras">
+                                        <f:setPropertyActionListener value="#{mejora}" target="#{controladorMejoras.mejoraSel}"/>     
+                                        <f:setPropertyActionListener value="#{mejora}" target="#{controladorObras.objMejora}"/>   
+                                    </p:commandButton>
+
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-plusthick" title="Registrar Mejora"
+                                                             onclick="PF('dlgRegistrarMejora').show()"/>
+                                        </c:when> 
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privSelect == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-description"
+                                                             title="Detalles de la Mejora"/>
+                                        </c:when> 
+                                    </c:choose>
+                                </f:facet>                            
+                            </p:dataTable>  
+                        </div>
+
+                        <div class="ui-g-6">
+                            <p:dataTable id="tblObras" var="obra" value="#{controladorMejoras.lstObras}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{obra.idObra}"
+                                         editable="true" selection="#{controladorMejoras.obraSel}" selectionMode="single">
+
+                                <p:column headerText="Obra" width="10%" style="text-align: center">
+                                    <p:outputLabel value="#{obra.nombreObra}"/>
+                                </p:column>
+
+                                <p:column headerText="Costo" width="4%" style="text-align: center">
+                                    <p:outputLabel value="#{obra.valorObra} $"/>
+                                </p:column>
+
+                                <p:column headerText="Editar" width="7%" style="text-align: center">
+                                    <c:choose>                                                                          
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}"> 
+                                            <p:commandButton icon="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" 
+                                                             onclick="PF('dlgEditarObra').show()"
+                                                             update="frmEditarObra">
+                                                <f:setPropertyActionListener value="#{obra}" target="#{controladorObras.obraSel}"/>
+                                            </p:commandButton>
+                                        </c:when> 
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">      
+                                            <p:commandButton icon="ui-icon-delete" 
+                                                             onclick="PF('dlgEliminarObra').show()"
+                                                             update="frmEliminarObra">
+                                                <f:setPropertyActionListener value="#{obra}" target="#{controladorObras.obraSel}"/>
+                                            </p:commandButton>
+                                        </c:when>                                         
+                                    </c:choose>
+                                    <p:commandButton icon="ui-icon-document" title="Ver Beneficiarios"
+                                                     action="#{controladorMejoras.obtenerBeneficiarios()}"
+                                                     update="frmPrincipal:tabBeneficiarios:tblBeneficiarios">
+                                        <f:setPropertyActionListener value="#{obra}" target="#{controladorObras.obraSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <f:facet name="header">
+                                    <p:outputLabel value="Obras"/>
+                                </f:facet>
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}"> 
+                                            <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                             onclick="PF('dlgRegistrarObras').show()"
+                                                             update="frmRegistrarObra"/>
+                                        </c:when> 
+                                    </c:choose>
+                                </f:facet> 
+
+                            </p:dataTable>
+                        </div>
+
+                        <div class="ui-g-12">
+                            <div class="card">
+                                <center>
+                                    <p:tabView id="tabBeneficiarios">
+                                        <p:tab id="benefDirectos" title="Beneficiarios directos">
+                                            <p:dataTable id="tblBeneficiarios" var="beneficiario" value="#{controladorMejoras.lstBenefDirectos}" rows="5"
+                                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{beneficiario.idBeneficiario}"
+                                                         editable="true" selection="#{controladorMejoras.beneficiario}" selectionMode="single">
+
+                                                <p:column headerText="Num. beneficiario" width="10%" style="text-align: center">
+                                                    <p:outputLabel value="#{beneficiario.numBeneficiario}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Clave Catastral" width="10%" style="text-align: center">
+                                                    <p:outputLabel value="#{beneficiario.predio.claveCatastral}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                                    <p:outputLabel value="#{beneficiario.predio.propietario.apellidos} 
+                                                                   #{beneficiario.predio.propietario.nombres}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Valor del Metro" width="10%" style="text-align: center">
+                                                    <p:outputLabel value="#{beneficiario.obra.valorMetroDirecto}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Forma de pago" width="10%" style="text-align: center">
+                                                    <p:outputLabel value="#{beneficiario.obra.mejora.plazo}  #{beneficiario.obra.mejora.formaPago.formaPago}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Valor de la mejora" width="10%" style="text-align: center">
+                                                    <p:outputLabel value="#{beneficiario.valorMejora}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Revisar" width="4%" style="text-align: center">
+                                                    <p:commandButton icon="ui-icon-rate-review"/>
+                                                </p:column>
+
+                                                <f:facet name="footer">
+                                                    <c:choose>                                         
+                                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">   
+                                                            <p:commandButton value="Registrar beneficiarios"
+                                                                             icon="ui-icon-group-add"
+                                                                             action="#{controladorMejoras.registarBeneficiariosObra()}"/>
+                                                        </c:when> 
+                                                    </c:choose>
+                                                </f:facet>
+                                            </p:dataTable>
+                                        </p:tab>
+                                        <p:tab id="benefIndirectos" title="Beneficiarios indirectos">
+
+                                        </p:tab>
+                                    </p:tabView>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+                <ui:include src="frmRegistrarMejora.xhtml"/>   
+                <ui:include src="frmEditarMejora.xhtml"/>   
+                <ui:include src="frmEliminarMejora.xhtml"/>   
+                <ui:include src="frmRegistrarObra.xhtml"/>   
+                <ui:include src="frmBeneficiariosDirectos.xhtml"/>   
+                <ui:include src="frmActualizarObra.xhtml"/>   
+                <ui:include src="frmEliminarObra.xhtml"/>  
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCem}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+
+    </ui:define>
+</ui:composition>

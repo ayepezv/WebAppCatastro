@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">  
+
+    <p:dialog id="dlgTitulo" widgetVar="dlgTitulo" closable="false" modal="true" resizable="true" 
+              header="Titulo Recaudado" showEffect="size" hideEffect="size">
+        <h:form id="frmTituloRecaudado">                     
+            <center>
+                <b>
+                    <p:outputLabel value="Transaccion: #{ctAnularCobro.objTransaccion.numTransaccion}"/> <br/>
+                    <p:outputLabel value="Valor recaudado: "/>
+                    <p:outputLabel value="#{ctAnularCobro.objTransaccion.valorTransaccion}">
+                        <f:convertNumber pattern="#0.00" />
+                    </p:outputLabel> <br/>                                
+                    <p:outputLabel value="Clave Catastral: #{ctAnularCobro.objTitulo.predio.claveCatastral}"/> <br/>
+                    <p:outputLabel value="Año Titulo: #{ctAnularCobro.objTitulo.anioTitulo}"/> <br/> 
+                </b>
+                <p:commandButton value="Aceptar"
+                                 icon="ui-icon-close"
+                                 onclick="PF('dlgTitulo').hide();"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

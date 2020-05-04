@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgEliminarDocumento" widgetVar="dlgEliminarDocumento" closable="true" modal="true" resizable="true" 
+              header="Eliminar" showEffect="size" hideEffect="size">
+        <h:form id="frmEliminarDocumento">            
+            <center>
+                <b><h2>¿Esta seguro que desea eliminar el documento seleccionado?</h2></b>
+                <h:outputLabel value="#{ctRepDocumentos.repositorioSel.documento.titulo}"/>
+                <br/>
+                <p:commandButton value="Si"
+                                 icon="ui-icon-check"
+                                 update="frmPrincipal:tblDocumentos"
+                                 action="#{ctRepDocumentos.eliminarDocumento()}"/>
+                <p:commandButton value="No"
+                                 icon="ui-icon-cancel"
+                                 onclick="PF('dlgEliminarDocumento').hide();"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

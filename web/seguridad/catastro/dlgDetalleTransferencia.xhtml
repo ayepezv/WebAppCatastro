@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">  
+    <p:dialog id="dlgDetalleTransfer" widgetVar="wdlgDetalleTransfer" closable="true" modal="true" resizable="true" 
+              header="Detalles de la Transferencia" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmDetalles">                     
+            <div class="ui-g"> 
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <p:separator/>
+                    <b>Clave Catastral: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.predio.claveCatastral}"/>
+                    <p:separator/>
+                    <b>PROPIETARIO:</b>
+                    <p:separator/>
+                    <b>Cédula/Ruc: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.propietario.cedula}"/>
+                    <br/>
+                    <b>Nombre/Razón Social: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.propietario.nombres}"/>
+                    <p:separator/>
+                    <b>COMPRADOR:</b>
+                    <p:separator/>
+                    <b>Cédula/Ruc: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.comprador.cedula}"/>
+                    <br/>
+                    <b>Nombre/Razón Social: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.comprador.nombres}"/>
+                    <br/>
+                    <p:separator/>
+                    <b>Datos transferencia</b>
+                    <br/>
+                    <b>Documento Habilitante: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.tipoTocumento} N° #{ctTransferenciaDominio.objTransferencia.numeroDocumento}"/>
+                    <br/>
+                    <b>Excenciones Especiales: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.excencionesEsp}"/>
+                    <br/>
+                    <b>Razón de la Excención: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.razonExcencion}"/>
+                    <br/>
+                    <b>Forma de Adquisición: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.formaAdquisicion}"/>
+                    <br/>
+                    <b>Notaría: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.notaria}"/>
+                    <br/>
+                    <b>Fecha de escritura: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.fechaEscritura}">
+                        <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                    </p:outputLabel>
+                    <br/>
+                    <b>Fecha de registro: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.fechaRegistro}">
+                        <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                    </p:outputLabel>
+                    <br/>
+                    <b>Area de Escritura: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.areaEscritura} m2"/>
+                    <p:separator/>
+                    <b>PRÉSTAMO</b>
+                    <br/>
+                    <b>Préstamo: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.prestamo}"/>
+                    <br/>
+                    <b>Entidad: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.entidad}"/>
+                    <br/>
+                    <b>Monto: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.montoCredito}">
+                    </p:outputLabel>
+                    <br/>
+                    <b>Plazo: </b>
+                    <p:outputLabel value="#{ctTransferenciaDominio.objTransferencia.plazo}"/>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

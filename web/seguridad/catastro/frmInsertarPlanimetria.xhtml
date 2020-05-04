@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgPlanimetria" widgetVar="dlgPlanimetria" closable="false" modal="true" resizable="true" 
+              header="Actualizar la Planimetria" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarPlanimetria">                      
+            <center>
+                <p:panel id="displayInsertarDocumento" styleClass="ui-noborder">
+                    <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;">
+                        <p:fileUpload fileUploadListener="#{ctrlActualizarPlanimetria.cargarArchivoDocumento}"
+                                      allowTypes="/(\.|\/)(pdf|doc?x|odt)$/" label="Abrir" mode="advanced"  
+                                      update="displayInsertarDocumento" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                      value="#{ctrlActualizarPlanimetria.archivoDocumento}"
+                                      required="true" requiredMessage="Cargar Documento!!" />
+                    </p:panelGrid>
+                </p:panel>
+                
+                <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                 action="#{ctrlActualizarPlanimetria.insertarPlanimetria()}"
+                                 update="frmPredios:tblPredios, displayInsertarDocumento"
+                                 process="@this"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgPlanimetria').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

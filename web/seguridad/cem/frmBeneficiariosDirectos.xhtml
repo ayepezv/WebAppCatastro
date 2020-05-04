@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgBenefDirectos" widgetVar="dlgBenefDirectos" closable="false" modal="true" resizable="true" 
+              header="Beneficiarios Directos" showEffect="size" hideEffect="size" width="75%">
+        <h:form id="frmBenefDirectos">
+            <p:dataTable id="tblBeneficiarios" var="beneficiario" value="#{controladorObras.lstPredios}" rows="5"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{beneficiario.idPredio}"
+                         editable="true" selection="#{controladorObras.predioSel}" selectionMode="single">
+                <p:column selectionMode="single" style="width:16px;text-align:center" width="2%"/>
+                <p:column headerText="Clave Catastral" width="5%">
+                    <h:outputText value="#{beneficiario.claveCatastral}" />
+                </p:column>
+                <p:column headerText="Beneficiario" width="10%">
+                    <h:outputText value="#{beneficiario.propietario.nombres} #{beneficiario.propietario.apellidos}" />
+                </p:column>
+                <p:column headerText="Área de construcción" width="5%">
+                    <h:outputText value="#{beneficiario.areaEscritura}" />
+                </p:column>
+            </p:dataTable>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgBenefDirectos').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteInteresGlobal" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a5c9b49-9dc5-422a-ac69-e92cf61ef530">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Catastro"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[select *
+from catastro.t_interes_mora
+order by sr_id_interes desc]]>
+	</queryString>
+	<field name="int_anio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="int_anio"/>
+	</field>
+	<field name="chv_mes" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="chv_mes"/>
+	</field>
+	<field name="chv_trimestre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="chv_trimestre"/>
+	</field>
+	<field name="db_interes_mensual" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="db_interes_mensual"/>
+	</field>
+	<field name="db_interes_acum_anual" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="db_interes_acum_anual"/>
+	</field>
+	<field name="db_interes_total_acum" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="db_interes_total_acum"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{int_anio}]]></groupExpression>
+		<groupHeader>
+			<band height="27">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="3" width="802" height="24" forecolor="#B89F7D" backcolor="#000000" uuid="f24569ed-2518-465a-a480-0c195aacd180"/>
+					<textField isStretchWithOverflow="true">
+						<reportElement style="SubTitle" x="2" y="0" width="695" height="24" forecolor="#FFFFFF" uuid="5b7282d2-5169-4db4-b85a-e2391d4d4e66"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="SansSerif" size="16" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{int_anio}]]></textFieldExpression>
+					</textField>
+					<line>
+						<reportElement x="0" y="27" width="802" height="1" uuid="4b8068dc-4050-410e-a307-f20473bf67a5"/>
+					</line>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{chv_trimestre}]]></groupExpression>
+		<groupHeader>
+			<band height="29">
+				<textField>
+					<reportElement positionType="Float" x="0" y="4" width="802" height="16" forecolor="#000000" uuid="c09ae599-41a3-4b19-8a1e-72af405a3627"/>
+					<textElement>
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_trimestre}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="21" width="802" height="1" uuid="f7fe3e28-9761-452f-b1f2-f5d2a3afa118"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="30" uuid="064291e5-3c7f-4a0c-ad3c-389baaf0a827"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL DEL CANTÓN ARCHIDONA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="802" height="19" uuid="9e03e1b1-83b0-4be1-8a9e-571464bc73ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TASAS DE INTERÉS POR MORA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="199" height="18" forecolor="#000000" uuid="f1d36b6d-0031-4530-b091-f1441de64618">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a373c0c-ad3f-4be3-ac25-cf2781561024"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="199" y="0" width="199" height="18" forecolor="#000000" uuid="a51ef7d3-4d8e-4818-9cbc-9ace073aa965">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9018bae0-6545-4399-9f6a-04de6752c5fb"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Interés mensual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="398" y="0" width="199" height="18" forecolor="#000000" uuid="5408c23f-1fb1-457d-b0b0-412f70eeea7a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a45b18f4-65c4-496b-8a8c-3dcea698eb1f"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Interés acumulado anual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="597" y="0" width="199" height="18" forecolor="#000000" uuid="d60b8434-dd87-4c6e-8156-2d47559034c7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ffb86eed-cc53-4123-998e-28e57aa65af9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Interés total acumulado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="34a2ae4b-4055-476b-8676-d499f6af510b"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="199" height="18" uuid="02f73a78-87b7-4718-ae3b-6d2a6dfdc7af">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a373c0c-ad3f-4be3-ac25-cf2781561024"/>
+					</reportElement>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_mes}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="199" y="0" width="199" height="18" uuid="fd9bf00c-b666-475f-a725-bae2dccfd9ad">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9018bae0-6545-4399-9f6a-04de6752c5fb"/>
+					</reportElement>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{db_interes_mensual}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="398" y="0" width="199" height="18" uuid="cfd31268-7c16-460d-a3af-1038015ef860">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a45b18f4-65c4-496b-8a8c-3dcea698eb1f"/>
+					</reportElement>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{db_interes_acum_anual}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" positionType="Float" x="597" y="0" width="199" height="18" uuid="fa15d3ba-3b72-42e4-9f54-4f9cdef576ac">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ffb86eed-cc53-4123-998e-28e57aa65af9"/>
+					</reportElement>
+					<textElement>
+						<font fontName="SansSerif" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{db_interes_total_acum}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="501ac6c4-e9d4-43cb-ba6b-7f2f44394cf3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="ffb10ec8-0371-4545-8eaa-96d62ad3cec0"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="b5521ea6-5f36-4864-856f-58d0bcd011f2"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="e625ea3c-1741-4cfe-81cf-fbbdd00162c8"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pág. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="0c9f7e91-d3f5-47f9-82b7-0b2b3a43a5d6"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgVerPlanimetria" widgetVar="dlgVerPlanimetria" closable="true" modal="true" resizable="true" 
+              header="Planimetría" showEffect="size" hideEffect="size">
+        <h:form id="frmVerPlanimetria">
+            <center>
+                <p:panel header="Previsualización">
+                    <p:lightBox >  
+                        <h:outputLink value="#" title="Ver Planimetría">  
+                            <h:outputText value="Ver Planimetría"/>
+                        </h:outputLink>
+                        <f:facet name="inline">
+                            <p:media value="#{ctrlActualizarPlanimetria.objPredio.planimetria}" height="450" width="650" />                                    
+                        </f:facet>
+                    </p:lightBox>
+                </p:panel>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

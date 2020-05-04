@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <h:form id="frmPrincipal">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    <div class="ui-g">                        
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <center>
+                                    <h1>Títulos Históricos</h1>
+                                </center>
+                                <p:separator/>
+                                <center>
+                                    <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                        <b>Buscar: </b>
+                                        <h:outputLabel value="Año:"/>
+                                        <p:selectOneMenu id="cmbAnios" value="#{ctTitulosHistoricos.anioEmision}">
+                                            <f:selectItem itemLabel="-- Todos los años --" itemValue="0"/>
+                                            <f:selectItems value="#{ctTitulosHistoricos.lstAnios}" 
+                                                           var="anio" itemLabel="#{anio.anioTitulo}" itemValue="#{anio.anioTitulo}"/>                                            
+                                            <p:ajax event="change" listener="#{ctTitulosHistoricos.obtenerTitulosDadoAnio()}"
+                                                    update="tblTitulos"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="Limpiar" title="Limpiar Tabla"
+                                                         update="tblTitulos" icon="ui-icon-close"
+                                                         action="#{ctTitulosHistoricos.limpiar()}"/>
+                                    </p:panelGrid>
+                                </center>
+                                <p:dataTable id="tblTitulos" var="titulo" value="#{ctTitulosHistoricos.lstTitulos}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="15,20,25,30,35" reflow="true" rowKey="#{titulo.idTituloHistorico}"
+                                             editable="true" selection="#{ctTitulosHistoricos.titulo}" selectionMode="single">                                    
+                                    <p:column headerText="Año" width="3%" style="text-align: center">
+                                        <h:outputText value="#{titulo.titulo.anioTitulo}"/>
+                                    </p:column>
+                                    <p:column headerText="N° de Título" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.titulo.tituloNumero}"/>
+                                    </p:column>
+                                    <!--
+                                    <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                                        <h:outputText value="#{titulo.titulo.predio.claveCatastral}"/>
+                                    </p:column>
+                                    -->
+                                    <p:column headerText="Fecha de baja" width="5%" style="text-align: center">
+                                        <h:outputText value="#{titulo.fechaRegistro}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                        <h:outputText value="#{titulo.titulo.propietarioIndex.apellidos} #{titulo.titulo.propietarioIndex.nombres}"/>
+                                    </p:column>                                    
+                                    <p:column headerText="Total título (USD)" width="4%" style="text-align: center">
+                                        <h:outputText value="#{titulo.titulo.totalTitulo}">
+                                            <f:convertNumber pattern="###,##"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Razón baja" width="10%" style="text-align: center">
+                                        <h:outputText value="#{titulo.razonBaja}"/>
+                                    </p:column>
+                                    <p:column headerText="Respaldo" width="10%" style="text-align: center" exportable="false">
+                                        <p:lightBox >  
+                                            <h:outputLink value="#" title="#{titulo.pathRespaldo}">  
+                                                <h:outputText value="#{titulo.pathRespaldo}"/>
+                                            </h:outputLink>
+                                            <f:facet name="inline">
+                                                <p:media value="#{titulo.pathRespaldo}" height="600" width="800" />                                    
+                                            </f:facet>
+                                        </p:lightBox>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Respaldo" visible="false">
+                                         <h:outputText value="#{titulo.pathRespaldo}"/>
+                                    </p:column>
+                                    <!--
+                                    <p:column width="3%" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-description"
+                                                         title="Detalles">
+                                            <f:setPropertyActionListener value="#{titulo}" target="#{ctTitulosHistoricos.titulo}"/>
+                                        </p:commandButton>                                                         
+                                    </p:column>
+                                    -->
+
+                                    <f:facet name="footer">
+                                        
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                            <p:dataExporter type="xls" target="tblTitulos" fileName="titulos" pageOnly="false" />
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/pdf.png"/>
+                                            <p:dataExporter type="pdf" target="tblTitulos" fileName="titulos" pageOnly="false"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/csv.png"/>
+                                            <p:dataExporter type="csv" target="tblTitulos" fileName="titulos" pageOnly="false"/>
+                                        </h:commandLink>                                        
+                                    </f:facet>
+
+
+
+                                </p:dataTable>
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Espere...">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

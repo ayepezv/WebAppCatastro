@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2017-08-01T21:38:45 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubreportLinderos" pageWidth="475" pageHeight="842" columnWidth="435" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b74ddd27-85a1-40a8-b8c7-2bd5a3fffb0b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WebAppCatastro"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="id_predio" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select *
+from catastro.v_reporte_ficha_predial 
+where int_id_predio=$P{id_predio}]]>
+	</queryString>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="int_num_ficha" class="java.lang.Integer"/>
+	<field name="int_id_parroquia" class="java.lang.Integer"/>
+	<field name="int_zona" class="java.lang.Integer"/>
+	<field name="int_sector" class="java.lang.Integer"/>
+	<field name="int_manzana" class="java.lang.Integer"/>
+	<field name="int_num_predio" class="java.lang.Integer"/>
+	<field name="int_prop_hor_bloque" class="java.lang.Integer"/>
+	<field name="int_prop_hor_piso" class="java.lang.Integer"/>
+	<field name="int_prop_hor_unidad" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="chv_clave_catastral_ant" class="java.lang.String"/>
+	<field name="chv_barrio" class="java.lang.String"/>
+	<field name="chv_calle_princ" class="java.lang.String"/>
+	<field name="chv_calle_secund" class="java.lang.String"/>
+	<field name="chv_num_casa" class="java.lang.String"/>
+	<field name="chv_nombre_edificio" class="java.lang.String"/>
+	<field name="int_id_titular_dom" class="java.lang.Integer"/>
+	<field name="int_id_rep_legal" class="java.lang.Integer"/>
+	<field name="int_id_dominio" class="java.lang.Integer"/>
+	<field name="chv_condicion" class="java.lang.String"/>
+	<field name="chv_forma_adq" class="java.lang.String"/>
+	<field name="chv_notaria" class="java.lang.String"/>
+	<field name="dt_fecha_titulo_prop" class="java.sql.Date"/>
+	<field name="dt_fecha_registro" class="java.sql.Date"/>
+	<field name="db_area_escritura" class="java.lang.Double"/>
+	<field name="chv_prop_anterior" class="java.lang.String"/>
+	<field name="db_avaluo_prop" class="java.lang.Double"/>
+	<field name="chv_gest_uso_suelo" class="java.lang.String"/>
+	<field name="chv_uso_suelo_consumo" class="java.lang.String"/>
+	<field name="chv_us_suel_intercambio" class="java.lang.String"/>
+	<field name="chv_us_suel_produc" class="java.lang.String"/>
+	<field name="chv_ocupacion_predio" class="java.lang.String"/>
+	<field name="chv_localizacion_predio" class="java.lang.String"/>
+	<field name="chv_topografia_pedio" class="java.lang.String"/>
+	<field name="chv_forma_predio" class="java.lang.String"/>
+	<field name="chv_caract_suelo" class="java.lang.String"/>
+	<field name="chv_uso_vias" class="java.lang.String"/>
+	<field name="chv_material_vias" class="java.lang.String"/>
+	<field name="chv_red_agua" class="java.lang.String"/>
+	<field name="chv_alcantarillado" class="java.lang.String"/>
+	<field name="chv_energ_electric" class="java.lang.String"/>
+	<field name="chv_red_telefon" class="java.lang.String"/>
+	<field name="chv_rec_basura" class="java.lang.String"/>
+	<field name="chv_transp_publico" class="java.lang.String"/>
+	<field name="chv_internet" class="java.lang.String"/>
+	<field name="chv_otros_servicios" class="java.lang.String"/>
+	<field name="db_area_construc" class="java.lang.Double"/>
+	<field name="db_area_total_const" class="java.lang.Double"/>
+	<field name="db_area_total_terreno" class="java.lang.Double"/>
+	<field name="chv_patio" class="java.lang.String"/>
+	<field name="chv_piscina" class="java.lang.String"/>
+	<field name="chv_cerramiento" class="java.lang.String"/>
+	<field name="chv_cisterna" class="java.lang.String"/>
+	<field name="chv_muros" class="java.lang.String"/>
+	<field name="chv_ascensor" class="java.lang.String"/>
+	<field name="int_num_banios" class="java.lang.Integer"/>
+	<field name="db_lindero_frente1" class="java.lang.Double"/>
+	<field name="db_lindero_frente2" class="java.lang.Double"/>
+	<field name="db_lindero_frente3" class="java.lang.Double"/>
+	<field name="db_lindero_frente4" class="java.lang.Double"/>
+	<field name="chv_lindero_calle1" class="java.lang.String"/>
+	<field name="chv_lindero_calle2" class="java.lang.String"/>
+	<field name="chv_lindero_calle3" class="java.lang.String"/>
+	<field name="chv_lindero_calle4" class="java.lang.String"/>
+	<field name="db_lindero_alicuota1" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota2" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota3" class="java.lang.Double"/>
+	<field name="db_lindero_alicuota4" class="java.lang.Double"/>
+	<field name="db_derechos_acciones" class="java.lang.Double"/>
+	<field name="chv_croquis" class="java.lang.String"/>
+	<field name="chv_emplazamiento" class="java.lang.String"/>
+	<field name="chv_fotografia" class="java.lang.String"/>
+	<field name="chv_topografia_ref_top" class="java.lang.String"/>
+	<field name="chv_foto_aerea" class="java.lang.String"/>
+	<field name="chv_otra_ref_top" class="java.lang.String"/>
+	<field name="db_coord_e" class="java.lang.Double"/>
+	<field name="db_coord_n" class="java.lang.Double"/>
+	<field name="chv_colindant_nort" class="java.lang.String"/>
+	<field name="chv_colindant_este" class="java.lang.String"/>
+	<field name="chv_colindant_sur" class="java.lang.String"/>
+	<field name="chv_colindant_oest" class="java.lang.String"/>
+	<field name="chv_fuente_informant" class="java.lang.String"/>
+	<field name="chv_telf_informant" class="java.lang.String"/>
+	<field name="chv_ficha_adjunta" class="java.lang.String"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="db_porcent_excep" class="java.lang.Double"/>
+	<field name="chv_excencion_esp" class="java.lang.String"/>
+	<field name="chv_observaciones" class="java.lang.String"/>
+	<field name="chv_dominio" class="java.lang.String"/>
+	<field name="titular_dominio" class="java.lang.String"/>
+	<field name="rep_legal" class="java.lang.String"/>
+	<field name="chv_nombre" class="java.lang.String"/>
+	<field name="nombre_propietario" class="java.lang.String"/>
+	<field name="apellidos_propietario" class="java.lang.String"/>
+	<field name="chv_celular" class="java.lang.String"/>
+	<field name="ch_estado_civil" class="java.lang.String"/>
+	<field name="chv_ruc" class="java.lang.String"/>
+	<field name="chv_direccion_domiciliaria" class="java.lang.String"/>
+	<field name="chv_cedula" class="java.lang.String"/>
+	<field name="foto_fachada" class="java.lang.String"/>
+	<field name="parroquia" class="java.lang.String"/>
+	<field name="foto_croquis" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="180" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="120" width="436" height="54" uuid="fdb545bb-9963-4a5e-80e2-59f57f1f2083">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="436" height="120" uuid="a6c37c5c-3b9c-4441-8470-f3f74c95b754">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="5" width="206" height="14" uuid="64bc8820-3129-4369-9ec1-1992e70d61eb">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LINDEROS]]></text>
+			</staticText>
+			<textField pattern="#,##0.00# m" isBlankWhenNull="true">
+				<reportElement x="53" y="22" width="127" height="14" uuid="fca0ed6a-0eb6-43b5-a18e-46d69f495664"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_frente1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="22" width="38" height="14" uuid="9fa9d620-8efd-4c33-a331-6056080f860c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Frente1:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="36" width="127" height="14" uuid="a1ebce1c-50e2-4439-a2be-5c10fda3df45"/>
+				<textFieldExpression><![CDATA[$F{chv_lindero_calle1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="36" width="38" height="14" uuid="4b79fb65-8f52-4227-a5a4-134f66670b67">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Calle1:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="64" y="50" width="116" height="14" uuid="4f8da495-2d1e-4f3f-808e-92f401e08543"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_alicuota1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="50" width="55" height="14" uuid="25a92008-1bad-4018-b0f8-9d4df926e792">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Alicuota1:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00# m" isBlankWhenNull="true">
+				<reportElement x="290" y="20" width="100" height="14" uuid="b8e18203-e68a-46c9-984a-3a8fd275336e"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_frente2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="20" width="46" height="14" uuid="c031c336-885a-4bf9-8137-fec07e1ac057">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Frente 2:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="290" y="35" width="140" height="14" uuid="7f102786-eeef-4034-8b58-f86cb513ff81"/>
+				<textFieldExpression><![CDATA[$F{chv_lindero_calle2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="35" width="40" height="14" uuid="f8412ad6-fe51-45d8-82b2-dcb51bf8e2d7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Calle 2:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="49" width="130" height="14" uuid="4ec97644-9fb9-4b54-b590-848787d8596c"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_alicuota2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="251" y="49" width="48" height="14" uuid="c5cbe24e-51e3-4abc-8909-bf8d3ff63ae3">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Alicuota 2:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#m" isBlankWhenNull="true">
+				<reportElement x="62" y="70" width="118" height="14" uuid="e23b6bef-2fbd-4e66-9fa2-82427e53f95b"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_frente3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="70" width="48" height="14" uuid="e94646a7-d13e-4b56-bbf2-4683bc8ce3aa">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Frente 3:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="84" width="126" height="14" uuid="cd756d5c-8249-4e48-bea1-0a91b2ec1194"/>
+				<textFieldExpression><![CDATA[$F{chv_lindero_calle3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="84" width="38" height="14" uuid="63b84274-4897-46a1-a2bc-7be0e388e949">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Calle 3:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="62" y="99" width="100" height="14" uuid="39f3f744-d057-466e-817f-3844e3f40cb7"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_alicuota3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="99" width="48" height="14" uuid="eb30c018-d3da-41f7-8e1a-7f35427c48ec">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Alicuota 3:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00# m" isBlankWhenNull="true">
+				<reportElement x="296" y="70" width="134" height="14" uuid="eeac8ff3-946c-46f4-a06f-25626232e4e6"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_frente4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="70" width="48" height="14" uuid="df572875-1d05-4bc3-b7f6-4fb0431aee93">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Frente 4:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="84" width="142" height="14" uuid="5eec27ea-633b-4fa1-ac33-8204c4db36d9"/>
+				<textFieldExpression><![CDATA[$F{chv_lindero_calle4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="85" width="40" height="14" uuid="a2a683b8-2369-4f13-a6a5-ca559989e832">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Calle 4:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="98" width="100" height="14" uuid="89302e79-254c-49b3-855e-aad40677098a"/>
+				<textFieldExpression><![CDATA[$F{db_lindero_alicuota4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="99" width="50" height="14" uuid="5db234ab-2fd5-4fcd-84c1-164e13162ff1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Alicuota 4:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="125" width="206" height="14" uuid="152b6e50-2580-4135-b59b-f8e638409162">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COLINDANTES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="44" y="140" width="169" height="14" uuid="44f93d3e-8e6b-4cd9-8e75-de64c3bb4968"/>
+				<textFieldExpression><![CDATA[$F{chv_colindant_nort}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="140" width="36" height="14" uuid="fde78f6e-b058-4327-b1fb-54029a1b23dc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Norte:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="34" y="154" width="179" height="14" uuid="8363c15e-ef83-4be2-8181-e542beab3757"/>
+				<textFieldExpression><![CDATA[$F{chv_colindant_sur}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="154" width="21" height="14" uuid="5b538a48-3009-456c-af37-fd78b1e1b139">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<text><![CDATA[Sur:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="259" y="140" width="169" height="14" uuid="2efacd70-79be-4cf6-b677-84ab12970d77">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{chv_colindant_este}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="234" y="140" width="25" height="14" uuid="ec8fb231-b22a-4b63-abca-4ffe6de2b542"/>
+				<text><![CDATA[Este:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="267" y="154" width="160" height="14" uuid="f64afd18-659e-4486-98ac-568beeb5e949"/>
+				<textFieldExpression><![CDATA[$F{chv_colindant_oest}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="234" y="154" width="33" height="14" uuid="d732bca5-50ad-43ae-a090-23b5be532689"/>
+				<text><![CDATA[Oeste:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

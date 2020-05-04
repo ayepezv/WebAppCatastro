@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgRecaudarCem" widgetVar="dlgRecaudarCem" closable="false" modal="true" resizable="true" 
+              header="Recaudar" showEffect="size" hideEffect="size">
+        <h:form id="frmRecaudarCem">
+            <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                <p:panel header="Detalles cuota">
+                    <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputText value="N° Cuota:"/>
+                        <h:outputLabel value="#{controladorRecaudacionCem.cuotaSel.numCouta}/#{controladorRecaudacionCem.cuotaSel.obra.mejora.plazo} "/>
+                        <h:outputText value="Valor a pagar:"/>
+                        <h:outputLabel value="#{controladorRecaudacionCem.cuotaSel.cuota}">                        
+                            <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                        </h:outputLabel>
+                        <h:outputText value="Intereses:"/>
+                        <h:outputLabel value="#{controladorRecaudacionCem.cuotaSel.interes}">                        
+                            <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                        </h:outputLabel>
+                        <h:outputText value="Total a pagar:"/>
+                        <h:outputLabel value="#{controladorRecaudacionCem.cuotaSel.totalPagar}">                        
+                            <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                        </h:outputLabel>
+                    </p:panelGrid>
+                </p:panel>            
+                <p:panel header="Detalles transacción">
+                    <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Forma de pago:"/>
+                        <p:selectOneMenu id="cmbFormaPago" value="#{controladorRecaudacionCem.idFormaPago}" required="true" 
+                                         requiredMessage="Seleccione un Item de un menú">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                            <f:selectItems value="#{controladorRecaudacionCem.lstFormasPago}" var="formaPago"
+                                           itemLabel="#{formaPago.formaRecaudacion}" itemValue="#{formaPago.codigo}"/>
+                        </p:selectOneMenu> 
+                    </p:panelGrid>
+                    <p:panelGrid columns="4"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Cliente: "/>
+                        <p:inputText value="#{controladorRecaudacionCem.cedula}"/>
+                        <p:commandButton icon="ui-icon-search" action="#{controladorRecaudacionCem.obtenerPersonas()}"
+                                         update="txtDatosCliente"/>
+                        <p:commandButton icon="ui-icon-control-point" title="Registrar Cliente"/>                        
+                    </p:panelGrid>
+                    <center>
+                        <b><h:outputLabel id="txtDatosCliente" value="#{controladorRecaudacionCem.cliente.apellidos} #{controladorRecaudacionCem.cliente.nombres}"/></b>
+                    </center>
+                    <p:panelGrid columns="3"  styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Efectivo:"/>
+                        <p:inputText id="efectivo" value="#{controladorRecaudacionCem.dineroEfectivo}"/>
+                        <p:commandButton icon="ui-icon-monetization-on"
+                                         action="#{controladorRecaudacionCem.calcularVuelto()}"
+                                         update="vuelto"
+                                         title="Calcular Vuelto"/>
+                        <p:outputLabel value="Cambio:"/>
+                        <p:outputLabel id="vuelto" value="#{controladorRecaudacionCem.vuelto}">
+                            <f:convertNumber pattern="#0.00" />
+                        </p:outputLabel>
+
+                    </p:panelGrid>    
+                </p:panel>
+            </p:panelGrid>
+
+            <center>
+                <p:commandButton id="btnCobrar" value="Recaudar" icon="ui-icon-save"
+                                 action="#{controladorRecaudacionCem.recaudarCem()}"
+                                 ajax="false" onclick="this.form.target = '_blank'"
+                                 update="frmPrincipal:tabCuotas:tblValoresPendientes,frmPrincipal:tabCuotas:tblValoresPagados"/>      
+
+                <p:commandButton value="Aceptar" icon="ui-icon-refresh"
+                                 action="#{controladorRecaudacionCem.refrescarRecaudacion()}"                                 
+                                 update="frmPrincipal:tabCuotas:tblValoresPendientes,frmPrincipal:tabCuotas:tblValoresPagados"/>   
+
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRecaudarCem').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

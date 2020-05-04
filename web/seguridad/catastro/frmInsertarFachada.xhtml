@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgInsertarFachada" widgetVar="dlgInsertarFachada" closable="true" modal="true" resizable="true" 
+              header="Fotografia Predio" showEffect="size" hideEffect="size">
+        <h:form id="frmInsertarFachada">            
+            <center>
+                <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;">
+                    <p:fileUpload fileUploadListener="#{ctActualizarFachada.cargarArchivoImagen}"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Abrir" mode="advanced"  
+                                  uploadLabel="Subir" cancelLabel="Cancelar"   
+                                  value="#{ctActualizarFachada.archivoImagen}"
+                                  required="true" requiredMessage="Cargar la imagen!!" />
+                </p:panelGrid>
+                <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                 action="#{ctActualizarFachada.insertarImagen()}"
+                                 update="frmImagenes:fachada"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

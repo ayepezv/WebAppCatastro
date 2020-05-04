@@ -1,0 +1,219 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h:form id="frmRoles">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                            <center><h3>Gestión de Roles del Sistema</h3></center>
+                            <p:dataTable id="tblRoles" var="rol" value="#{rolCtrl.lstRoles}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,25,30" reflow="true"
+                                         rowKey="#{rol.idRol}" selectionMode="single" selection="#{rolCtrl.rolSel}">
+                                <p:column headerText="Nombre" width="10%" style="text-align: center"
+                                          filterBy="#{rol.nombre}"  filterMatchMode="contains">
+                                    <h:outputText value="#{rol.nombre}"/>
+                                </p:column>
+                                <p:column headerText="Descripción" width="10%" style="text-align: center"
+                                          filterBy="#{rol.descripcion}"  filterMatchMode="contains">
+                                    <h:outputText value="#{rol.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="Modulo asociado" width="10%" style="text-align: center"
+                                          filterBy="#{rol.idModulo.nombre}"  filterMatchMode="contains">
+                                    <h:outputText value="#{rol.idModulo.nombre}"/>
+                                </p:column>
+                                <p:column headerText="Imagen" width="10%" style="text-align: center">
+                                    <p:lightBox styleClass="imagebox" >  
+                                        <h:outputLink value="../..#{rol.icono}" title="#{rol.nombre}">  
+                                            <p:graphicImage value="#{rol.icono}" width="80" title="#{rol.nombre}"/>
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                </p:column>
+                                <p:column headerText="Fecha de creación" width="5%" style="text-align: center">
+                                    <h:outputText value="#{rol.fechaRegistro}"/>
+                                </p:column>
+                                <p:column headerText="Fecha ultim. actualización" width="5%" style="text-align: center">
+                                    <h:outputText value="#{rol.fechaActualizacion}"/>
+                                </p:column>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Editar" width="4%" style="text-align: center">
+                                            <p:commandButton title="Editar" icon="ui-icon-pencil" onclick="PF('dlgActualizar').show();"
+                                                             update="frmActualizar">
+                                                <f:setPropertyActionListener value="#{rol}" 
+                                                                             target="#{rolCtrl.rolSel}"/>     
+                                            </p:commandButton>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Eliminar" width="4%" style="text-align: center">
+                                            <p:commandButton title="Eliminar" icon="ui-icon-trash" onclick="PF('dlgEliminar').show();"
+                                                             update="frmEliminar">
+                                                <f:setPropertyActionListener value="#{rol}" 
+                                                                             target="#{rolCtrl.rolSel}"/>     
+                                            </p:commandButton>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Cargar" width="4%" style="text-align: center">
+                                            <p:commandButton title="Actualizar Imagen" icon="ui-icon-image" onclick="PF('dlgActualizarImagen').show();"
+                                                             update="frmInsertarImagen" >
+                                                <f:setPropertyActionListener value="#{rol}" 
+                                                                             target="#{rolCtrl.rolSel}"/>     
+                                            </p:commandButton>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                             onclick="PF('dlgRegistrar').show();"/>
+                                        </c:when>
+                                    </c:choose>
+                                </f:facet>
+                            </p:dataTable>
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>
+                        </p:dialog>
+
+                        <p:dialog header="Registrar Rol" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmRegistrar">
+                                <p:panel>
+                                    <p:panelGrid columns="1"  styleClass="ui-panelgrid-blank form-group">
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText id="txtNombre"  value="${rolCtrl.rol.nombre}"
+                                                         title="Cedula" required="true" requiredMessage="El nombre del rol es un campo obligatorio."/> 
+                                            <label>Rol</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText id="txtDescripcion"  value="${rolCtrl.rol.descripcion}"
+                                                         title="Cedula" required="true" requiredMessage="La descripción del rol es un campo obligatorio."/> 
+                                            <label>Descripción</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup >                                                                            
+                                            <p:selectOneMenu id="cmbModulos" value="#{rolCtrl.idModuloSel}" required="true" requiredMessage="Seleccione un módulo">
+                                                <f:selectItem itemLabel="Seleccione un módulo" itemValue="#{null}"/>
+                                                <f:selectItems value="#{rolCtrl.lstModulos}" var="modulo"
+                                                               itemLabel="#{modulo.nombre}" itemValue="#{modulo.idModulo}"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGroup>
+                                    </p:panelGrid>
+                                    <p:separator/>
+                                    <center>
+                                        <p:commandButton value="Aceptar" action="#{rolCtrl.registrar()}" update="frmRoles:tblRoles,frmRegistrar"/>
+                                        <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/> 
+                                    </center>   
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+
+
+                        <p:dialog header="Actualizar URL" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold" >
+                            <h:form id="frmActualizar">
+                                <p:panel>
+                                    <p:panelGrid columns="1"  styleClass="ui-panelgrid-blank form-group">
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText id="txtNombre"  value="${rolCtrl.rolSel.nombre}"
+                                                         title="Cedula" required="true" requiredMessage="El nombre del rol es un campo obligatorio."/> 
+                                            <label>Rol</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText id="txtDescripcion"  value="${rolCtrl.rolSel.descripcion}"
+                                                         title="Cedula" required="true" requiredMessage="La descripción del rol es un campo obligatorio."/> 
+                                            <label>Descripción</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup >                                                                            
+                                            <p:selectOneMenu id="cmbModulos" value="#{rolCtrl.rolSel.idModulo.idModulo}" required="true" requiredMessage="Seleccione un módulo">
+                                                <f:selectItem itemLabel="Seleccione un módulo" itemValue="#{null}"/>
+                                                <f:selectItems value="#{rolCtrl.lstModulos}" var="modulo"
+                                                               itemLabel="#{modulo.nombre}" itemValue="#{modulo.idModulo}"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGroup>
+                                    </p:panelGrid>
+                                    <p:separator/>
+                                    <center>
+                                        <p:commandButton value="Aceptar" action="#{rolCtrl.actualizar()}" update="frmRoles:tblRoles,frmActualizar"/>
+                                        <p:commandButton value="Cancelar" type="button" onclick="PF('dlgActualizar').hide();"/> 
+                                    </center>   
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+
+                        <p:dialog header="Eliminar Rol" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmEliminar">
+                                <p:panel>
+                                    <center>
+                                        <h3>¿Está seguro de elimar el Rol?</h3>
+                                        <h:outputLabel value="#{rolCtrl.rolSel.nombre}"/>
+                                        <br/>
+                                        <h:outputLabel value="#{rolCtrl.rolSel.descripcion}"/>
+                                        <p:separator/>
+                                        <p:commandButton value="Aceptar" action="#{rolCtrl.eliminar()}" update="frmRoles:tblRoles,frmEliminar"/>
+                                        <p:commandButton value="Cancelar" type="button" onclick="PF('dlgEliminar').hide();"/> 
+                                    </center>
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+
+                        <p:dialog header="Actualizar Imagen" widgetVar="dlgActualizarImagen" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmInsertarImagen" enctype="multipart/form-data">
+                                <p:panel id="displayInsertarImagen" >
+                                    <p:outputLabel value="Previzualización"/>
+                                    <p:graphicImage id="griPrevisualizar" value="#{rolCtrl.rolSel.icono}" 
+                                                    height="80"  />
+                                    <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;">
+                                        <p:fileUpload fileUploadListener="#{rolCtrl.cargarArchivoImagen}"
+                                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Abrir" mode="advanced"  
+                                                      update="displayInsertarImagen griPrevisualizar" uploadLabel="Subir" cancelLabel="Cancelar"   
+                                                      value="#{rolCtrl.archivoImagen}"
+                                                      required="true" requiredMessage="Cargar la imagen!!" />
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="2" style="text-align: center;">
+                                        <p:commandButton value="Aceptar" action="#{rolCtrl.insertarImagen()}"
+                                                         update=":frmRoles:tblRoles" process="@this"/>
+                                        <p:commandButton value="Cancelar" onclick="PF('dlgActualizarImagen').hide();"/>
+                                    </p:panelGrid>
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+                    </div>                
+                </div>   
+            </c:when>
+        </c:choose>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+
+    </ui:define>
+</ui:composition>

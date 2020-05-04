@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgObligacionesPendientes" widgetVar="dlgObligacionesPendientes" closable="true" modal="true" resizable="true" 
+              header="Obligaciones Pendientes" showEffect="size" hideEffect="size"
+              closeOnEscape="true" width="600">
+        <h:form id="frmPendientes">
+            <center>
+                <p:dataTable id="tblTitulos" var="titulo" value="#{ctrlEliminarPredio.lstTitulos}" rows="15"
+                             paginator="true"  emptyMessage="No se han encontrado valores pendientes" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{titulo.idTitulo}"
+                             selection="#{ctrlEliminarPredio.objTitulo}" selectionMode="single">
+                    <f:facet name="header">
+                        <b>Impuesto Predial</b>
+                    </f:facet>
+                    <p:column headerText="Año" width="2%" style="text-align: center">
+                        <h:outputText value="#{titulo.anioTitulo}"/>
+                    </p:column>
+
+                    <!--
+                    <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                        <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                    </p:column>
+                    <p:column headerText="Impuesto predial" width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.impuestoPredial}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Proces." width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.procesamiento}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Bomberos" width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.cuerpoBomberos}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Desc." width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.descuento}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Interes" width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.interesesMora}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="No. edif." width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.recargo}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Recargo" width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.pagoTardio}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    -->
+                    <p:column headerText="Total a pagar" width="3%" style="text-align: center">
+                        <h:outputText value="#{titulo.totalPagar}" style="font-size: 20px">                                    
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <h:commandLink title="Exportar a Excel">
+                            <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                            <p:dataExporter type="xls" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                        </h:commandLink>
+                        <h:commandLink title="Exportar a PDF">                                        
+                            <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                            <p:dataExporter type="pdf" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                        </h:commandLink>
+                        <h:commandLink title="Exportar a CSV">
+                            <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                            <p:dataExporter type="xls" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                        </h:commandLink>
+                        <h:commandLink title="Exportar a XML">
+                            <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                            <p:dataExporter type="xml" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                        </h:commandLink>
+                    </f:facet>
+                </p:dataTable>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

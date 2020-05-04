@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="dlgActPerJur" widgetVar="dlgActPerJur" closable="true" modal="true" resizable="true" 
+              header="Actualizar Información" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmActPerJur">
+
+            <b>Llene los campos:</b>
+
+            <center>
+                <p:selectOneMenu value="#{ctContribuyente.usuarioSel.tipoPersona.idTipoPersona}">                    
+                    <f:selectItem itemLabel="Persona Juridica Publica" itemValue="2"/>
+                    <f:selectItem itemLabel="Persona Juridica Privada" itemValue="3"/>                   
+                </p:selectOneMenu>
+            </center>
+
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText id="txtNombrePer"   value="#{ctContribuyente.usuarioSel.nombres}" title="Nombres Persona" required="true" 
+                                 requiredMessage="El Nombre es requerido!" type="text"  onkeypress="return soloLetras(event)"
+                                 validatorMessage="Nombres, No puede ingresar números..." >
+                        <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                    </p:inputText>
+                    <label>* Razón Social</label>
+                </h:panelGroup> 
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText maxlength="13" value="#{ctContribuyente.usuarioSel.ruc}"
+                                 title="Ruc" required="true" 
+                                 requiredMessage="El Ruc es un campo obligatorio."/>                                         
+                    <label>* RUC </label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">                                                          
+                    <p:calendar id="fechaConst" value="#{ctContribuyente.usuarioSel.fechaNacimiento}" locale="de"
+                                navigator="true" pattern="dd-MM-yyyy"
+                                placeholder="* Fecha de Constitución"/>                             
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText id="txtCelularPJ"  value="#{ctContribuyente.usuarioSel.celular}" title="Celular Persona" required="true" 
+                                 requiredMessage="El Celular es requerido!" maxlength="10" onkeypress="return validar(event)"
+                                 validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >
+                        <f:validateLength minimum="10"/>
+                    </p:inputText>
+                    <label>#{AtributosVistas.celular}</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText  id="txtCorreoPJ"  value="#{ctContribuyente.usuarioSel.mail}" title="Correo Electrónico" required="true" 
+                                  requiredMessage="El Correo Electrónico es requerido!" 
+                                  validatorMessage="Correo Electrónico, formato inválido. Ejm: info@info.com">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <label>#{AtributosVistas.correo}</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText value="#{ctContribuyente.usuarioSel.nick}" required="true" 
+                                 requiredMessage="El Nick es obligatorio."/>
+                    <label>* Nick</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText value="#{ctContribuyente.usuarioSel.direccionDom}"                                         
+                                 title="Direccion domiciliaria"/>                                                 
+                    <label>* Dirección domiciliaria </label>
+                </h:panelGroup>
+            </p:panelGrid>
+            <center>
+                <p:commandButton value="Registrar"
+                                 icon="ui-icon-save"
+                                 action="#{ctContribuyente.actualizarUsuario()}"
+                                 update="@form,frmUsuarios:tblUsuarios"/>
+            </center>
+        </h:form>
+    </p:dialog>   
+</ui:composition>

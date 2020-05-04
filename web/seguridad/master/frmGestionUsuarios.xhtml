@@ -1,0 +1,292 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h:form id="frmUsuarios">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                            <center>
+                                <h3>Gestión de Personas</h3>
+                                <b>Buscar:</b>
+                                <p:selectOneMenu value="#{usuarioCtrl.idTipoPersona}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{usuarioCtrl.lstTiposPersonas}" var="tipo"
+                                                   itemLabel="#{tipo.tipoPersona}" itemValue="#{tipo.idTipoPersona}"/>
+                                    <p:ajax event="change" listener="#{usuarioCtrl.obtenerUsuarios()}"
+                                            update="frmUsuarios:tblUsuarios, frmUsuarios:txtParametro"/>
+                                </p:selectOneMenu>
+                                <br/>
+                                <p:inputText id="txtParametro" value="#{usuarioCtrl.parametro}" placeholder="Criterio Busqueda"/>
+                                <p:commandButton value="Buscar"
+                                                 action="#{usuarioCtrl.encontrarUsuarios()}"
+                                                 update="frmUsuarios:tblUsuarios"
+                                                 icon="ui-icon-search"/>
+                            </center>                                                                                                                
+
+                            <p:dataTable id="tblUsuarios" var="usuario" value="#{usuarioCtrl.lstUsuarios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true"
+                                         rowKey="#{usuario.idPersona}" selectionMode="single" selection="#{usuarioCtrl.usuarioSel}">
+
+                                <c:choose>
+                                    <c:when  test="#{usuarioCtrl.idTipoPersona==1}">
+
+                                        <p:column headerText="Cédula" width="5%" style="text-align: center">
+                                            <h:outputText value="#{usuario.cedula}"/>
+                                        </p:column>
+                                        <p:column headerText="Apellidos" width="10%" style="text-align: center">
+                                            <h:outputText value="#{usuario.apellidos}"/>
+                                        </p:column>
+                                        <p:column headerText="Nombres" width="10%" style="text-align: center">
+                                            <h:outputText value="#{usuario.nombres}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Sexo" width="3%" style="text-align: center">
+                                            <h:outputText value="#{usuario.sexo}"/>
+                                        </p:column>
+
+                                    </c:when>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when  test="#{usuarioCtrl.idTipoPersona==2|| 
+                                                     usuarioCtrl.idTipoPersona==3}">
+                                        <p:column headerText="Razon Social" width="10%" style="text-align: center"
+                                                  filterBy="#{usuario.nombres}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.nombres} #{usuario.apellidos}"/>
+                                        </p:column>
+
+                                        <p:column headerText="RUC" width="10%" style="text-align: center"
+                                                  filterBy="#{usuario.ruc}" filterMatchMode="contains">
+                                            <h:outputText value="#{usuario.ruc}"/>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+
+                                <p:column headerText="Nick" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.nick}"/>
+                                </p:column>
+                                <p:column headerText="Mail" width="8%" style="text-align: center">
+                                    <h:outputText value="#{usuario.mail}"/>
+                                </p:column>
+                                <p:column headerText="Fecha de Registro" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.fechaRegistro}"/>
+                                </p:column>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+
+                                        <p:column headerText="Actualizar Contraseña" width="5%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-vpn-key" onclick="PF('dlgActualizar').show();"
+                                                             title="Actualizar Contraseña" update="frmActualizarContrasenia"/>
+                                        </p:column>
+
+                                    </c:when>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <c:choose>
+                                            <c:when  test="#{usuarioCtrl.idTipoPersona==1}">
+                                                <p:column headerText="Editar" width="5%" style="text-align: center">
+                                                    <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                                     onclick="PF('dlgActPerNat').show();"
+                                                                     update="frmActPerNat">
+                                                        <f:setPropertyActionListener value="#{usuario}" target="#{usuarioCtrl.usuarioSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </c:when>
+                                        </c:choose>
+                                        <c:choose>
+                                            <c:when  test="#{usuarioCtrl.idTipoPersona==2|| 
+                                                             usuarioCtrl.idTipoPersona==3}">
+                                                <p:column headerText="Editar" width="3%" style="text-align: center">
+                                                    <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                                     onclick="PF('dlgActPerJur').show();"
+                                                                     update="frmActPerJur">
+                                                        <f:setPropertyActionListener value="#{usuario}" target="#{usuarioCtrl.usuarioSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:when>
+                                </c:choose>
+
+
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Eliminar" width="3%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-trash" onclick="PF('dlgEliminar').show();" 
+                                                             title="Eliminar"  update="frmEliminarUsuario"/>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <!--
+                                            <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                             onclick="PF('dlgRegistrar').show();"/>
+                                            -->
+                                            <p:commandButton value="Registrar Nuevo" icon="ui-icon-person"
+                                                             onclick="PF('dlgNuevoUsuario').show();"/>  
+                                            <!--
+                                            <p:commandButton value="Nuevo dado Rol" icon="ui-icon-person"
+                                                             onclick="PF('dlgRegistrarUsuario').show();"/>
+                                            -->
+                                        </c:when>
+                                    </c:choose>
+                                </f:facet>
+                            </p:dataTable>
+
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>
+                        </p:dialog>
+
+                        <p:dialog header="Registrar Usuarios" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmRegistrar">
+                                <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="txtCedula"  value="${usuarioCtrl.usuario.cedula}" maxlength="10"
+                                                     title="Cedula" required="true" requiredMessage="La Cédula es un campo obligatorio."
+                                                     onkeypress="return validar(event)" 
+                                                     /> 
+                                        <label>#{AtributosVistas.cedula}</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="txtNombre"   value="#{usuarioCtrl.usuario.nombres}" title="Nombres Persona" required="true" 
+                                                     requiredMessage="El Nombre es requerido!" type="text"  onkeypress="return soloLetras(event)"
+                                                     validatorMessage="Nombres, No puede ingresar números..." >
+                                            <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                                        </p:inputText>
+                                        <label>#{AtributosVistas.nombres}</label>
+                                    </h:panelGroup>   
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="txtApellidos"   value="#{usuarioCtrl.usuario.apellidos}" title="Nombres Persona" required="true" 
+                                                     requiredMessage="Los apellidos son requeridos!" type="text"  onkeypress="return soloLetras(event)"
+                                                     validatorMessage="Apellidos, No puede ingresar números..." >
+                                            <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                                        </p:inputText>
+                                        <label>#{AtributosVistas.apellidos}</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup >
+                                        <label>Sexo</label>
+                                        <p:selectOneRadio id="radioSexo" value="#{usuarioCtrl.usuario.sexo}" required="true" requiredMessage="El sexo del usuario es obligatorio.">
+                                            <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                            <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                                        </p:selectOneRadio>                                     
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText id="txtCelular"  value="#{usuarioCtrl.usuario.celular}" title="Celular Persona" required="true" 
+                                                     requiredMessage="El Celular es requerido!" maxlength="10" onkeypress="return validar(event)"
+                                                     validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >
+                                            <f:validateLength minimum="10"/>
+                                        </p:inputText>
+                                        <label>#{AtributosVistas.celular}</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText  id="txtCorreo"  value="#{usuarioCtrl.usuario.mail}" title="Correo Electrónico" required="true" 
+                                                      requiredMessage="El Correo Electrónico es requerido!" 
+                                                      validatorMessage="Correo Electrónico, formato inválido. Ejm: info@info.com">
+                                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </p:inputText>
+                                        <label>#{AtributosVistas.correo}</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText value="#{usuarioCtrl.usuario.nick}" required="true" 
+                                                     requiredMessage="El Nick es obligatorio."/>
+                                        <label>Nick</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText value="#{usuarioCtrl.usuario.password}" required="true" 
+                                                     requiredMessage="El password es obligatorio."/>
+                                        <label>Contraseña</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar" action="#{usuarioCtrl.insertarUsuario()}" 
+                                                     update="frmUsuarios:tblUsuarios,frmRegistrar"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/>
+                                </center>  
+                            </h:form>
+                        </p:dialog>
+
+                        <p:dialog header="Actualizar Contraseña" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold" >
+                            <h:form id="frmActualizarContrasenia">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Usuario: "/>
+                                    <h:outputLabel value="#{usuarioCtrl.usuarioSel.apellidos} #{usuarioCtrl.usuarioSel.nombres}"/>
+                                    <h:outputLabel value="Contraseña"/>
+                                    <p:inputText value="#{usuarioCtrl.usuarioSel.password}" required="true" requiredMessage="La contraseña es requerida"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar"  action="#{usuarioCtrl.actualizarContraseña()}" update="frmUsuarios:tblUsuarios,frmActualizarContrasenia"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgActualizar').hide();"/>
+                                </center>
+                            </h:form>
+                        </p:dialog>
+
+                        <p:dialog header="Eliminar" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold" >
+                            <h:form id="frmEliminarUsuario">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                                <h:panelGrid>
+                                    <center>
+                                        <h3>¿Esta seguro que desea eliminar al Usuario?</h3>
+                                        <h:outputLabel value="#{usuarioCtrl.usuarioSel.apellidos} #{usuarioCtrl.usuarioSel.nombres}"/>
+                                    </center>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar"  action="#{usuarioCtrl.desactivarUsuario()}" update="frmUsuarios:tblUsuarios,frmEliminarUsuario"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgEliminar').hide();"/>
+                                </center>
+                            </h:form>
+                        </p:dialog>
+                    </div>                
+                </div>           
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmRegistrarUsuarioDadoRol.xhtml"/>  
+        <ui:include src="dlgNuevoUsuario.xhtml"/>
+        <ui:include src="dlgEditarPersonaNatural.xhtml"/>
+        <ui:include src="dlgEditarPersonaJuridica.xhtml"/>
+    </ui:define>
+</ui:composition>
+
+
+

@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarCoefAlcantarillado" widgetVar="dlgRegistrarCoefAlcantarillado" closable="false" modal="true" resizable="true" 
+              header="Registrar Coeficiente de Alcantarillado" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarCoefAlcantarillado">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefAlcantarillado.objCoefAlcantarillado.coeficiente}"
+                                 required="true"
+                                 requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Codigo: "/>
+                    <p:inputText value="#{ctrlCoefAlcantarillado.objCoefAlcantarillado.codigo}"
+                                 required="true"
+                                 requiredMessage="Codigo Obligatorio"/>             
+                    <p:outputLabel value="Valor del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefAlcantarillado.objCoefAlcantarillado.valorCoeficiente}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefAlcantarillado.insertar()}"
+                                 update="frmListaCoefAlcantarillado:tblListaCoefAlcantarillado"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarCoefAlcantarillado').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

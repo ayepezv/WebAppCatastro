@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgDetallesObra" widgetVar="dlgDetallesObra" closable="true" modal="true" resizable="true" 
+              header="Detalles de la obra" showEffect="size" hideEffect="size">
+        <h:form id="frmDeatllesObra">                     
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">                
+                <p:outputLabel value="Nombre de la Obra:"/>
+                <p:inputText value="#{ctCem.obraSel.nombreObra}"
+                             style="width: 100%"
+                             required="true" 
+                             requiredMessage="El nombre de la obra es obligatorio"
+                             disabled="true"/>                                
+            </p:panelGrid>           
+            <p:selectOneMenu style="text-align: justify; " id="idTipoObra" 
+                             value="#{ctCem.obraSel.tipoObra.idTipoObra}" effect="fade" filter="true" 
+                             filterMatchMode="contains" requiredMessage="El tipo de obra es campo obligatorio." required="true"
+                             disabled="true">
+                <f:selectItem itemLabel="* Tipo de obra" itemValue="#{null}" noSelectionOption="true"/>
+                <f:selectItems value="#{ctCem.lstTipoObras}" 
+                               var="tipObra"
+                               itemLabel="#{tipObra.tipoObra}"
+                               itemValue="#{tipObra.idTipoObra}" />                        
+            </p:selectOneMenu>            
+            <p:panelGrid columns="6" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Costo de la obra:"/>
+                <p:inputText value="#{ctCem.obraSel.valorObra}" disabled="true"/>
+                <p:outputLabel value="Forma de pago:"/>
+                <p:selectOneMenu style="text-align: justify; " id="idFormaPago" 
+                                 value="#{ctCem.obraSel.formaPago.idFormaPago}" effect="fade" filter="true" 
+                                 filterMatchMode="contains" requiredMessage="El tipo de obra es campo obligatorio." required="true"
+                                 disabled="true">
+                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItems value="#{ctCem.lstFormaPago}" 
+                                   var="formaPago"
+                                   itemLabel="#{formaPago.formaPago}"
+                                   itemValue="#{formaPago.idFormaPago}" />                        
+                </p:selectOneMenu>
+                <p:outputLabel value="Plazo:"/>
+                <p:inputText value="#{ctCem.obraSel.plazo}" disabled="true"/>
+                <p:outputLabel value="Fecha inicial de pago:"/>
+                <p:calendar value="#{ctCem.obraSel.fechaInicialPago}" 
+                            id="txtFechaInicio" requiredMessage="Ingrese la fecha, el campo es obligatorio."
+                            placeholder="dd/MM/yyyy" 
+                            locale="es"
+                            pattern="dd/MM/yyyy" required="true" 
+                            disabled="true"/>
+            </p:panelGrid>
+            <b>Términos de pago</b>
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Municipio:"/>
+                <p:inputText value="#{ctCem.obraSel.porctMunicipio}" style="width: 80%" disabled="true"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Beneficiarios directos:"/>
+                <p:inputText value="#{ctCem.obraSel.porctBenefDirect}" style="width: 80%" disabled="true"/>
+                <p:outputLabel value="Basado en:"/>
+                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Frente:"/>
+                    <p:inputText value="#{ctCem.obraSel.frenteBenefDirect}" style="width: 80%" disabled="true"/>
+                    <p:outputLabel value="Costo metro lineal:"/>
+                    <p:inputText value="#{ctCem.obraSel.valorMetroDirecto}" style="width: 80%" disabled="true"/> 
+                    <p:outputLabel value="Avalúo:"/>
+                    <p:inputText value="#{ctCem.obraSel.avaluoBenefDirect}" style="width: 80%" disabled="true"/>  
+                    <p:outputLabel value="Rango de afectación:"/>
+                    <p:inputText value="#{ctCem.obraSel.rangoAfectacion}" disabled="true"/>
+                </p:panelGrid>
+            </p:panelGrid>
+            <p:separator/>
+            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Beneficiarios indirectos:"/>
+                <p:inputText value="#{ctCem.obraSel.porctBenefIndirect}" style="width: 80%" disabled="true"/>
+                <p:outputLabel value="Basado en:"/>
+                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Frente:"/>
+                    <p:inputText value="#{ctCem.obraSel.frentBenefIndirect}" style="width: 80%" disabled="true"/>
+                    <p:outputLabel value="Costo metro lineal:"/>
+                    <p:inputText value="#{ctCem.obraSel.valorMetroDirecto}" style="width: 80%" disabled="true"/>  
+                    <p:outputLabel value="Avalúo:"/>
+                    <p:inputText value="#{ctCem.obraSel.avaluoBenefIndirect}" style="width: 80%" disabled="true"/>   
+                    <p:outputLabel value="Rango de afectación:"/>
+                    <p:inputText value="#{ctCem.obraSel.rangoAfectInd}" disabled="true"/>
+                </p:panelGrid>
+            </p:panelGrid>            
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <c:choose>
+                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                        </p:dialog>
+
+                        <h:form id="frmPrincipal">
+                            <p:growl autoUpdate="true"/>
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                            <center><h1>Eliminar todo en registro</h1></center>
+                            <div class="ui-g"> 
+                                <div class="ui-g-12 ui-md-12 ui-lg-4">
+                                    <div class="card">
+                                        <b>Ingrese la clave catastral actual:</b>
+                                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                <p:outputLabel value="Zona:"/>                                            
+                                                <p:outputLabel value="Sector:"/>
+                                                <p:outputLabel value="Manzana:"/>                                            
+                                                <p:outputLabel value="Predio"/>
+                                                <h:inputText value="#{ctrlEliminarPredio.zona}" size="2" />
+                                                <h:inputText value="#{ctrlEliminarPredio.sector}" size="2" />
+                                                <h:inputText value="#{ctrlEliminarPredio.manzana}" size="2" />
+                                                <h:inputText value="#{ctrlEliminarPredio.predio}" size="2" />
+                                            </p:panelGrid>
+
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{ctrlEliminarPredio.obtenerPredios()}"
+                                                             update="tblPredios"/>
+
+                                        </p:panelGrid>
+
+                                    </div>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-12 ui-lg-8">
+                                    <div class="card">
+
+                                        <b>Predios Asociados</b>
+                                        <p:dataTable id="tblPredios" var="predio" value="#{ctrlEliminarPredio.lstPredios}" rows="10"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                                     editable="true" selection="#{ctrlEliminarPredio.predioSel}" selectionMode="single">
+                                            <f:facet name="header">
+                                                <p:outputLabel value="Listado de predios"/>
+                                            </f:facet>
+                                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.claveCatastral}"/>
+                                            </p:column>
+                                            <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                            </p:column>
+                                            <p:column headerText="Dirección" width="12%">
+                                                <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Seleccionar" width="5%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-pencil"
+                                                                 action="#{ctrlEliminarPredio.verificarPendientes()}"
+                                                                 update="frmEliminar,frmPendientes">
+                                                    <f:setPropertyActionListener value="#{predio}" target="#{ctrlEliminarPredio.predioSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+
+                                    </div>                                        
+                                </div>                                
+                            </div>
+                        </h:form>
+                    </c:when>
+                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privInactivo}">
+                        <center>
+                            <h1>Permisos Insuficientes</h1>
+                            <br/>
+                            <b>Consulte con el administrador</b>
+                        </center>
+                    </c:when>
+                </c:choose>
+            </c:when>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                    <br/>
+                    <b>Consulte con el administrador</b>
+                </center>
+            </c:when>
+        </c:choose>
+
+        <ui:include src="dlgEliminarPredio.xhtml"/>  
+        <ui:include src="dlgOblicacionesPendientes.xhtml"/>
+        <ui:include src="dlgConfirmarEliminacion.xhtml"/>
+    </ui:define>
+</ui:composition>

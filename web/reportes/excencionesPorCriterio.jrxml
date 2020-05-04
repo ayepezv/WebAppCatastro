@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="excenciones_beneficiario" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="229fba20-5b12-43da-92c9-2ee470b6b9e3">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="criterio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from catastro.f_obtener_excenciones_predios_dado_criterio($P{criterio}
+)]]>
+	</queryString>
+	<field name="id_predio" class="java.lang.Integer"/>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="chv_clave_catastral" class="java.lang.String"/>
+	<field name="id_excencion" class="java.lang.Integer"/>
+	<field name="sr_id_excencion" class="java.lang.Integer"/>
+	<field name="chv_excencion" class="java.lang.String"/>
+	<field name="chv_descripcion" class="java.lang.String"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="dt_fecha_inicio" class="java.sql.Date"/>
+	<field name="dt_fecha_fin" class="java.sql.Date"/>
+	<field name="db_porcentaje" class="java.lang.Double"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="id_session_usuario" class="java.lang.Integer"/>
+	<field name="chv_observaciones" class="java.lang.String"/>
+	<field name="int_id_titular_dom" class="java.lang.Integer"/>
+	<field name="sr_id_persona" class="java.lang.Integer"/>
+	<field name="chv_cedula" class="java.lang.String"/>
+	<field name="chv_nombres" class="java.lang.String"/>
+	<field name="chv_apellidos" class="java.lang.String"/>
+	<group name="chv_excencion">
+		<groupExpression><![CDATA[$F{chv_excencion}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement mode="Opaque" x="-21" y="7" width="843" height="24" forecolor="#B89F7D" backcolor="#F2EBDF" uuid="96b224c0-03f5-463a-bcd8-317488ed28e8"/>
+					<rectangle>
+						<reportElement mode="Opaque" x="21" y="0" width="36" height="24" backcolor="#736343" uuid="7e52cf69-face-411c-84fa-92087a9f0e6d"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement style="SubTitle" x="68" y="0" width="755" height="24" forecolor="#736343" uuid="cf095993-d958-4543-8ba6-3ae51119a54d"/>
+						<textElement>
+							<font fontName="SansSerif" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{chv_excencion}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="800" height="21" uuid="82eec73c-76ef-4b9b-bcbc-6d7c2771d186"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GOBIENRO AUTÓNOMO MUNICIPAL DESCENTRALIZADO MUNICIPAL DEL CANTÓN ARCHIDONA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="21" width="800" height="20" uuid="6dfa3602-22d9-4f09-90ec-4fca3f231caf"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Reporte de Excenciones aplicadas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="1398ebca-ec06-4c17-bb79-06b5cce03db1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="71" height="15" forecolor="#000000" uuid="9060272c-9a7a-4d9e-abfa-54de3a8b8616"/>
+				<textElement>
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Cédula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="73" y="0" width="89" height="15" forecolor="#000000" uuid="c112a70f-84c9-485c-b97b-333c7032f971"/>
+				<textElement>
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="164" y="0" width="89" height="15" forecolor="#000000" uuid="2ba05bc4-680c-4eb8-9c83-259a8ccb4a34"/>
+				<textElement>
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="254" y="0" width="89" height="15" forecolor="#000000" uuid="4076f328-b8f0-4341-86fc-f07d0ecca20e"/>
+				<textElement>
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Clave catastral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="344" y="0" width="155" height="15" forecolor="#000000" uuid="4af29941-407b-4c22-a184-e93a9ff81701"/>
+				<textElement>
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="503" y="0" width="59" height="15" forecolor="#000000" uuid="9d561ab9-6ebf-4d8f-98cd-0b3f1cb32f89"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Porcentaje]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="562" y="0" width="67" height="15" forecolor="#000000" uuid="a963e782-a1fb-4c0b-923d-3fd2ac0fe13d"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fecha inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="631" y="0" width="59" height="15" forecolor="#000000" uuid="9ab7d28a-517e-4e87-bf2b-4e0bf557d778"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Fecha fin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="695" y="0" width="106" height="15" forecolor="#000000" uuid="98828b82-d965-40db-af4d-2cb3d1cb2bbf"/>
+				<textElement>
+					<font size="10" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="15" uuid="be0c1b7a-cdf1-4827-a114-22c545eab224"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="0" y="0" width="71" height="15" uuid="048314fe-bef7-46dc-a5c4-ca1d7bef079c"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_cedula}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="73" y="0" width="89" height="15" uuid="218947d6-84cd-42bb-8fec-6c49f9bd772b"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_nombres}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="164" y="0" width="89" height="15" uuid="199f3be2-3d97-4cab-9cef-f277bba8b9c7"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_apellidos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="254" y="0" width="89" height="15" uuid="0ea180a6-01ac-4db1-a7a3-baa561e851f7"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_clave_catastral}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="344" y="0" width="155" height="15" uuid="b6105eff-9b47-4ee5-bfb2-a37053d3ab8e"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_descripcion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="###0">
+					<reportElement style="Detail" x="503" y="0" width="59" height="15" uuid="880ed480-5212-4ea2-b80e-07584723741f"/>
+					<textElement textAlignment="Center">
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{db_porcentaje}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
+					<reportElement style="Detail" x="562" y="0" width="67" height="15" uuid="b71ef06d-87b3-473f-a0e0-ca3e24809e91"/>
+					<textElement textAlignment="Center">
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dt_fecha_inicio}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
+					<reportElement style="Detail" x="631" y="0" width="59" height="15" uuid="750cb9db-a1ab-499d-b1a5-52124a949c85"/>
+					<textElement textAlignment="Center">
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dt_fecha_fin}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="695" y="0" width="106" height="15" uuid="25e8f848-6955-4419-bb9a-00cb4d0f49c7"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{chv_observaciones}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="23cfc81e-e84f-43b6-a0a2-c35ed96aa5df"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="9a1915c2-1920-4ef0-a4a6-c9ee3ecb801c"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#000000" uuid="39a04783-e109-4cc8-8d07-10f894962e03"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#000000" uuid="d98ca9eb-e074-4f24-bb12-fc9ad0e48537"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#000000" uuid="882354cb-89b9-4a91-8f7e-4a1b7cc942db"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

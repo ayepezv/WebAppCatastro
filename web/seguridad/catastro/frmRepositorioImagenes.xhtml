@@ -1,0 +1,186 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="true"> <!--"#{sessionScope.idRol == VariablesGlobales.rolCatastro}"> -->
+                <p:growl id="msjs" life="3000" autoUpdate="true" showDetail="true"/>                    
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <center><h1>Repositorio de Imágenes</h1></center>
+                <h:form id="frmBusquedas">
+                     <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <center>
+                                <div class="card">
+                                    <b>Buscar: </b>                                    
+                                    <p:selectOneMenu value="#{ctRepImagenes.band}">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>
+                                        <f:selectItem itemLabel="Por Propietario" itemValue="2"/>
+                                        <p:ajax event="change" update="pnlBuscarPorClaveCatastral,pnlBuscarPorPropietario"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </center>
+                        </div> 
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <center>
+                                <div class="card">
+                                    <p:panel id="pnlBuscarPorClaveCatastral" visible="#{ctRepImagenes.band==1}" style="border: none">                                        
+                                        <p:panelGrid columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <p:outputLabel value="Zona"/>
+                                            <p:inputText id="zona" value="#{ctRepImagenes.zona}" style="width: 35%"/>
+                                            <p:outputLabel value="Sector"/>
+                                            <p:inputText id="sector" value="#{ctRepImagenes.sector}" style="width: 35%"/>
+                                            <p:outputLabel value="Manzana"/>
+                                            <p:inputText id="manzana" value="#{ctRepImagenes.manzana}" style="width: 35%"/>
+                                            <p:outputLabel value="Predio"/>
+                                            <p:inputText id="predio" value="#{ctRepImagenes.numPredio}" style="width: 35%"/>                                        
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{ctRepImagenes.buscarPredios()}"
+                                                             update="frmPrincipal:tblImagenes"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{ctRepImagenes.limpiar()}"
+                                                             update="frmPrincipal:tblImagenes,@form"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPorPropietario" visible="#{ctRepImagenes.band==2}" style="border: none">    
+                                        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <h:outputText value="Apellidos/Cédula:"/>
+                                            <p:inputText value="#{ctRepImagenes.txtCedula}"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{ctRepImagenes.obtenerPrediosDadoCedula()}"
+                                                             update="tblPredios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{ctRepImagenes.limpiar()}"
+                                                             update="tblPredios,@form,frmPrincipal"/>
+                                        </p:panelGrid>
+                                        <br/>
+                                        <p:dataTable id="tblPredios" var="predio" value="#{ctRepImagenes.lstPredios}" rows="5"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                                     editable="true" selection="#{ctRepImagenes.objPredio}" selectionMode="single">  
+
+                                            <f:facet name="header">
+                                                <b>Predios Vinculados</b>
+                                            </f:facet>
+                                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.claveCatastral}"/>
+                                            </p:column>
+                                            <p:column headerText="Cédula/RUC" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.propietario.cedula}"/>
+                                            </p:column>
+                                            <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                                <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                            </p:column>
+                                            <p:column headerText="Dirección" width="12%">
+                                                <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Buscar" width="4%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-search"
+                                                                 update="frmPrincipal:tblImagenes"
+                                                                 action="#{ctRepImagenes.obtenerImagenes()}">
+                                                    <f:setPropertyActionListener value="#{predio}" target="#{ctRepImagenes.objPredio}"/>
+                                                </p:commandButton>
+                                            </p:column> 
+                                        </p:dataTable>
+                                    </p:panel> 
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                </h:form>
+
+
+                <h:form id="frmPrincipal">
+                    <div class="ui-g">                        
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">
+                                <p:dataTable id="tblImagenes" var="imagen" value="#{ctRepImagenes.lstImagenes}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20,25" reflow="true"
+                                             rowKey="#{imagen.predio.idPredio}" selectionMode="single" 
+                                             selection="#{ctRepImagenes.repositorioSel}">
+                                    <f:facet name="header">
+                                        <b>Imágenes del predio #{ctRepImagenes.objPredio.claveCatastral}</b>
+                                    </f:facet>
+                                    <p:column headerText="Imagen" width="15%" style="text-align: center">
+                                        <h:outputText value="#{imagen.imagen.titulo}" />
+                                    </p:column>
+                                    
+                                     <p:column headerText="Categoría" width="10%" style="text-align: center">
+                                         <h:outputText value="#{imagen.imagen.categoria}" />
+                                    </p:column>
+                                    <p:column headerText="Descripción" width="15%" style="text-align: center">
+                                        <h:outputText value="#{imagen.imagen.keywords}" />
+                                    </p:column>
+                                    <p:column headerText="Previsualización" width="20%" style="text-align: center">
+                                        <p:lightBox styleClass="imagebox" >  
+                                            <h:outputLink value="../..#{imagen.imagen.path}" title="#{imagen.imagen.titulo} #{imagen.imagen.tipo}">  
+                                                <p:graphicImage value="#{imagen.imagen.path}" width="60%" title="#{imagen.imagen.path}"/>
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                    </p:column>
+                                    <p:column headerText="Fecha de registro" width="15%" style="text-align: center">
+                                        <h:outputText value="#{imagen.imagen.fechaRegistro}" />
+                                    </p:column>
+
+                                    <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-trash"
+                                                         title="Eliminar"
+                                                         onclick="PF('dlgEliminarImagen').show();"
+                                                         update="frmEliminarImagen">
+                                            <f:setPropertyActionListener value="#{imagen}" target="#{ctRepImagenes.repositorioSel}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Nuevo"
+                                                         icon="ui-icon-plus"
+                                                         onclick="PF('dlgInsertarImagen').show();"
+                                                         update="frmInsertarImagen"/>
+                                    </f:facet>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" 
+                          closable="false" resizable="false" showHeader="false">   
+                    <b>Estamos procesando su solicitud</b>
+                    <br/>
+                    <p:graphicImage name="Loading.gif" library="gifs"/>
+                </p:dialog> 
+
+                <ui:include src="frmRegistrarImagen.xhtml"/> 
+                <ui:include src="frmEliminarImagen.xhtml"/> 
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

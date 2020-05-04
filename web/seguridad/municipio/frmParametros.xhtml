@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <div class="ui-g">                        
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form id="frmPrincipal">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                                <center>
+                                    <b>Gestión de Parámetros Administrativos</b>    
+
+                                    <p:dataTable id="tblParametros" var="parametro" value="#{ctParametrosAdmin.lstParametros}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{parametro.idParametro}"
+                                                 editable="true" selection="#{ctParametrosAdmin.parametroSel}" selectionMode="single">
+
+                                        <p:column headerText="Id" width="3%" style="text-align: center">
+                                            <h:outputText value="#{parametro.idParametro}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Código" width="10%" style="text-align: center">
+                                            <h:outputText value="#{parametro.codigo}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Descripción" width="10%" style="text-align: center">
+                                            <h:outputText value="#{parametro.descripcion}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Valor numérico" width="5%" style="text-align: center">
+                                            <h:outputText value="#{parametro.valor}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Valor textual" width="10%" style="text-align: center">
+                                            <h:outputText value="#{parametro.valorTextual}"/>
+                                        </p:column>                                                                               
+
+                                        <p:column width="3%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-pencil"
+                                                             onclick="PF('dlgEditar').show();"
+                                                             update="frmEditar">
+                                                <f:setPropertyActionListener value="#{parametro}" target="#{ctParametrosAdmin.parametroSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+                                        <p:column width="3%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-delete"
+                                                             onclick="PF('dlgEliminar').show();"
+                                                             update="frmEliminar">
+                                                <f:setPropertyActionListener value="#{parametro}" target="#{ctParametrosAdmin.parametroSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+                                        <f:facet name="footer">
+                                            <p:commandButton value="Nuevo"
+                                                             icon="ui-icon-plus"
+                                                             onclick="PF('dlgRegistrar').show();"/>
+                                        </f:facet>
+                                    </p:dataTable>
+                                </center>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+
+        <ui:include src="dlgNuevo.xhtml"/> 
+        <ui:include src="dlgEditar.xhtml"/> 
+        <ui:include src="dlgEliminar.xhtml"/> 
+    </ui:define>
+</ui:composition>

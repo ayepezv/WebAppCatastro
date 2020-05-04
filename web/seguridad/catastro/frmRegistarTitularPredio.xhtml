@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog header="Registrar propietario" widgetVar="dlgNuevoPropietario" modal="true" closable="false" resizable="false"
+              showEffect="clip" hideEffect="fold" >
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h:form id="frmNuevoPropietario">
+                    <p:panel>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText maxlength="10" value="#{editarPredioCtrl.objPredio.propietario.cedula}"
+                                             title="Cedula" required="true" requiredMessage="La Cédula es un campo obligatorio."/>                                                 
+                                <label>* Cédula de Identidad </label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{editarPredioCtrl.objPredio.propietario.apellidos}" required="rue" 
+                                             requiredMessage="Los apellidos del propietario son obligatorios"
+                                             title="Apellidos" />
+                                <label>* Apellidos</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{editarPredioCtrl.objPredio.propietario.nombres}" required="rue" 
+                                             requiredMessage="Los nombres del propietario son obligatorios"
+                                             title="Nombres" />
+                                <label>* Nombres</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{editarPredioCtrl.objPredio.propietario.direccionDom}" required="rue" 
+                                             requiredMessage="La dirección domiciliaria es un campo obligatorio"
+                                             title="Dirección Domiciliaria" />
+                                <label>* Dirección Domiciliaria</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{editarPredioCtrl.objPredio.propietario.nick}" required="rue" 
+                                             requiredMessage="El nick es un campo obligatorio"
+                                             title="Nick" />
+                                <label>* Nick</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{editarPredioCtrl.objPredio.propietario.mail}" required="rue" 
+                                             requiredMessage="El mail es obligatorio"
+                                             title="email" />
+                                <label>* Correo Electrónico</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText value="#{editarPredioCtrl.objPredio.propietario.celular}" required="rue" 
+                                             requiredMessage="El celular es obligatorio"
+                                             title="celular" />
+                                <label>* Celular</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </p:panel>
+                    <br/>
+                    <center>
+                        <p:commandButton value="Aceptar" icon="ui-icon-save" action="#{editarPredioCtrl.insertarPropietario()}"
+                                         update="frmNuevoPropietario,
+                                         frmEditar:acdnDatos:otxtPropietario,
+                                         frmEditar:acdnDatos:otxtRuc"/>
+                        <p:commandButton onclick="PF('dlgNuevoPropietario').hide();" value="Cancelar" icon="ui-icon-close"
+                                         process="@this"/>
+                    </center>
+
+                </h:form>
+            </div>
+        </div>                    
+    </p:dialog>
+</ui:composition>

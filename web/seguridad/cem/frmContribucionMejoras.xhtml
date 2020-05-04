@@ -1,0 +1,285 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCem}">
+                <p:growl autoUpdate="true" escape="false" showDetail="true"/>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                <h:form id="frmPrincipal"> 
+
+                    <div class="ui-g" >
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <center>
+                                <h2><b>Gestión de Mejoras</b> </h2>
+                            </center>
+                            <p:dataTable id="tblMejoras" var="mejora" value="#{ctCem.lstMejoras}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{mejora.idMejora}"
+                                         editable="true" selection="#{ctCem.mejoraSel}" selectionMode="single">                             
+                                <p:column headerText="Nombre" width="10%" style="text-align: justify">
+                                    <p:outputLabel value="#{mejora.nombre}"/>
+                                </p:column>
+
+                                <p:column headerText="Costo" width="3%" style="text-align: center">
+                                    <p:outputLabel value="#{mejora.costo} $"/>
+                                </p:column>
+                                <p:column headerText="Año Avalúo" width="3%" style="text-align: center">
+                                    <p:outputLabel value="#{mejora.anioAvaluo}"/>
+                                </p:column>
+
+                                <p:column headerText="Fecha incial pago" width="3%" style="text-align: center">
+                                    <p:outputLabel value="#{mejora.fechaInicialPago}"/>
+                                </p:column>
+                                <p:column headerText="Observaciones" width="10%" style="text-align: justify">
+                                    <p:outputLabel value="#{mejora.observaciones}"/>
+                                </p:column>
+
+                                <p:column headerText="Editar" width="2%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-pencil" onclick="PF('dlgEditarMejora').show()"
+                                                     update="frmEditarMejora">
+                                        <f:setPropertyActionListener value="#{mejora}" target="#{ctCem.mejoraSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column headerText="Eliminar" width="2%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-trash" onclick="PF('dlgEliminarMejora').show()"
+                                                     update="frmEliminarMejora">
+                                        <f:setPropertyActionListener value="#{mejora}" target="#{ctCem.mejoraSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column headerText="Obras" width="2%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-assignment-return"
+                                                     title="Ver obras"
+                                                     action="#{ctCem.obtenerObras()}"
+                                                     update="frmObras,@form">
+                                        <f:setPropertyActionListener value="#{mejora}" target="#{ctCem.mejoraSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Registrar" icon="ui-icon-plusthick" 
+                                                     onclick="PF('dlgRegistrarMejora').show()"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </div>  
+                    </div> 
+                </h:form>
+
+                <h:form id="frmObras" style="visibility: #{ctCem.visible}">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <center><h2>Gestión de Obras</h2></center>
+                            <p:dataTable id="tblObras" var="obra" value="#{ctCem.lstObras}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{obra.idObra}"
+                                         selection="#{ctCem.obraSel}" selectionMode="single">                           
+
+                                <p:column headerText="Código" width="3%" style="text-align: center">
+                                    <p:outputLabel value="#{obra.idObra}"/>
+                                </p:column>
+
+                                <p:column headerText="Obra" width="10%" style="text-align: center">
+                                    <p:outputLabel value="#{obra.nombreObra}"/>
+                                </p:column>
+
+                                <p:column headerText="Costo" width="4%" style="text-align: center">
+                                    <p:outputLabel value="#{obra.valorObra} $"/>
+                                </p:column>
+
+                                <p:column headerText="Metro Lineal" width="4%" style="text-align: center">
+                                    <p:outputLabel value="#{obra.valorMetroDirecto} $"/>
+                                </p:column>
+                                <!--
+                                                                <p:column headerText="Calles" width="3%" style="text-align: center">
+                                                                    <p:commandButton icon="ui-icon-map"
+                                                                                     title="Calles de afectación"
+                                                                                     onclick="PF('dlgAgregarCalles').show();"
+                                                                                     update="frmAgregar"
+                                                                                     action="#{ctCem.obtenerCallesAfectadas()}">
+                                                                        <f:setPropertyActionListener value="#{obra}" target="#{ctCem.obraSel}"/>
+                                                                    </p:commandButton>                                        
+                                                                </p:column>
+                                -->
+
+                                <p:column headerText="Beneficiarios" width="3%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-group"
+                                                     title="Obtener beneficiarios"
+                                                     action="#{ctCem.obtenerBeneficiariosDirectos()}"
+                                                     update="frmBeneficiarios, @form">
+                                        <f:setPropertyActionListener value="#{obra}" target="#{ctCem.obraSel}"/>
+                                    </p:commandButton>                                        
+                                </p:column>                                
+
+                                <p:column headerText="Acciones" width="5%" style="text-align: center">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-pencil"
+                                                             onclick="PF('dlgEditarObra').show();"
+                                                             update="frmEditarObra"
+                                                             title="Editar">
+                                                <f:setPropertyActionListener value="#{obra}" target="#{ctCem.obraSel}"/>
+                                            </p:commandButton>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:commandButton icon="ui-icon-delete"
+                                                             onclick="PF('dlgEliminarObra').show();"
+                                                             update="frmEliminarObra"
+                                                             title="Eliminar">
+                                                <f:setPropertyActionListener value="#{obra}" target="#{ctCem.obraSel}"/>
+                                            </p:commandButton>
+                                        </c:when>
+                                    </c:choose>                                    
+
+                                    <p:commandButton icon="ui-icon-description"
+                                                     onclick="PF('dlgDetallesObra').show();"
+                                                     update="frmDeatllesObra"
+                                                     title="Detalles de la obra">
+                                        <f:setPropertyActionListener value="#{obra}" target="#{ctCem.obraSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <p:commandButton value="Registrar"
+                                                             icon="ui-icon-plus"
+                                                             onclick="PF('dlgNuevaObra').show();"
+                                                             update="frmNuevaObra"/>
+                                        </c:when>
+                                    </c:choose>
+                                </f:facet>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+
+                <h:form id="frmBeneficiarios" style="visibility: #{ctCem.visibleBenef}">
+                    <!--<h:form id="frmBeneficiarios" >-->
+                    <div class="ui-g-12">
+                        <center><h3>Beneficiarios</h3></center>
+                        <p:dataTable id="tblBeneficiarios" var="beneficiario" value="#{ctCem.lstBenefDirectos}" rows="15"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="20,25,30,35" reflow="true"
+                                     >
+
+                            <p:column headerText="N°" width="3%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.numBeneficiario}"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo" width="5%" style="text-align: center">                                    
+                                <h:outputText value="#{beneficiario.tipo=='D' ?'Directo':'Indirecto'}"/>
+                            </p:column>
+
+                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.predio.claveCatastral}"/>
+                            </p:column>
+
+                            <p:column headerText="Propietario" width="15%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.predio.propietario.apellidos} #{beneficiario.predio.propietario.nombres}"/>
+                            </p:column>
+
+                            <!--
+                            <p:column headerText="Valor del Metro/Avalúo" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.obra.valorDirecto}">                                        
+                                    <f:convertNumber groupingUsed="true" minFractionDigits="5" />
+                                </p:outputLabel>
+                            </p:column>
+
+                            <p:column headerText="Frente" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.frente}">                                        
+                                    <f:convertNumber groupingUsed="true" minFractionDigits="3" />
+                                </p:outputLabel>
+                            </p:column>
+                            -->
+
+                            <p:column headerText="Avalúo predio" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.avaluo}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </p:outputLabel>
+                            </p:column>
+
+                            <p:column headerText="Valor de la mejora" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.valorMejora}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </p:outputLabel>                                        
+                            </p:column>
+
+                            <p:column headerText="Fecha inicial" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{beneficiario.obra.fechaInicialPago}"/>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                        <p:commandButton value="Registrar"
+                                                         icon="ui-icon-save"
+                                                         action="#{ctCem.registrarBeneficiarios()}"/>
+
+                                        <p:commandButton value="Emitir cuotas"
+                                                         icon="ui-icon-explicit"
+                                                         action="#{ctCem.generarEmsisionCuotas()}"/>
+                                    </c:when>
+                                </c:choose>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                    <p:dataExporter type="xls" target="tblBeneficiarios" fileName="beneficiarios" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/imagenes/pdf.png"/>
+                                    <p:dataExporter type="pdf" target="tblBeneficiarios" fileName="beneficiarios"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/imagenes/csv.png"/>
+                                    <p:dataExporter type="csv" target="tblBeneficiarios" fileName="beneficiarios" />
+                                </h:commandLink>
+                            </f:facet>
+                        </p:dataTable>
+                    </div>
+                </h:form>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCem}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <ui:include src="dlgAgregarCalles.xhtml"/>  
+        <ui:include src="dlgNuevaObra.xhtml"/>  
+        <ui:include src="dlgEditarObra.xhtml"/>  
+        <ui:include src="dlgDetallesObra.xhtml"/>  
+        <ui:include src="frmEliminarObra.xhtml"/>  
+        <ui:include src="frmRegistrarMejora.xhtml"/>   
+        <ui:include src="frmEditarMejora.xhtml"/>   
+        <ui:include src="frmEliminarMejora.xhtml"/>   
+        <ui:include src="frmObrasDadoMejora.xhtml"/>   
+    </ui:define>
+</ui:composition>

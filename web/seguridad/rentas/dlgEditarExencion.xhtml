@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgEditar" widgetVar="dlgEditar" closable="false" modal="true" resizable="true" 
+              header="Editar excencion" showEffect="size" hideEffect="size">
+        <h:form id="frmEditar">            
+            <center>
+                <b><h:outputLabel id="otxtPredioSel" value="Predio seleccionado: #{ctPrediosExcenciones.excencionSel.predio.claveCatastral}"/>
+                    <br/>
+                    <p:outputLabel id="otxtDetalleExcen" value="#{ctPrediosExcenciones.excencionSel.excencion.descripcion}"/>
+                    <br/>
+                    <p:outputLabel id="otxtFormaUso" value="#{ctPrediosExcenciones.excencionSel.excencion.formaUso}"/>
+                </b>
+
+                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Excencion especial:"/>
+                    <p:selectOneMenu value="#{ctPrediosExcenciones.excencionSel.excencion.idExccencion}" effect="fold"
+                                     filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{ctPrediosExcenciones.lstExencionesEsp}" var="excen" 
+                                       itemLabel="#{excen.excencion}" itemValue="#{excen.idExccencion}"/>
+                        <p:ajax event="change" listener="#{ctPrediosExcenciones.excenSel()}"
+                                update="otxtDetalleExcen,txtCapital,otxtFormaUso" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Porcentaje:"/>
+                    <p:inputText value="#{ctPrediosExcenciones.excencionSel.porcentaje}" required="true" 
+                                 requiredMessage="Ingrese el porcentaje de la excencion"/>
+
+                    <p:outputLabel value="Fecha de inicio:"/>
+                    <p:calendar id="txtFechaInicio" 
+                                pattern="dd/MM/yyyy"
+                                placeholder="dd/MM/yyyy"
+                                value="#{ctPrediosExcenciones.excencionSel.fechaInicio}" />
+
+                    <p:outputLabel value="Fecha de finalización:"/>
+                    <p:calendar id="txtFechaFin" 
+                                pattern="dd/MM/yyyy"
+                                placeholder="dd/MM/yyyy"
+                                value="#{ctPrediosExcenciones.excencionSel.fechaFin}" />
+
+                    <p:outputLabel value="Observaciones:"/>
+                    <p:inputTextarea value="#{ctPrediosExcenciones.excencionSel.observaciones}"/>
+
+                    <p:outputLabel  value="Valor Capital (BIESS):"/>
+                    <p:inputText  id="txtCapital" disabled="#{ctPrediosExcenciones.excencionSel.excencion.idExccencion!=4}" value="#{ctPrediosExcenciones.excencionSel.capitalBiess}"
+                                  requiredMessage="Ingrese el capital pendiente del préstamo"/>
+
+                </p:panelGrid>
+
+                <p:commandButton value="Aceptar" icon="ui-icon-check"                                 
+                                 update="frmPrincipal:tblExcenciones"
+                                 action="#{ctPrediosExcenciones.editar()}"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditar').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

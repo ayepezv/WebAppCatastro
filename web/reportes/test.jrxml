@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf03001a-9e48-42b0-b355-e1a4dfee4269">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[select * from master.t_modulo]]>
+	</queryString>
+	<field name="int_id_modulo" class="java.lang.Integer"/>
+	<field name="chv_descripcion" class="java.lang.String"/>
+	<field name="chv_nombre" class="java.lang.String"/>
+	<field name="ch_estado_logico" class="java.lang.String"/>
+	<field name="ts_fecha_registro" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_actualizacion" class="java.sql.Timestamp"/>
+	<field name="ts_fecha_baja" class="java.sql.Timestamp"/>
+	<field name="chv_icono" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="110" y="10" width="288" height="49" uuid="1f1576d2-9d6b-4398-9748-1b9e8cb6e517"/>
+				<textElement>
+					<font fontName="Roboto" size="36" isBold="true" isItalic="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Static text]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="201" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="185" height="70" uuid="fe864f2b-1093-4ec9-91b2-bdf85fb51e9f"/>
+				<textElement>
+					<font fontName="Roboto" size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{int_id_modulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="185" height="70" uuid="55884a73-badd-494f-aa42-5f9d4ea6cdab"/>
+				<textElement>
+					<font fontName="Roboto" size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="185" height="70" uuid="92b3e02a-f9ed-4e9a-8460-bfc70e108d64"/>
+				<textElement>
+					<font fontName="Roboto" size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarCoefLocalizacion" widgetVar="dlgEditarCoefLocalizacion" closable="false" modal="true" resizable="true" 
+              header="Editar Coeficientes de Localización" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarCoefLocalizacion">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefLocalizacion.coeflocalizacionSel.coeficiente}"
+                             required="true"
+                             requiredMessage="Nombre Obligatorio"/>
+                <p:outputLabel value="Codigo: "/>
+                <p:inputText value="#{ctrlCoefLocalizacion.coeflocalizacionSel.codigo}"
+                             required="true"
+                             requiredMessage="Codigo Obligatorio"/>
+                <p:outputLabel value="Valor del Coeficiente: "/>
+                <p:inputText value="#{ctrlCoefLocalizacion.coeflocalizacionSel.valorCoeficiente}"
+                             required="true"
+                             requiredMessage="Valor Obligatorio"/>
+                <p:outputLabel value="Descripción: "/>
+                <p:inputTextarea value="#{ctrlCoefLocalizacion.coeflocalizacionSel.descripcion}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefLocalizacion.actualizar()}"
+                                 update="frmListaCoefLocalizacion:tblListaCoefLocalizacion"
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarCoefLocalizacion').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

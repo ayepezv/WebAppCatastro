@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+  <info>
+    <name>ingresar predios que no tienen relacion con las liquidaciones</name>
+    <description/>
+    <extended_description/>
+    <trans_version/>
+    <trans_type>Normal</trans_type>
+    <directory>/</directory>
+    <parameters>
+    </parameters>
+    <log>
+      <trans-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <size_limit_lines/>
+        <interval/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STATUS</id>
+          <enabled>Y</enabled>
+          <name>STATUS</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+          <subject/>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>STARTDATE</id>
+          <enabled>Y</enabled>
+          <name>STARTDATE</name>
+        </field>
+        <field>
+          <id>ENDDATE</id>
+          <enabled>Y</enabled>
+          <name>ENDDATE</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>DEPDATE</id>
+          <enabled>Y</enabled>
+          <name>DEPDATE</name>
+        </field>
+        <field>
+          <id>REPLAYDATE</id>
+          <enabled>Y</enabled>
+          <name>REPLAYDATE</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>Y</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+        <field>
+          <id>EXECUTING_SERVER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_SERVER</name>
+        </field>
+        <field>
+          <id>EXECUTING_USER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_USER</name>
+        </field>
+        <field>
+          <id>CLIENT</id>
+          <enabled>N</enabled>
+          <name>CLIENT</name>
+        </field>
+      </trans-log-table>
+      <perf-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <interval/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>SEQ_NR</id>
+          <enabled>Y</enabled>
+          <name>SEQ_NR</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>INPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>INPUT_BUFFER_ROWS</name>
+        </field>
+        <field>
+          <id>OUTPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>OUTPUT_BUFFER_ROWS</name>
+        </field>
+      </perf-log-table>
+      <channel-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>LOGGING_OBJECT_TYPE</id>
+          <enabled>Y</enabled>
+          <name>LOGGING_OBJECT_TYPE</name>
+        </field>
+        <field>
+          <id>OBJECT_NAME</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_NAME</name>
+        </field>
+        <field>
+          <id>OBJECT_COPY</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_COPY</name>
+        </field>
+        <field>
+          <id>REPOSITORY_DIRECTORY</id>
+          <enabled>Y</enabled>
+          <name>REPOSITORY_DIRECTORY</name>
+        </field>
+        <field>
+          <id>FILENAME</id>
+          <enabled>Y</enabled>
+          <name>FILENAME</name>
+        </field>
+        <field>
+          <id>OBJECT_ID</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_ID</name>
+        </field>
+        <field>
+          <id>OBJECT_REVISION</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_REVISION</name>
+        </field>
+        <field>
+          <id>PARENT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>PARENT_CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>ROOT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>ROOT_CHANNEL_ID</name>
+        </field>
+      </channel-log-table>
+      <step-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>N</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+      </step-log-table>
+      <metrics-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_DATE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_CODE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_CODE</name>
+        </field>
+        <field>
+          <id>METRICS_DESCRIPTION</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DESCRIPTION</name>
+        </field>
+        <field>
+          <id>METRICS_SUBJECT</id>
+          <enabled>Y</enabled>
+          <name>METRICS_SUBJECT</name>
+        </field>
+        <field>
+          <id>METRICS_TYPE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_TYPE</name>
+        </field>
+        <field>
+          <id>METRICS_VALUE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_VALUE</name>
+        </field>
+      </metrics-log-table>
+    </log>
+    <maxdate>
+      <connection/>
+      <table/>
+      <field/>
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file/>
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+    <created_user>-</created_user>
+    <created_date>2018/08/11 18:05:31.255</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2018/08/11 18:05:31.255</modified_date>
+    <key_for_session_key/>
+    <is_key_private>N</is_key_private>
+  </info>
+  <notepads>
+  </notepads>
+  <connection>
+    <name>local</name>
+    <server>localhost</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>bd_app_catastro_andres</database>
+    <port>5432</port>
+    <username>postgres</username>
+    <password>Encrypted 2be98afc86aa7938aaf0bab638fcbf883</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>5432</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <order>
+    <hop>
+      <from>Table input</from>
+      <to>Add constants</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add constants</from>
+      <to>Insert / Update</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <step>
+    <name>Table input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>local</connection>
+    <sql>
+select clave_catastral_bien, max(id_propietario), zona, sector, manzana, predio from migracion.liquidacion_20180629 where clave_catastral_bien IN ('010100100400000000',
+'010100100500000000','010100100800000000','010101300700000000','010101300800000000',
+'010101300900000000','010101301000000000','010101301200000000','010101301300000000',
+'010102202100000000','010103700700000000','010103700800000000','010103700900000000',
+'010103701000000000','010103701100000000','010103701200000000','010103900800000000',
+'010104100200000000','010104100300000000','010104100400000000','010104100600000000',
+'010104100700000000','010104100800000000','010104100900000000','010104101000000000',
+'010104400200000000','010104400300000000','010104400400000000','010104400500000000',
+'010104400600000000','010104400700000000','010104400800000000','010104400900000000',
+'010104401000000000','010104401100000000','010104401200000000','010104500200000000',
+'010104500300000000','010104600200000000','010104600300000000','010104600400000000',
+'010104600500000000','010104600600000000','010104600700000000','010104600800000000',
+'010104600900000000','010104601000000000','010104601100000000','010104700200000000',
+'010104700300000000','010104700400000000','010104700500000000','010104800200000000',
+'010200301000000000','010200901300000000','010201500500000000','010201600300000000',
+'010201701000000000','010201701100000000','010201701200000000','010201701300000000',
+'010201701400000000','010201701500000000','010201701600000000','010201701700000000',
+'010202000300000000','010202000400000000','010202000500000000','010202400100000000',
+'010202400200000000','010202400300000000','010202400400000000','010202400500000000',
+'010202400600000000','010202400700000000','010202400900000000','010202401000000000',
+'010202600500000000','010202700400000000','010202700500000000','010202700600000000',
+'010202700700000000','010202700900000000','010203300200000000','010203300300000000',
+'010203300400000000','010203400100000000','010203400200000000','010203400300000000',
+'010203400400000000','010203400500000000','010203500200000000','010203501000000000',
+'010204100200000000','010204100300000000','010204100400000000','010204100500000000',
+'010204100600000000','010204100700000000','010204100800000000','010204300200000000',
+'010204300300000000','010204300400000000','010204300500000000','010204500200000000',
+'010204500300000000','010204500400000000','010204500500000000','010204500900000000',
+'010204501000000000','010204800500000000','010300300600000000','010301001200000000',
+'010302000500000000','010302000700000000','010303300200000000','010303300300000000',
+'010304600800000000','010304601400000000','010400400200000000','010400400400000000',
+'010400400500000000','010400600700000000','010401400200000000','010401400500000000',
+'010401400600000000','010401600800000000','010401803100000000','010401804000000000',
+'010401804700000000','010402000500000000','010402300200000000','010402400200000000',
+'010402400300000000','010402400400000000','010402400500000000','010402400600000000',
+'010402500300000000','010402700200000000','010402700300000000','010402700400000000',
+'010402700500000000','010402700600000000','020100102500000000','020100303700000000',
+'020101600400000000','020101800900000000','020102100500000000','020102100600000000',
+'020102100800000000','020102100900000000','020102101500000000','020102600100000000',
+'020103400200000000','020103802700000000','020103802800000000','020103802900000000',
+'020103803000000000','020103803100000000','020103803300000000','020103803400000000',
+'020103803500000000','020103803600000000','020103803700000000','020103900600000000',
+'020103900700000000','020103900900000000','020103901000000000','020103901200000000',
+'020103901300000000','020103901400000000','020103901500000000','020104500100000000',
+'020104500200000000','020104500300000000','020104500400000000','020104500500000000',
+'020104502000000000','020104502100000000','020104502200000000','020104502300000000',
+'020104502400000000','020104502500000000','020104502600000000','020104600100000000',
+'020104600200000000','020104600300000000','020104600400000000','020104600500000000',
+'020104602000000000','020104602100000000','020104602200000000','020104602300000000',
+'020104602400000000','020104800100000000','020104900100000000','020105000100000000',
+'020105200500000000','020106000900000000','020106001000000000','020106001300000000',
+'020106001400000000','020106001600000000','020106001700000000','020106001900000000',
+'020106200200000000','020106201100000000','020106201200000000','020106201400000000',
+'020106201500000000','020106201800000000','020106300300000000','020106300400000000',
+'020106300500000000','020106400500000000','020106401100000000','020106401200000000',
+'020106500400000000','020106800600000000','020107401600000000','020202100200000000','020202100300000000','020202200300000000',
+'020202300100000000','020202300200000000','020202300300000000','020202300400000000',
+'020205100300000000','020205100700000000','020205800100000000','020205800200000000',
+'020205800800000000','020206201400000000','020206300400000000','020209900700000000',
+'020209900800000000','030100100700000000','030100401900000000','030100601100000000',
+'030100601200000000','030101400300000000','030101400800000000','030102200100000000',
+'030102301200000000','030102401000000000','030103100500000000','030103102400000000',
+'030105301500000000','030105404100000000','030105405200000000','030106000400000000',
+'030201001400000000','030201002900000000','030201100600000000','030201300200000000',
+'030201300300000000','030201300900000000','030201301000000000','030201400300000000',
+'030202300600000000','030202400200000000','030202400300000000','030202500100000000',
+'030203300900000000','030203400100000000','030204100100000000','030204100200000000',
+'030204100300000000','030205400100000000','030205400200000000','030205400300000000',
+'030205400400000000','030205400500000000','030205400600000000','030205600800000000',
+'030206001000000000','030206001100000000','030206001300000000','030206002100000000',
+'030206002200000000','030206002300000000','040100200600000000','040100200700000000',
+'040100200800000000','040100200900000000','040100300800000000','040100900900000000',
+'040100901000000000','040100901100000000','040101000200000000','040101000300000000',
+'040200100500000000','040200100700000000','040200100800000000','040200100900000000',
+'040200101000000000','040200801100000000','040201001700000000','040300200200000000',
+'040300200700000000','040300201100000000','040300301300000000','050100900900000000'
+) 
+group by clave_catastral_bien,  zona, sector, manzana, predio
+</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>48</xloc>
+      <yloc>128</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Insert / Update</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>local</connection>
+    <commit>100</commit>
+    <update_bypassed>Y</update_bypassed>
+    <lookup>
+      <schema>catastro</schema>
+      <table>t_predio2</table>
+      <key>
+        <name>clave_catastral_bien</name>
+        <field>chv_clave_catastral</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>int_zona</name>
+        <rename>zona</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>int_sector</name>
+        <rename>sector</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>int_manzana</name>
+        <rename>manzana</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>int_num_predio</name>
+        <rename>predio</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>chv_clave_catastral</name>
+        <rename>clave_catastral_bien</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>int_id_titular_dom</name>
+        <rename>max</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>int_id_rep_legal</name>
+        <rename>max</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>chv_barrio</name>
+        <rename>BARRIO</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ch_estado_logico</name>
+        <rename>ESTADO</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>bl_legalizado</name>
+        <rename>LEGALIZADO</rename>
+        <update>N</update>
+      </value>
+    </lookup>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>208</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Add constants</name>
+    <type>Constant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>BARRIO</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>IGM-SISTEMA</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>ESTADO</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>D</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>LEGALIZADO</name>
+        <type>Boolean</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>FALSE</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>64</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step_error_handling>
+  </step_error_handling>
+  <slave-step-copy-partition-distribution>
+  </slave-step-copy-partition-distribution>
+  <slave_transformation>N</slave_transformation>
+</transformation>

@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarDominio" widgetVar="dlgRegistrarDominio" closable="false" modal="true" resizable="true" 
+              header="Registrar Dominio" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarDominio">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre Dominio: "/>
+                    <p:inputText value="#{ctrlDominio.objDominio.dominio}"
+                                 required="true"
+                                 requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Descripción: "/>
+                    <p:inputText value="#{ctrlDominio.objDominio.descripcion}"
+                                 required="true"
+                                 requiredMessage="Descripción Obligatoria"/>             
+                    
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlDominio.insertar()}"
+                                 update="frmListaDominio:tblListaDominio"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarDominio').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

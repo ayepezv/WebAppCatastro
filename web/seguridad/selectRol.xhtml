@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pu="http://primefaces.org/ultima">
+
+    <f:metadata>        
+        <f:event type="preRenderView" listener="#{templateControlador.verificarSesion()}"/>
+    </f:metadata>
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>#{AtributosVistas.titulo}</title>
+        <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/swipe.js" library="ultima-layout" />     
+        <h:outputScript name="funcionesUI.js" library="js" />    
+        <h:outputStylesheet name="estilos-menus.css" library="css" />        
+        <link rel="shortcut icon" href="/WebAppCatastro/faces/resources/imagenes/escudo.png" />  
+    </h:head>
+
+    <h:body  styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}" onload="nobackbutton();">
+        <div class="layout-wrapper #{guestPreferences.menuLayout}">
+            <ui:include src="topRol.xhtml" />
+
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <pu:menu widgetVar="me">
+                    </pu:menu>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px">
+                <center>
+                    <p:graphicImage name="#{AtributosVistas.imagenRol}" width="10%" library="imagenes" />     
+                    <br/>
+                    <span class="overview-detail">Bienvenido: <b> #{sessionScope.nombre} </b>
+                        #{AtributosVistas.msjRol}</span>
+                    <br/>
+                    <div class="ui-g dashboard fadeInDown animated">
+                        <div class="ui-g-12">
+                            <h:form id="frmRoles">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                <p:growl id="msj"  life="10000" autoUpdate="true"/> 
+
+                                <ui:repeat  value="#{controladorRol.lstRoles}" var="rol" varStatus="status">
+                                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                        <div class="ui-g card colorbox colorbox-6 fadeInDown animated" style="height: 120px">
+                                            <div class="ui-g-4">                                                                                                
+                                                <p:graphicImage id="griPrevisualizar" value="#{rol.idRol.icono}" 
+                                                                width="85%"/>
+                                            </div>
+                                            <div class="ui-g-8">
+                                                <span>#{rol.idRol.nombre}</span>
+                                                <p>
+                                                    <h:outputLabel value="#{rol.idRol.descripcion}"/>
+                                                    <p:commandButton type="submit" value="#{AtributosVistas.btnEscoger}"
+                                                                     action="#{controladorLogin.iniciarSesionRol()}" update=":frmRoles:msj">
+                                                        <f:setPropertyActionListener value="#{rol}" target="#{controladorLogin.rolUsuario}"/>
+                                                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                                                    </p:commandButton>
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ui:repeat>
+
+                            </h:form>
+
+                            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                                <img src="../resources/gifs/Loading.gif" alt=""/>
+                            </p:dialog>
+
+                        </div>
+                    </div>
+                </center>
+            </div>
+        </div>
+        <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />        
+        <h:outputStylesheet name="css/layout-yelou.css" library="ultima-layout" />    
+        <h:outputStylesheet name="css/layout-blue.css" library="ultima-layout" />         
+    </h:body>
+</html>

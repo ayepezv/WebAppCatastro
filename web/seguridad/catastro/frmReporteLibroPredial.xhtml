@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>  
+
+    <p:dialog id="dlgLibroPredial" widgetVar="wgLibroPredial" modal="true" resizable="false" 
+              appendTo="@(body)" header="Seleccione el Año" showEffect="fade" hideEffect="fade" style="width: 100%">
+
+        <h:form id="frmLibroPredial">
+
+            <p:panel id="panelIngresar"  widgetVar="plnLibroPredial" closable="true" toggleable="true" style="width: 100%">                
+                <center>
+                    <p:spinner id="minMax" value="#{cTitulosEmitidosAnualmente.anio}" 
+                               min="2000" max="#{cTitulosEmitidosAnualmente.anioActual}" />
+                </center>
+                <div class="menu-gestion">                    
+
+                    <div class="opcion-gestion">
+                        <p:commandLink actionListener="#{cTitulosEmitidosAnualmente.verReporteLibroPredial()}"
+                                      target="_blank" >
+                            <span class="gestion-icono">C</span>
+                            <div >
+                                <h2 class="titulo-gestion">Generar reporte</h2>
+                            </div>
+                        </p:commandLink>
+                    </div>   
+                </div>
+            </p:panel>            
+        </h:form>
+    </p:dialog>
+</ui:composition>

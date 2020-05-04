@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <p:growl autoUpdate="true" showDetail="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <center><h1>Excenciones Aplicadas</h1></center>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-12 ui-lg-4">
+                    <center>
+                        <div class="card">
+                            <b>Buscar: </b>
+                            <p:selectOneMenu value="#{ctExcencionesAplicadas.band}">
+                                <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Por Beneficiario" itemValue="1"/>
+                                <f:selectItem itemLabel="Por rango de fechas" itemValue="2"/>
+                                <p:ajax event="change" update="pnlBuscarPorFecha,pnlBuscarPorFechas,pnlPrintPorBeneficiario,pnlPrintPorFechas"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </center>
+                </div> 
+                <div class="ui-g-12 ui-md-12 ui-lg-8">
+                    <center>
+                        <div class="card">
+                            <p:panel id="pnlBuscarPorFecha" 
+                                     visible="#{ctExcencionesAplicadas.band==1}" 
+                                     style="border: none">
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <p:outputLabel value="Cédula/Apellidos:"/>
+                                    <p:inputText value="#{ctExcencionesAplicadas.criterio}"/>
+                                    <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                     title="Buscar"
+                                                     action="#{ctExcencionesAplicadas.obtenerExcencionesCriterio()}"
+                                                     update="tblExcenciones, pnlPrintPorBeneficiario,pnlPrintPorFechas"/>
+                                </p:panelGrid>
+                            </p:panel>
+
+                            <p:panel id="pnlBuscarPorFechas" 
+                                     visible="#{ctExcencionesAplicadas.band==2}" 
+                                     style="border: none">
+                                <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <p:outputLabel value="Fecha de Inicio:"/>
+                                    <p:calendar id="fechaIni" value="#{ctExcencionesAplicadas.fechaInicio}" showOn="button" 
+                                                placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                    <p:outputLabel value="Fecha de Fin"/>
+                                    <p:calendar id="fechaFin" value="#{ctExcencionesAplicadas.fechaFin}" showOn="button" 
+                                                placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                    <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                     title="Buscar"
+                                                     action="#{ctExcencionesAplicadas.obtenerExcenciones()}"
+                                                     update="tblExcenciones,pnlPrintPorBeneficiario,pnlPrintPorFechas"/>                                        
+                                </p:panelGrid>
+                            </p:panel> 
+                        </div>
+                    </center>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                    <p:dataTable id="tblExcenciones" var="excencion" value="#{ctExcencionesAplicadas.lstExcenciones}" rows="10"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{excencion.predio.idPredio}"
+                                 editable="true" selection="#{ctExcencionesAplicadas.excencionSel}" selectionMode="single">
+
+                        <p:column filterBy="#{excencion.predio.claveCatastral}" filterMatchMode="contains"
+                                  headerText="Predio" width="6%" style="text-align: center">
+                            <h:outputText value="#{excencion.predio.claveCatastral}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{excencion.excencion.excencion}" filterMatchMode="contains"
+                                  headerText="Excención" width="5%" style="text-align: center">
+                            <h:outputText value="#{excencion.excencion.excencion}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{excencion.predio.propietario.apellidos}" filterMatchMode="contains"
+                                  headerText="Titular" width="7%" style="text-align: center">
+                            <h:outputText value="#{excencion.predio.propietario.apellidos} #{excencion.predio.propietario.nombres}"/>
+                        </p:column>
+
+                        <p:column headerText="Porcentaje" width="5%" style="text-align: center">
+                            <h:outputText value="#{excencion.porcentaje}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha de inicio" width="5%" style="text-align: center">
+                            <h:outputText value="#{excencion.fechaInicio}"/>
+                        </p:column>   
+
+                        <p:column headerText="Fecha de fin" width="5%" style="text-align: center">
+                            <h:outputText value="#{excencion.fechaFin}"/>
+                        </p:column> 
+
+                        <p:column headerText="Observaciones" width="7%" style="text-align: center">
+                            <h:outputText value="#{excencion.observaciones}"/>
+                        </p:column>   
+
+
+                        <f:facet name="footer">
+
+
+                            <h:commandLink>
+                                <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                <p:dataExporter type="xls" target="tblExcenciones" fileName="excenciones" />
+                            </h:commandLink>
+
+                            <h:commandLink>
+                                <p:graphicImage name="/imagenes/pdf.png"/>
+                                <p:dataExporter type="pdf" target="tblExcenciones" fileName="excenciones"/>
+                            </h:commandLink>
+
+                            <h:commandLink>
+                                <p:graphicImage name="/imagenes/csv.png"/>
+                                <p:dataExporter type="csv" target="tblExcenciones" fileName="excenciones" />
+                            </h:commandLink>  
+                        </f:facet>
+                    </p:dataTable>
+                    <center>
+                        <p:panel id="pnlPrintPorBeneficiario" 
+                                 visible="#{ctExcencionesAplicadas.band==1}" 
+                                 style="border: none">
+
+                            <p:commandButton icon="ui-icon-local-printshop"  ajax="false" title="Ver Pdf" 
+                                             value="Imprimir 1"
+                                             actionListener="#{ctExcencionesAplicadas.verReporteExcenciones()}"
+                                             onclick="this.form.target = '_blank'"/>
+
+
+                        </p:panel>                                                      
+
+                        <p:panel id="pnlPrintPorFechas" 
+                                 visible="#{ctExcencionesAplicadas.band==2}" 
+                                 style="border: none">
+                            <p:commandButton icon="ui-icon-local-printshop"  ajax="false" title="Ver Pdf" 
+                                             value="Imprimir 2"
+                                             actionListener="#{ctExcencionesAplicadas.verReporteExcencionesCriterio()}"
+                                             onclick="this.form.target = '_blank'"/>
+                        </p:panel>
+                    </center>
+                </div>
+
+            </div> 
+
+
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+    </ui:define>
+</ui:composition>

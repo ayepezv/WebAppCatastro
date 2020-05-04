@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgEliminarCalle" widgetVar="dlgEliminarCalle" closable="false" modal="true" resizable="true" 
+              header="Eliminar Calle" showEffect="size" hideEffect="size">
+        <h:form id="frmEliminarCalle">                     
+            <center>                
+                <h3>¿Esta seguro que desea eliminar la calle #{ctCalles.calleSel.nombre}?</h3>
+                <br/>
+                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group"  >
+                    <p:commandButton value="Aceptar"
+                                     icon="ui-icon-save"
+                                     action="#{ctCalles.eliminar()}"
+                                     update="frmPrincipal:tblCalles,frmEliminarCalle"/>
+                    <p:commandButton value="Cancelar"
+                                     icon="ui-icon-close"
+                                     onclick="PF('dlgEliminarCalle').hide()"/>
+                </p:panelGrid>
+
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

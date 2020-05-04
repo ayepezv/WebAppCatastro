@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <div class="ui-g">                        
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form id="frmPrincipal">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                                <center>
+                                    <b>Gestión de Excenciones Tercera Edad Supera los 500 Salarios Básicos</b> <br/> 
+                                    El presente listado de abonados indica que se encuentran con la excención de la Tercera Edad, <br/> pero el valor total de su patrimonio supera los 500 salarios básicos unificados
+
+                                    <p:dataTable id="tblExcenciones" var="excencionTer" value="#{ctPrediosExcenciones.lstExcencionTer}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{excencionTer.id_titular}"
+                                                 editable="false" selectionMode="single">
+                                        
+                                        <p:column filterBy="#{excencionTer.cedula}" filterMatchMode="contains"
+                                                  headerText="Cedula / RUC" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.cedula}"/>
+                                        </p:column>
+                                        
+                                        <p:column filterBy="#{excencionTer.apellidos} #{excencionTer.nombres}" filterMatchMode="contains"
+                                                  headerText="Nombres" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.apellidos} #{excencionTer.nombres}"/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{excencionTer.chv_excencion}"
+                                            headerText="Tipo de Excención" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.chv_excencion}"/>
+                                        </p:column>
+                                        
+                                        <p:column filterBy="#{excencionTer.chv_excencion}"
+                                            headerText="Fecha Nacimiento" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.nacimiento}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Edad (años)" width="3%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.edad}"/>
+                                        </p:column>
+                                        
+                                        <p:column filterBy="#{excencionTer.num_predios}"
+                                            headerText="Número de Predios" width="7%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.num_predios}"/>
+                                        </p:column>
+                                        
+
+                                        <p:column headerText="Patrimonio Total" width="7%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.suma_valor}">
+                                                <f:convertNumber  currencySymbol="$"  groupingUsed="true" maxFractionDigits="2" type="number" locale="es_EC" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <!--
+                                        <p:column headerText="Fecha de inicio" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.fechaInicio}"/>
+                                        </p:column>   
+
+                                        <p:column headerText="Fecha de fin" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.fechaFin}"/>
+                                        </p:column> 
+
+                                        <p:column headerText="Observaciones" width="7%" style="text-align: center">
+                                            <h:outputText value="#{excencionTer.observaciones}"/>
+                                        </p:column>   
+
+                                        <p:column width="4%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-pencil"
+                                                             title="Editar"
+                                                             onclick="PF('dlgEditar').show();"
+                                                             update="frmEditar">
+                                                <f:setPropertyActionListener value="#{excencionTer}" target="#{ctPrediosExcenciones.excencionTerSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+
+                                        <p:column width="4%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-delete"
+                                                             title="Eliminar"
+                                                             onclick="PF('dlgEliminar').show();"
+                                                             update="frmEliminar">
+                                                <f:setPropertyActionListener value="#{excencionTer}" target="#{ctPrediosExcenciones.excencionTerSel}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        -->
+
+
+                                        <f:facet name="footer">
+                                            <!--
+                                            <p:commandButton value="Nuevo"
+                                                             icon="ui-icon-plus"
+                                                             onclick="PF('dlgRegistrar').show()"/>
+                                            -->
+                                        </f:facet>
+                                    </p:dataTable>
+                                </center>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+        <ui:include src="dlgNuevaExencion.xhtml"/> 
+        <ui:include src="dlgEditarExencion.xhtml"/> 
+        <ui:include src="dlgEliminarExencion.xhtml"/> 
+    </ui:define>
+</ui:composition>

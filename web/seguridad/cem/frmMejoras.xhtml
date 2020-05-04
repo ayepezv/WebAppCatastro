@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <h:form id="frmPrincipal">
+                        <p:growl autoUpdate="true" showDetail="true"/>
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                        <p:panel header="Buscar">
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Mejora"/>
+                                <p:inputText value="#{controladorMejoras.parametro}"/>
+                                <p:commandButton icon="ui-btn ui-icon-search"
+                                                 action="#{controladorMejoras.encontrarMejoras()}"
+                                                 update="tblMejoras"
+                                                 value="Buscar"/>
+                            </p:panelGrid>
+                        </p:panel>
+                        <br/>
+                        <p:dataTable id="tblMejoras" var="mejora" value="#{controladorMejoras.lstMejoras}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{mejora.idMejora}"
+                                     editable="true" selection="#{controladorMejoras.mejoraSel}" selectionMode="single">
+                            <f:facet name="header">
+                                <b>Listado de Mejoras</b> 
+                            </f:facet>
+                            <p:column headerText="Código" width="3%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.idMejora}"/>
+                            </p:column>
+                            <p:column headerText="Nombre" width="10%">
+                                <p:outputLabel value="#{mejora.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Costo" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.costo} $"/>
+                            </p:column>
+                            <p:column headerText="Año Avalúo" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.anioAvaluo}"/>
+                            </p:column>
+                            <p:column headerText="Plazo" width="4%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.plazo}"/>
+                            </p:column>
+                            <p:column headerText="Forma de pago" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.formaPago.formaPago}"/>
+                            </p:column>
+                            <p:column headerText="Fecha incial pago" width="5%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.fechaInicialPago}"/>
+                            </p:column>
+                            <p:column headerText="Observaciones" width="10%" style="text-align: center">
+                                <p:outputLabel value="#{mejora.observaciones}"/>
+                            </p:column>
+
+                            <p:column headerText="Ver Obras" width="3%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-folder-open" onclick="PF('dlgMostrarObras').show()"
+                                                 update="frmMostrarObras"
+                                                 action="#{controladorMejoras.obtenerObrasDadoMejora()}">
+                                    <f:setPropertyActionListener value="#{mejora}" target="#{controladorMejoras.mejoraSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Editar" width="3%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-pencil" onclick="PF('dlgEditarMejora').show()"
+                                                 update="frmEditarMejora">
+                                    <f:setPropertyActionListener value="#{mejora}" target="#{controladorMejoras.mejoraSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Eliminar" width="3%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-trash" onclick="PF('dlgEliminarMejora').show()"
+                                                 update="frmEliminarMejora">
+                                    <f:setPropertyActionListener value="#{mejora}" target="#{controladorMejoras.mejoraSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Registrar" icon="ui-icon-plusthick" 
+                                                 onclick="PF('dlgRegistrarMejora').show()"/>
+                            </f:facet>                            
+                        </p:dataTable>                       
+
+                    </h:form>                    
+                </div>
+            </div>
+        </div>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <ui:include src="frmRegistrarMejora.xhtml"/>   
+        <ui:include src="frmEditarMejora.xhtml"/>   
+        <ui:include src="frmEliminarMejora.xhtml"/>   
+        <ui:include src="frmObrasDadoMejora.xhtml"/>   
+    </ui:define>
+</ui:composition>

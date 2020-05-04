@@ -1,0 +1,247 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <!--<c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}"> -->
+            <c:when  test="true">
+                <p:growl autoUpdate="true"/>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+                <center>
+                    <h1>Consultar títulos de crédito</h1>
+                </center>
+                <h:form id="frmBusqueda">
+                    <div class="ui-g"> 
+                        <!--INICIO MENU BUSQUEDA -->
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <b>Buscar por:</b>
+                                <p:selectOneMenu value="#{ctrlConsultarTitulosCredito.band}">
+                                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>
+                                    <f:selectItem itemLabel="Por Propietario" itemValue="2"/>                                    
+                                    <p:ajax event="change" 
+                                            update="pnlPorDefecto,pnlPorClave,pnlPorCedula,@form,frmTitulos:tblTitulos"/>
+                                </p:selectOneMenu>                                                             
+                            </div>
+                        </div>
+                        <!--FIN MENU BUSQUEDA -->
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <div class="card">
+                                <!--FILTRO POR DEFECTO-->
+                                <p:panel id="pnlPorDefecto" visible="#{ctrlConsultarTitulosCredito.band==0}" style="border: none">
+                                    <center><h3>Seleccione el filtro de búsqueda</h3></center>
+                                </p:panel>
+                                <!--FIN FILTRO POR DEFECTO-->
+
+                                <!--INICIO BUSQUEDA POR CLAVE CATASTRAL-->
+                                <p:panel id="pnlPorClave" visible="#{ctrlConsultarTitulosCredito.band==1}" style="border: none">
+                                    <b>Ingrese la clave catastral:</b>
+                                    <center>
+                                        <p:panelGrid columns="9" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Zona:"/>
+                                            <h:inputText value="#{ctrlConsultarTitulosCredito.zona}" size="4"/>
+                                            <p:outputLabel value="Sector:"/>
+                                            <h:inputText value="#{ctrlConsultarTitulosCredito.sector}" size="4"/>
+                                            <p:outputLabel value="Manzana:"/>
+                                            <h:inputText value="#{ctrlConsultarTitulosCredito.manzana}" size="4"/>
+                                            <p:outputLabel value="Predio:"/>
+                                            <h:inputText value="#{ctrlConsultarTitulosCredito.predio}" size="4"/>
+
+                                            <p:selectOneMenu value="#{ctrlConsultarTitulosCredito.band2}">
+                                                <f:selectItem itemLabel="-- Consultar --" itemValue="#{null}" noSelectionOption="true"/>
+                                                <f:selectItem itemLabel="Títulos Cancelados" itemValue="1"/>
+                                                <f:selectItem itemLabel="Títulos Pendientes" itemValue="2"/>
+                                                <f:selectItem itemLabel="Limpiar" itemValue="3"/>
+                                                <p:ajax event="change" listener="#{ctrlConsultarTitulosCredito.consultarTitulos()}"
+                                                        update="frmTitulos:tblTitulos"
+                                                        process="pnlPorClave"/>
+                                            </p:selectOneMenu> 
+
+                                        </p:panelGrid>
+                                    </center>
+                                </p:panel>
+                                <!--FIN BUSQUEDA POR CLAVE CATASTRAL-->
+
+                                <!--INICIO BUSQUEDA POR PROPIETARIO-->
+                                <p:panel id="pnlPorCedula" visible="#{ctrlConsultarTitulosCredito.band==2}" style="border: none">
+                                    <center>
+                                        <b>Ingrese la cédula/RUC:</b>
+                                        <p:inputText value="#{ctrlConsultarTitulosCredito.parametro}" placeholder="Cédula/Ruc"/>
+                                        <p:commandButton value="Buscar" icon="ui-icon-person"
+                                                         action="#{ctrlConsultarTitulosCredito.obtenerContribuyentes()}"
+                                                         update="tblUsuarios"/>
+                                        <p:commandButton value="Limpiar" icon="ui-icon-clear"
+                                                         action="#{ctrlConsultarTitulosCredito.limpiar()}"
+                                                         update="tblUsuarios,frmTitulos:tblTitulos"/>
+
+                                        <p:dataTable id="tblUsuarios" var="contribuyente" value="#{ctrlConsultarTitulosCredito.lstContribuyentes}" rows="5"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{contribuyente.idPersona}"
+                                                     selection="#{ctrlConsultarTitulosCredito.contribuyente}" selectionMode="single">                                                                                
+                                            <p:column headerText="Cédula/RUC" width="5%" style="text-align: center">                                
+                                                <h:outputText value="#{contribuyente.ruc}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Contribuyente" width="8%" style="text-align: center">
+                                                <h:outputText value="#{contribuyente.nombres} #{contribuyente.apellidos}"/>
+                                            </p:column>
+                                            <p:column headerText="Consultar" width="8%" style="text-align: center">
+                                                <p:commandButton icon="ui-icon-autorenew" title="Buscar"
+                                                                 action="#{ctrlConsultarTitulosCredito.consultarPendientesPorCedula()}"
+                                                                 update="frmTitulos:tblTitulos"
+                                                                 value="Pendientes">
+                                                    <f:setPropertyActionListener value="#{contribuyente}" target="#{ctrlConsultarTitulosCredito.contribuyente}"/>
+                                                </p:commandButton>
+
+                                                <p:commandButton icon="ui-icon-clear" title="Buscar"
+                                                                 action="#{ctrlConsultarTitulosCredito.consultarPagadosPorCedula()}"
+                                                                 update="frmTitulos:tblTitulos"
+                                                                 value="Cancelados">
+                                                    <f:setPropertyActionListener value="#{contribuyente}" target="#{ctrlConsultarTitulosCredito.contribuyente}"/>
+                                                </p:commandButton>
+                                            </p:column>                                                                                                                                     
+                                        </p:dataTable>
+                                    </center>
+                                </p:panel>
+                                <!--FIN BUSQUEDA POR PROPIETARIO-->
+                            </div>
+
+                        </div>
+                    </div>
+                </h:form>
+
+                <h:form id="frmTitulos">
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <div class="card">
+                            <p:dataTable id="tblTitulos" var="titulo" value="#{ctrlConsultarTitulosCredito.lstTitulos}" rows="15"
+                                         paginator="true"  emptyMessage="No se han encontrado valores pendientes" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{titulo.idTitulo}"
+                                         selection="#{ctrlConsultarTitulosCredito.objTitulo}" selectionMode="single">
+                                <f:facet name="header">
+                                    <b>Valores #{ctrlConsultarTitulosCredito.txtValor}</b>
+                                </f:facet>
+                                <p:column headerText="Año" width="2%" style="text-align: center">
+                                    <h:outputText value="#{titulo.anioTitulo}"/>
+                                </p:column>
+                                
+                                <c:choose>
+                                    <c:when  test="#{ctrlConsultarTitulosCredito.txtValor == 'Cancelados'}">
+                                        <p:column headerText="Fecha cobro" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.transacion.fechaEmision}"/>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+                                <!--
+                                <p:column headerText="Número de título" width="4%" style="text-align: center">
+                                    <h:outputText value="#{titulo.tituloNumero}"/>
+                                </p:column>
+                                -->
+                                <p:column headerText="Clave Catastral" width="6%" style="text-align: center">
+                                    <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                                </p:column>
+                                <p:column headerText="Impuesto predial" width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.impuestoPredial}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Proces." width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.procesamiento}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Bomberos" width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.cuerpoBomberos}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Desc." width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.descuento}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Interes" width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.interesesMora}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="No. edif." width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.recargo}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Recargo" width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.pagoTardio}">
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Total a pagar" width="3%" style="text-align: center">
+                                    <h:outputText value="#{titulo.totalPagar}" style="font-size: 20px">                                    
+                                        <f:convertNumber type="currency" currencySymbol="$" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <c:choose>
+                                    <c:when  test="#{ctrlConsultarTitulosCredito.txtValor == 'Cancelados'}">
+                                        <p:column headerText="Duplicado" width="3%" 
+                                                  style="text-align: center"
+                                                  exportable="false">
+                                            <p:commandButton icon="ui-icon-archive"  ajax="false" title="Ver Pdf"
+                                                             actionListener="#{ctrlConsultarTitulosCredito.verReporteDuplicado()}"
+                                                             onclick="this.form.target = '_blank'">
+                                                <f:setPropertyActionListener value="#{titulo}" target="#{ctrlConsultarTitulosCredito.objTitulo}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+
+                                <f:facet name="footer">
+                                    <h:commandLink title="Exportar a Excel">
+                                        <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a PDF">                                        
+                                        <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                        <p:dataExporter type="pdf" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a CSV">
+                                        <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a XML">
+                                        <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                        <p:dataExporter type="xml" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <h1>Error</h1>
+                    <h3>Permisos Insuficientes</h3>
+                    <b>Consulte con el administrador</b>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgValoresConstruccion" widgetVar="dlgValoresConstruccion" closable="true" modal="true" resizable="true" 
+              header="Valores Técnicos" showEffect="size" hideEffect="size" >
+        <h:form id="frmCoefConstruccion">
+            <b>
+                <!--<h:outputLabel value="Datos Generales"/>-->
+                <p:panelGrid columns="8" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputLabel value="Descripción:"/>
+                    <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.idPiso.descripcion}"
+                                 disabled="true" size="5"/>
+
+                    <h:outputLabel value="Estado:"/>
+                    <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.idPiso.estadoPiso}"
+                                 disabled="true" size="5"/>
+
+                    <h:outputLabel value="Área de construcción:"/>
+                    <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.idPiso.areaConstruccion}"
+                                 disabled="true"/>
+
+                    <h:outputLabel value="Año de construcción:"/>
+                    <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.idPiso.anioConstruccion}"
+                                 disabled="true" size="5"/>
+                </p:panelGrid>
+            </b>
+
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                <p:panel >
+                    <center>ACABADOS</center>
+                    <b>
+                        <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="ELEMENTO"/>
+                            <h:outputLabel value="CARACTERÍSTICA"/>
+                            <h:outputLabel value="VALOR"/>
+                            <h:outputLabel value="Pisos:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabPisos}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabPisos}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Puertas:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabPuertas}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabPuertas}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Ventanas:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabVentanas}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabVentanas}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Cubreventanas:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabCubrevent}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabCubrevent}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Tumbados:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabTumbados}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabTumbados}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Cubierta:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructEscaleras}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructEscaleras}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Baños:"/> 
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabCubierta}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabCubierta}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Cocina:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabCocina}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabCocina}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Closets:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabClosets}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabClosets}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Rev. Interior:"/>   
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabRevInterior}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabRevInterior}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Rev. Exterior:"/> 
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.acabRevExt}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.acabRevExt}" disabled="true" size="5"/>
+                        </p:panelGrid>
+                    </b>
+                </p:panel> 
+                <p:panel>
+                    <center>ESTRUCTURA</center>
+                    <b>                        
+                        <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="ELEMENTO"/>
+                            <h:outputLabel value="CARACTERÍSTICA"/>
+                            <h:outputLabel value="VALOR"/>
+                            <h:outputLabel value="Cimientos:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructCimientos}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructCimientos}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Columnas:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructColumnas}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructColumnas}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Vigas/Cadenas:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructVigas}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructVigas}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Entrepisos:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructEntrepisos}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructEntrepisos}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Paredes:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructParedes}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructParedes}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Cubierta:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructCubierta}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructCubierta}" disabled="true" size="5"/>
+
+                            <h:outputLabel value="Escaleras:"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.pisoSel.estructEscaleras}" disabled="true"/>
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estructEscaleras}" disabled="true" size="5"/>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Fact. Estado:"/>                        
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.estadoPiso}" disabled="true" size="10"/>
+                            <h:outputLabel value="Fact. Depresiación:"/>                        
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.fde}" disabled="true" size="10"/>
+                            <h:outputLabel value="Suma coeficientes:"/>                        
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.total1}" disabled="true" size="10"/>
+                            <h:outputLabel value="TOTAL:" style="font-size: 18px"/>                        
+                            <h:inputText value="#{registrarConstruccionesCtrl.detalleConstruccion.total2}" 
+                                         disabled="true" size="10" style="font-size: 18px">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:inputText>
+                        </p:panelGrid>
+                    </b>
+
+
+                </p:panel>
+
+            </p:panelGrid>
+        </h:form>
+    </p:dialog>
+</ui:composition>

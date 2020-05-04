@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="frmEstadisticasAccesos">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <p:chart type="bar" model="#{estadisticasAccesos.barModel}">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+                        </p:chart>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">   
+            <img src="../../resources/gifs/Loading.gif" alt=""/>            
+        </p:dialog>
+    </ui:define>
+</ui:composition>

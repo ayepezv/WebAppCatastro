@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">   
+
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <center><h1>Gestion Coeficientes de Vida Útil</h1></center>
+                            <h:form  id="frmListaCoefVidaUtil">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:messages autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+                                <p:dataTable id="tblListaCoefVidaUtil" value="#{ctrCoefVidaUtil.lstCoeficientes}"
+                                             var="coef" reflow="true" rows="25" paginator="true"
+                                             rowKey="#{coef.id_coef_vida_util}"
+                                             selection="#{ctrCoefVidaUtil.coefvidautilSel}"
+                                             selectionMode="single"
+                                             >
+                                    <p:column headerText="Uso" width="5%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.uso}"/>
+                                    </p:column>
+                                    <p:column headerText="Material" width="5%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.material}"/>
+                                    </p:column>  
+                                    <p:column headerText="Descripción" width="10%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.descripcion}"/>
+                                    </p:column>  
+                                    <p:column headerText="Vida Útil" width="5%" style="text-align: center">
+                                        <h:outputLabel value="#{coef.vida_util}"/>
+                                    </p:column>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="4%" style="text-align: center"
+                                                      exportable="false">
+                                                <p:commandButton icon="ui-icon-edit" value="Editar"
+                                                                 onclick="PF('dlgEditarCoefVidaUtil').show()"
+                                                                 update="frmEditarCoefVidaUtil">
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrCoefVidaUtil.coefvidautilSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="4%" style="text-align: center"
+                                                      exportable="false">
+                                                <p:commandButton icon="ui-icon-trash" value="Eliminar"
+                                                                 onclick="PF('dlgEliminarCoefVidaUtil').show()"
+                                                                 update="frmEliminarCoefVidaUtil"
+                                                                 >
+                                                    <f:setPropertyActionListener value="#{coef}" target="#{ctrlCoefVidaUtil.coefvidautilSel}"/>   
+                                                </p:commandButton> 
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Nuevo"
+                                                                 icon="ui-icon-plus"
+                                                                 onclick="PF('dlgRegistrarCoefVidaUtil').show()"
+                                                                 update="frmRegistrarCoefVidaUtil"
+                                                                 /> 
+                                            </c:when>
+                                        </c:choose>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                            <p:dataExporter type="xls" target="tblListaCoefVidaUtil" fileName="coeficientes" />
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/pdf.png"/>
+                                            <p:dataExporter type="pdf" target="tblListaCoefVidaUtil" fileName="coeficientes"/>
+                                        </h:commandLink>
+
+                                        <h:commandLink>
+                                            <p:graphicImage name="/imagenes/csv.png"/>
+                                            <p:dataExporter type="csv" target="tblListaCoefVidaUtil" fileName="coeficientes" />
+                                        </h:commandLink>
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMunicipio}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmRegistrarCoefVidaUtil.xhtml"/>      
+        <ui:include src="frmEditarCoefVidaUtil.xhtml"/>           
+        <ui:include src="frmEliminarCoefVidaUtil.xhtml"/>         
+    </ui:define>
+
+</ui:composition>

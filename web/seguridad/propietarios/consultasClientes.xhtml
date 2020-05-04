@@ -1,0 +1,172 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <h:form id="frmPrincipal">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />    
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">
+                        <p:dataTable id="tblPredios" var="predio" value="#{ctrlRecaudacionClientes.lstPredios}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{predio.idPredio}"
+                                     editable="true" selection="#{ctrlRecaudacionClientes.predio}" selectionMode="single">
+                            <f:facet name="header">
+                                <b>Predios aosciados</b>
+                            </f:facet>
+                            <p:column headerText="Clave Catastral" width="8%" style="text-align: center">                                
+                                <h:outputText value="#{predio.claveCatastral}"/>
+                            </p:column>
+                            <p:column headerText="Parroquia" width="8%" style="text-align: center">
+                                <h:outputText value="#{predio.idParroquia.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Barrio" width="10%" style="text-align: center">
+                                <h:outputText value="#{predio.barrio}"/>
+                            </p:column>
+                            <p:column headerText="Dirección" width="12%" style="text-align: center">
+                                <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                            </p:column>
+                            <p:column headerText="Consultar" width="10%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-assignment" title="Consultar"
+                                                 action="#{ctrlRecaudacionClientes.obtenerTitulos()}"
+                                                 update="frmPrincipal:tabTitulos,frmPrincipal:tabTitulos:tblTitulos,frmPrincipal:tabTitulos:tblTitulosPagados">
+                                    <f:setPropertyActionListener value="#{predio}" target="#{ctrlRecaudacionClientes.predio}"/>
+                                </p:commandButton>
+                            </p:column>  
+                        </p:dataTable>
+
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="card">
+                        <center>
+                            <p:tabView id="tabTitulos">
+                                <p:tab id="tabPendientes" title="Valores pendientes">
+                                    <p:dataTable id="tblTitulos" var="titulo" value="#{ctrlRecaudacionClientes.lstTitulos}" rows="5"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{titulo.idTitulo}"
+                                                 editable="true" selection="#{ctrlRecaudacionClientes.titulo}" selectionMode="single">
+                                        <f:facet name="header">
+                                            <b>Valores a cancelar</b>
+                                        </f:facet>
+                                        <p:column headerText="Año" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.anioTitulo}"/>
+                                        </p:column>
+                                        <p:column headerText="Número de título" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.tituloNumero}"/>
+                                        </p:column>
+                                        <p:column headerText="Fecha de emisión" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.fechaEmision}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Valor terreno" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.valorTerreno}">
+                                                <f:convertNumber pattern="#0.00"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Valor construcción" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.valorConstruccion}">
+                                                <f:convertNumber pattern="#0.00" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Descuentos" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.descuento}">
+                                                <f:convertNumber pattern="#0.00" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Intereses" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.interesesMora}">
+                                                <f:convertNumber pattern="#0.00" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Total a pagar" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.totalPagar}">                                    
+                                                <f:convertNumber pattern="#0.00" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Estado" width="6%" style="text-align: center">
+                                            <h:outputText value="#{titulo.pagado==false ?'Pendiente':'Pagado'}"/>
+                                        </p:column>  
+                                        <p:column headerText="Detalles" width="6%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-chrome-reader-mode"/>
+                                        </p:column>   
+                                    </p:dataTable>
+                                </p:tab>
+                                <p:tab id="tabTitulos" title="Títulos">
+                                    <p:dataTable id="tblTitulosPagados" var="tit" value="#{ctrlRecaudacionClientes.lstTitulosPagados}" rows="5"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{tit.idTitulo}"
+                                                 editable="true" selection="#{ctrlRecaudacionClientes.titulo}" selectionMode="single">
+                                        <p:column headerText="Año" width="5%" style="text-align: center">
+                                            <h:outputText value="#{tit.anioTitulo}"/>
+                                        </p:column>
+                                        <p:column headerText="Número de título" width="8%" style="text-align: center">
+                                            <h:outputText value="#{tit.tituloNumero}"/>
+                                        </p:column>
+                                        <p:column headerText="Fecha de emisión" width="8%" style="text-align: center">
+                                            <h:outputText value="#{tit.fechaEmision}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Fecha de pago" width="8%" style="text-align: center">
+                                            <h:outputText value="#{tit.transacion.fechaEmision}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Forma de pago" width="8%" style="text-align: center">
+                                            <h:outputText value="#{tit.transacion.formaRecaudacion.formaRecaudacion}">                                                
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Transacción" width="5%" style="text-align: center">
+                                            <h:outputText value="#{tit.transacion.idTransaccion}">                                                
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Título" width="5%" style="text-align: center">                                            
+                                           <!--
+                                            <h:commandLink id="duplicado"
+                                                           target="_blank"
+                                                           title="Imprimir duplicado"
+                                                           actionListener="#{ctrlRecaudacionClientes.verReportePdfPorId()}">
+                                                <i class="fa fa-print fa-2x" aria-hidden="true"></i>
+                                                <f:setPropertyActionListener value="#{tit}" target="#{ctrlRecaudacionClientes.titulo}"/>
+                                            </h:commandLink>    
+                                            -->
+
+                                            <p:commandButton icon="ui-icon-print"
+                                                             title="Imprimir duplicado"
+                                                             action="#{ctrlRecaudacionClientes.verReportePdfPorId()}" 
+                                                             ajax="false" onclick="this.form.target = '_blank'">
+                                                <f:setPropertyActionListener value="#{tit}" target="#{ctrlRecaudacionClientes.titulo}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Transacción" width="5%" style="text-align: center">
+                                            <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:tab>
+                            </p:tabView>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+    </ui:define>
+</ui:composition>

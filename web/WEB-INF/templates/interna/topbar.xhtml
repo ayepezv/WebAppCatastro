@@ -1,0 +1,73 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <div class="topbar clearfix">
+        <div class="topbar-left">  
+            <p:graphicImage name="#{AtributosVistas.imagenMenu}" width="75%" library="imagenes"/>
+        </div>
+
+        <div class="topbar-right">
+            <a id="menu-button" href="#">
+                <i></i>
+            </a>
+
+            <a id="topbar-menu-button" href="#">
+                <i class="material-icons">menu</i>
+            </a>
+
+            <ul class="topbar-items fadeInDown animated">
+                <ui:fragment>
+                    <li class="profile-item">
+                        <a href="#">
+                            <h:graphicImage id="fotoUsuario" class="profile-image" value="#{sessionScope.fotoUsuario}" 
+                                            width="35%" alt="#{AtributosVistas.msjAltImagen}"/>    
+                            <span class="topbar-item-name">#{sessionScope.nombre}</span>
+                        </a>
+
+                        <ul class="ultima-menu animated">
+                            <li role="menuitem">                             
+                                <h:form>
+                                    <a href="/WebAppCatastro/faces/seguridad/perfilUsuario.xhtml">                                        
+                                        <i class="material-icons">&#xE7FD;</i>
+                                        <span>Perfil</span>
+                                    </a>
+                                </h:form>                                                                                                
+                            </li>
+                            <li role="menuitem">
+                                <a href="/WebAppCatastro/faces/seguridad/cambiarContrasenia.xhtml">
+                                    <i class="material-icons">&#xE32A;</i>
+                                    <span>Cambiar Contraseña</span>
+                                </a>
+                            </li>
+
+                            <li role="menuitem">
+                                <h:form>
+                                    <p:commandLink action="#{controladorLogin.cambiarRol()}">
+                                        <i class="material-icons">&#xE915;</i>
+                                        <span>Cambiar Rol</span>
+                                    </p:commandLink>
+                                </h:form>
+                            </li>
+
+                            <li role="menuitem">
+                                <h:form>
+                                    <p:commandLink action="#{controladorLogin.cerrarSesion()}">
+                                        <i class="material-icons">&#xE8AC;</i>
+                                        <span>Salir</span>
+                                    </p:commandLink>
+                                </h:form>
+                            </li>
+                        </ul>
+                    </li>
+                </ui:fragment>                                 
+            </ul>            
+        </div>
+    </div>
+
+</ui:composition>

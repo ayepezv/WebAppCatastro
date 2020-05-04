@@ -1,0 +1,288 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">                   
+                    <h:form id="frmUsuarios">                        
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                        <center>
+                            <p:panelGrid columns="3" style="text-align: center; width: 55%; " layout="grid" >
+                                <h:outputLabel value="Buscar propietario (Cedula Propietario, Nombres o Apellidos)"/>
+                                <p:inputText style="width: 85%" value="#{propietarioCtrl.parametro}"/>
+                                <p:commandButton value="Buscar" icon="ui-icon-search" 
+                                                 action="#{propietarioCtrl.encontrarPropietario()}" update="tblUsuarios"/>                           
+                            </p:panelGrid>
+                        </center>
+                        <br/> 
+                        <p:panel>
+                            <center>
+                                <b>
+                                    <h3>Gestión de Propietarios</h3>
+                                </b>
+                            </center>
+                            <p:dataTable id="tblUsuarios" var="usuario" value="#{propietarioCtrl.lstUsuarios}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true"
+                                         rowKey="#{usuario.idPersona}" selectionMode="single" selection="#{propietarioCtrl.usuarioSel}">
+                                <p:column headerText="Apellidos" width="10%" style="text-align: center">
+                                    <h:outputText value="#{usuario.apellidos}"/>
+                                </p:column>
+                                <p:column headerText="Nombres" width="10%" style="text-align: center">
+                                    <h:outputText value="#{usuario.nombres}"/>
+                                </p:column>
+                                <p:column headerText="Sexo" width="3%" style="text-align: center">
+                                    <h:outputText value="#{usuario.sexo}"/>
+                                </p:column>
+                                <p:column headerText="Nick" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.nick}"/>
+                                </p:column>
+                                <p:column headerText="Mail" width="8%" style="text-align: center">
+                                    <h:outputText value="#{usuario.mail}"/>
+                                </p:column>
+                                <p:column headerText="Fecha de Registro" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.fechaRegistro}"/>
+                                </p:column>
+                                <p:column headerText="Fecha Ultim. Actualización" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.fechaActualizacion}"/>
+                                </p:column>
+                                <p:column headerText="Operaciones" width="5%" style="text-align: center">
+                                    <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                     onclick="PF('dlgActualizar').show();"
+                                                     update="frmActualizar">
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton title="Eliminar" icon="ui-icon-trash"
+                                                     onclick="PF('dlgEliminar').show();"
+                                                     update="frmEliminar">
+
+                                        <f:setPropertyActionListener value="#{usuario}" target="#{propietarioCtrl.usuarioSel}"/>
+
+                                    </p:commandButton>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                     onclick="PF('dlgRegistrar').show();"/>
+                                </f:facet>
+                            </p:dataTable> 
+                        </p:panel>                                              
+
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                    <p:dialog header="Registrar Propietario" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+                        <h:form id="frmRegistrar">
+                            <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText id="txtCedula"  value="${propietarioCtrl.usuario.cedula}" maxlength="10"
+                                                 title="Cedula" required="true" requiredMessage="La Cédula es un campo obligatorio."                                                  
+                                                 /> 
+                                    <label>#{AtributosVistas.cedula}</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText id="txtNombre" value="#{propietarioCtrl.usuario.nombres}" 
+                                                 title="Nombres Persona" required="true" 
+                                                 requiredMessage="El Nombre es requerido!" type="text" 
+                                                 validatorMessage="Nombres, No puede ingresar números..." >                                        
+                                    </p:inputText>
+                                    <label>#{AtributosVistas.nombres}</label>
+                                </h:panelGroup>   
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText id="txtApellidos"   value="#{propietarioCtrl.usuario.apellidos}" 
+                                                 title="Nombres Persona" required="true" 
+                                                 requiredMessage="Los apellidos son requeridos!" type="text"
+                                                 validatorMessage="Apellidos, No puede ingresar números..." >                                        
+                                    </p:inputText>
+                                    <label>#{AtributosVistas.apellidos}</label>
+                                </h:panelGroup>
+                                <h:panelGroup >
+                                    <label>Sexo</label>
+                                    <p:selectOneRadio id="radioSexo" value="#{propietarioCtrl.usuario.sexo}" 
+                                                      required="true" requiredMessage="El sexo del usuario es obligatorio.">
+                                        <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                        <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                                    </p:selectOneRadio>                                     
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText id="txtCelular"  value="#{propietarioCtrl.usuario.celular}" 
+                                                 title="Celular Persona" required="true" 
+                                                 requiredMessage="El Celular es requerido!" maxlength="10"
+                                                 validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >                                        
+                                    </p:inputText>
+                                    <label>#{AtributosVistas.celular}</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText  id="txtCorreo"  value="#{propietarioCtrl.usuario.mail}" 
+                                                  title="Correo Electrónico" required="true" 
+                                                  requiredMessage="El Correo Electrónico es requerido!" 
+                                                  validatorMessage="Correo Electrónico, formato inválido. Ejm: info@info.com">                                        
+                                    </p:inputText>
+                                    <label>#{AtributosVistas.correo}</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText  id="txtDireccion"  value="#{propietarioCtrl.usuario.direccionDom}" 
+                                                  title="Dirección Domiciliaria" required="true" 
+                                                  requiredMessage="La Dirección es requerida!" >
+                                    </p:inputText>
+                                    <label>Dirección Domiciliaria</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:outputLabel for="button" />
+                                    <p:calendar id="button" value="#{propietarioCtrl.fechaNacimiento}" showOn="button" 
+                                                navigator="true"  />
+                                    <label>Fecha Nacimiento</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{propietarioCtrl.usuario.estadoCivil}" required="true" 
+                                                 requiredMessage="El Campo es obligatorio."/>
+                                    <label>Estado Civil</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{propietarioCtrl.usuario.ruc}" required="true" 
+                                                 requiredMessage="El Ruc es obligatorio."/>
+                                    <label>R.U.C.</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{propietarioCtrl.usuario.nick}" required="true" 
+                                                 requiredMessage="El Nick es obligatorio."/>
+                                    <label>Nick</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText value="#{propietarioCtrl.usuario.password}" required="true" 
+                                                 requiredMessage="El password es obligatorio."/>
+                                    <label>Contraseña</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar" action="#{propietarioCtrl.insertarUsuario()}" 
+                                                 update="frmUsuarios:tblUsuarios,frmRegistrar"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgRegistrar').hide();"/>
+                            </center>  
+                        </h:form>
+                    </p:dialog>
+
+
+                    <p:dialog header="Actualizar Propietario" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold" >
+                        <h:form id="frmActualizar">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Cedula:"/>
+                                <p:inputText value="${propietarioCtrl.usuarioSel.cedula}" maxlength="10"
+                                             title="Cedula" required="true" 
+                                             requiredMessage="La Cédula es un campo obligatorio."                                             
+                                             /> 
+                                <h:outputLabel value="Nombres:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.nombres}" title="Nombres Persona" required="true" 
+                                             requiredMessage="El Nombre es requerido!" type="text"
+                                             validatorMessage="Nombres, No puede ingresar números..." >                                    
+                                </p:inputText>
+                                <h:outputLabel value="Apellidos:"/>
+                                <p:inputText  value="#{propietarioCtrl.usuarioSel.apellidos}" title="Apellidos Persona" required="true" 
+                                              requiredMessage="Los apellidos son requeridos!" type="text"
+                                              validatorMessage="Apellidos, No puede ingresar números..." >                                    
+                                </p:inputText>
+                                <h:outputLabel value="Sexo:"/>
+                                <p:selectOneRadio value="#{propietarioCtrl.usuarioSel.sexo}" required="true" requiredMessage="El sexo del usuario es obligatorio.">
+                                    <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                    <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                                </p:selectOneRadio>
+                                <h:outputLabel value="Celular:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.celular}" title="Celular Persona" required="true" 
+                                             requiredMessage="El Celular es requerido!" maxlength="10"
+                                             validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >                                    
+                                </p:inputText>
+                                <h:outputLabel value="Dirección Domiciliaria:"/>
+                                <p:inputText  value="#{propietarioCtrl.usuarioSel.direccionDom}" 
+                                              title="Dirección Domiciliaria" required="true" 
+                                              requiredMessage="La Dirección es requerida!" >
+                                </p:inputText>
+                                <h:outputLabel value="Fecha de Nacimiento:"/>
+                                <p:calendar value="#{propietarioCtrl.fechaNacimiento}" showOn="button" 
+                                            navigator="true"  />
+                                <h:outputLabel value="Estado Civil:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.estadoCivil}" required="true" 
+                                             requiredMessage="El Campo es obligatorio."/>
+                                <h:outputLabel value="R.U.C:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.ruc}" required="true" 
+                                             requiredMessage="El Ruc es obligatorio."/>
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar"  action="#{propietarioCtrl.actualizarUsuario()}" update="frmUsuarios:tblUsuarios,frmActualizar"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgActualizar').hide();"/>
+                            </center>
+                        </h:form>
+
+                    </p:dialog>
+
+                    <p:dialog header="Esta Seguro que Desea Eliminar el Registro?" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+                        <h:form id="frmEliminar">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Cedula:"/>
+                                <p:inputText value="${propietarioCtrl.usuarioSel.cedula}" maxlength="10"
+                                             title="Cedula" disabled="true"/> 
+                                <h:outputLabel value="Nombres:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.nombres}" title="Nombres Persona" disabled="true" >
+
+                                </p:inputText>
+                                <h:outputLabel value="Apellidos:"/>
+                                <p:inputText  value="#{propietarioCtrl.usuarioSel.apellidos}" title="Apellidos Persona" disabled="true" >
+
+                                </p:inputText>
+                                <h:outputLabel value="Sexo:"/>
+                                <p:selectOneRadio value="#{propietarioCtrl.usuarioSel.sexo}" disabled="true">
+                                    <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                    <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                                </p:selectOneRadio>
+                                <h:outputLabel value="Celular:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.celular}" title="Celular Persona"  disabled="true" >
+
+                                </p:inputText>
+                                <h:outputLabel value="Dirección Domiciliaria:"/>
+                                <p:inputText  value="#{propietarioCtrl.usuarioSel.direccionDom}" title="Dirección Domiciliaria" disabled="true" >
+
+                                </p:inputText>
+                                <h:outputLabel value="Fecha de Nacimiento:"/>
+                                <p:calendar value="#{propietarioCtrl.usuarioSel.fechaNacimiento}" showOn="button" disabled="true" 
+                                            navigator="true"  />
+                                <h:outputLabel value="Estado Civil:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.estadoCivil}" disabled="true"/>
+                                <h:outputLabel value="R.U.C:"/>
+                                <p:inputText value="#{propietarioCtrl.usuarioSel.ruc}" disabled="true"/>
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar"  action="#{propietarioCtrl.eliminarUsuario()}" 
+                                                 update="frmUsuarios:tblUsuarios,frmEliminar"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgEliminar').hide();"/>
+                            </center>
+                        </h:form>
+                    </p:dialog>                   
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

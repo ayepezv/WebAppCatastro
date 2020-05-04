@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 4}">
+                <h:form id="frmPrincipal">
+                    <center>
+                        <h1>Reporte de Altas</h1>
+
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="card">
+                                    <p:panelGrid columns="6" styleClass="ui-panelgrid-blank form-group">                                       
+                                        <h:outputText value="Desde:" />
+                                        <p:calendar id="fechaInicio" value="#{ctrlAltas.fechaInicio}" 
+                                                    showOn="button" pattern="dd/MM/yyyy" 
+                                                    placeholder="dd/MM/yyyy"/>
+                                        <h:outputText value="Hasta:" />
+                                        <p:calendar id="fechaFin" value="#{ctrlAltas.fechaFin}" 
+                                                    showOn="button" pattern="dd/MM/yyyy" 
+                                                    placeholder="dd/MM/yyyy"/>
+                                        <p:commandButton value="Buscar"
+                                                         icon="ui-icon-search"
+                                                         action="#{ctrlAltas.obtenerAltas()}"
+                                                         update="tblTitulos"/>
+                                        <p:commandButton value="Limpiar"
+                                                         icon="ui-icon-clear"
+                                                         update="@form"
+                                                         action="#{ctrlAltas.limpiar()}"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="card">
+                                    <p:dataTable id="tblTitulos" var="titulo" value="#{ctrlAltas.lstTitulos}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20,25" reflow="true">  
+                                        <f:facet name="header">
+                                            <b>Títulos pendientes</b>
+                                        </f:facet>
+                                        <p:column headerText="Año" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.anioTitulo}"/>
+                                        </p:column>
+                                        <p:column headerText="Número de título" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.tituloNumero}"/>
+                                        </p:column>
+                                        <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.predio.claveCatastral}"/>
+                                        </p:column>
+                                        <p:column headerText="Fecha de emisión" width="8%" style="text-align: center">
+                                            <h:outputText value="#{titulo.fechaEmision}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor titulo" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.totalTitulo}">
+                                                <f:convertNumber type="currency" currencySymbol="$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Descuentos" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.descuento}">
+                                                <f:convertNumber type="currency" currencySymbol="$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Intereses" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.interesesMora}">
+                                                <f:convertNumber type="currency" currencySymbol="$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Total a pagar" width="5%" style="text-align: center">
+                                            <h:outputText value="#{titulo.totalPagar}">                                    
+                                                <f:convertNumber type="currency" currencySymbol="$" />
+                                            </h:outputText>
+                                        </p:column>                                   
+
+                                        <f:facet name="footer">    
+                                            <h:commandLink title="Exportar a Excel">
+                                                <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                                <p:dataExporter type="xls" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                            </h:commandLink>
+                                            <h:commandLink title="Exportar a PDF">                                        
+                                                <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                                <p:dataExporter type="pdf" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                            </h:commandLink>
+                                            <h:commandLink title="Exportar a CSV">
+                                                <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                                <p:dataExporter type="xls" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                            </h:commandLink>
+                                            <h:commandLink title="Exportar a XML">
+                                                <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                                <p:dataExporter type="xml" target="tblTitulos" fileName="Titulos" pageOnly="false" />
+                                            </h:commandLink>
+                                        </f:facet>
+
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+                </h:form>
+            </c:when>
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+            </p:dialog>
+
+            <c:when  test="#{sessionScope.idRol != 4}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

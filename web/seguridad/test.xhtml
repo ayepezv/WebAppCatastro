@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">                    
+                    <center>
+                        <c:choose>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                                <h:outputLabel value="Bienvenido al Módulo Administración de Catastro"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                                <h:outputLabel value="Bienvenido al Módulo de Administración Central"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolAuditor}">
+                                <h:outputLabel value="Bienvenido al Módulo de Auditoría"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolPropietario}">
+                                <h:outputLabel value="Bienvenido al Módulo Clientes"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMunicipio}">
+                                <h:outputLabel value="Bienvenido al Módulo Administración de Municipio"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolRecaudador}">
+                                <h:outputLabel value="Bienvenido al Módulo de Recaudación"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCem}">
+                                <h:outputLabel value="Bienvenido al Módulo Contribución Especial de Mejoras"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+
+                            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolRegistrPropiedad}">
+                                <h:outputLabel value="Bienvenido al Módulo de Registro de la Propiedad"  
+                                               style="font-size: 20px;"/>
+                            </c:when>
+                        </c:choose>
+                    </center>                                          
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

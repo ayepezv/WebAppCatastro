@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolRecaudador}">
+                <div class="ui-g">
+                    <h:form id="frmBuscarPredios">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                           
+                        <p:growl autoUpdate="true"/>                                
+                        <div class="ui-g">
+                            <center>
+                                <h3>Recaudación entre Fecha</h3>
+                            </center>                            
+                            <div class="ui-g-12">
+                                <div class="card">
+                                    <center>                                  
+                                        <p:panelGrid columns="5"  styleClass="ui-panelgrid-blank form-group">
+                                            <h:outputText value="Fecha inicio:"/>
+                                            <p:calendar id="fechaInicio" value="#{ctBuscarPredios.fechaInicio}" showOn="button" 
+                                                        required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <h:outputText value="Fecha fin"/>
+                                            <p:calendar id="fechaFin" value="#{ctBuscarPredios.fechaFin}" showOn="button" 
+                                                        required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                            <p:commandButton value="Generar reporte" icon="ui-icon-assessment"
+                                                             title="Generar reporte"
+                                                             action="#{ctBuscarPredios.buscarPrediosFechas()}"
+                                                             update="tblPredios"/>
+                                        </p:panelGrid>
+                                    </center>
+                                </div>
+                            </div>
+                        </div> 
+
+
+
+                        <div class="ui-g-12">
+                            <center><h3>Parte Diario Recaudación por Fechas</h3></center>
+                            <p:dataTable id="tblPredios" var="predio" value="#{ctBuscarPredios.lstPredios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,25,30,35,40" reflow="true"
+                                         rowKey="#{predio.idPredio}" selectionMode="single" >
+
+                                <p:column headerText="Clave Catastral" width="10%" style="text-align: center"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{predio.claveCatastral}"/>
+                                </p:column>
+                                    <p:column headerText="CI / RUC" width="7%" style="text-align: center">
+                                        <h:outputText value="#{predio.propietario.ruc}"/>
+                                    </p:column>
+                                    <p:column headerText="Propietario" width="10%" style="text-align: center" >
+                                        <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                    </p:column>
+                                    <p:column headerText="Calle Principal" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.callePrinc}"/>
+                                    </p:column>
+                                    <p:column headerText="Calle Secundaria" width="10%" style="text-align: center">
+                                        <h:outputText value="#{predio.calleSecund}"/>
+                                    </p:column>
+                                    <p:column headerText="Barrio" width="10%">
+                                        <h:outputText value="#{predio.barrio}"/>
+                                    </p:column>
+                                    <p:column headerText="Zona" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.zona}"/>
+                                    </p:column>                                
+                                    <p:column headerText="Sector" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.sector}"/>
+                                    </p:column>                                                               
+                                    <p:column headerText="Manzana" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.manzana}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha Registro" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.fechaRegistro}"/>
+                                    </p:column>
+
+
+
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">                                            
+                                                <p:commandButton id="btnReporte" value="Reporte" icon="ui-icon-local-printshop"
+                                                                 action="#{ctBuscarPredios.reportePredioPorFechas()}"
+                                                         ajax="false" onclick="this.form.target = '_blank'"/>
+                                            </c:when>
+                                        </c:choose>
+                                        <h:commandLink title="Exportar a Excel">
+                                            <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                            <p:dataExporter type="xls" target="tblPredios" fileName="PrediosIngresados" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a PDF">                                        
+                                            <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                            <p:dataExporter type="pdf" target="tblPredios" fileName="PrediosIngresados" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a CSV">
+                                            <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                            <p:dataExporter type="xls" target="tblPredios" fileName="PrediosIngresados" pageOnly="false" />
+                                        </h:commandLink>
+                                        <h:commandLink title="Exportar a XML">
+                                            <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                            <p:dataExporter type="xml" target="tblPredios" fileName="PrediosIngresados" pageOnly="false" />
+                                        </h:commandLink>
+                                    </f:facet>
+                            </p:dataTable>
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                </div>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <h1>     </h1>
+                </center>
+            </c:when>
+        </c:choose>  
+    </ui:define>
+</ui:composition>

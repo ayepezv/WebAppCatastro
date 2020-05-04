@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCem}">
+                <p:growl autoUpdate="true" showDetail="true" />
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                
+                <h:form id="frmMejoras">
+                    <center><h1>Gestión de Obras</h1></center>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-3">
+                            <center>
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Mejora:"/>
+                                    <p:inputText value="#{ctMejoras.txtCriterio}" />
+                                    <p:commandButton title="Buscar" 
+                                                     icon="ui-icon-search" 
+                                                     action="#{ctMejoras.obtenerMejoras()}"
+                                                     update="frmMejoras:tblMejoras"/>
+                                </p:panelGrid>
+                            </center>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-9">
+                            <p:dataTable id="tblMejoras" var="mejora" value="#{ctMejoras.lstMejoras}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{mejora.idMejora}"
+                                         editable="true" selection="#{ctMejoras.mejoraSel}" selectionMode="single">
+                                <f:facet name="header">
+                                    <b>Listado de Mejoras</b> 
+                                </f:facet>
+
+                                <p:column headerText="Nombre" width="10%">
+                                    <p:outputLabel value="#{mejora.nombre}"/>
+                                </p:column>
+
+                                <p:column headerText="Costo" width="5%" style="text-align: center">
+                                    <p:outputLabel value="#{mejora.costo} $"/>
+                                </p:column>
+
+                                <p:column headerText="Seleccionar" width="3%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-check"
+                                                     title="Seleccionar"
+                                                     action="#{ctMejoras.obtenerObras()}"
+                                                     update="frmObras:tblObras,frmObras">
+                                        <f:setPropertyActionListener value="#{mejora}" target="#{ctMejoras.mejoraSel}"/>
+                                    </p:commandButton>
+                                </p:column>                                                                
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+
+                <h:form id="frmObras" style="visibility: #{ctMejoras.visible}">
+                    <p:dataTable id="tblObras" var="obra" value="#{ctMejoras.lstObras}" rows="5"
+                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{obra.idObra}"
+                                 editable="true" selection="#{ctMejoras.obraSel}" selectionMode="single">
+                        <f:facet name="header">
+                            <b>Obras</b>
+                        </f:facet>
+                        <p:column headerText="Código" width="2%" style="text-align: center">
+                            <p:outputLabel value="#{obra.idObra}"/>
+                        </p:column>
+                        <p:column headerText="Obra" width="10%" style="text-align: center">
+                            <p:outputLabel value="#{obra.nombreObra}"/>
+                        </p:column>
+
+                        <p:column headerText="Tipo de Obra" width="5%" style="text-align: center">
+                            <p:outputLabel value="#{obra.tipoObra.descripcion}"/>
+                        </p:column>
+
+                        <p:column headerText="Costo" width="4%" style="text-align: center">
+                            <p:outputLabel value="#{obra.valorObra} $"/>
+                        </p:column>
+
+                        <p:column headerText="Beneficiarios" width="2%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-group"
+                                             title="Editar"
+                                             >
+                                <f:setPropertyActionListener value="#{obra}" target="#{ctMejoras.obraSel}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column headerText="Editar" width="2%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil"
+                                             title="Editar"
+                                             >
+                                <f:setPropertyActionListener value="#{obra}" target="#{ctMejoras.obraSel}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column headerText="Eliminar" width="2%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil"
+                                             title="Eliminar"
+                                             >
+                                <f:setPropertyActionListener value="#{obra}" target="#{ctMejoras.obraSel}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <f:facet name="footer">
+                            
+                        </f:facet>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" 
+                          header="Procesando" showHeader="false">
+                    <center>
+                        <b>Espere</b><br/>
+                        <b>Estamos procesado su solicitud</b><br/>
+                        <p:graphicImage name="Loading.gif" library="gifs"/>
+                    </center>
+                </p:dialog>
+            </c:when>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCem}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

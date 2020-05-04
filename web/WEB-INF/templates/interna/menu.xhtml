@@ -1,0 +1,35 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+    
+    <h:form id="menuform">                         
+        <div class="layout-menu">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile" >
+                            <!--<img src="../resources/imagenes/login.png" alt="" width="20%"/>-->
+                            <h:graphicImage id="idFoto" styleClass="fotoredondo " 
+                                            value="#{sessionScope.fotoUsuario}" 
+                                            width="40%" height="80%" alt="#{AtributosVistas.msjAltImagen}"/>
+                            <br/>
+                            <span class="topbar-item-name">#{sessionScope.nombre}</span>
+                        </div>                        
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="me" model="#{controladorMenuTemplate.menu}" >                        
+                    </pu:menu>                                    
+
+                </div>
+            </div>
+        </div>
+
+    </h:form>
+</ui:composition>

@@ -1,0 +1,117 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../WEB-INF/templates/interna/template.xhtml">            
+            <ui:define name="title">Cobros diarios</ui:define>
+            <ui:define name="content">
+
+                <h:form id="frmEstadisticas">
+                    <p:growl autoUpdate="true"/>                                
+                    <div class="ui-g">
+
+                        <div class="ui-g-12">
+                            <center>
+                                <h1>Transacciones históricas</h1>
+                            </center>  
+                            <div class="card" style="text-align: center">
+                                <center>                                  
+                                    <p:panelGrid columns="5"  styleClass="ui-panelgrid-blank form-group" >
+                                        <h:outputText value="Fecha inicio:"/>
+                                        <p:calendar id="fechaInicio" value="#{controladorRecaudacionPorDia.fechaInicio}" showOn="button" 
+                                                    required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                        <h:outputText value="Fecha fin"/>
+                                        <p:calendar id="fechaFin" value="#{controladorRecaudacionPorDia.fechaFin}" showOn="button" 
+                                                    required="true" placeholder="dd-MM-yyyy" pattern="dd-MM-yyyy"/>
+                                        <p:commandButton value="Generar reporte" icon="ui-icon-assessment"
+                                                         title="Generar reporte"
+                                                         action="#{controladorRecaudacionPorDia.generarJson()}"
+                                                         ajax="false" 
+                                                         update="frmGraficos"/>
+                                    </p:panelGrid>
+                                </center>
+                            </div>
+                        </div>
+                    </div> 
+
+                </h:form>
+
+                <h:form id="frmGraficos">
+                    <center>                                         
+                        <div class="ui-g">
+                            <style>
+                                #chartdiv {
+                                    width		: 100%;
+                                    height		: 450px;
+                                    font-size	: 11px;
+                                }					
+                            </style>
+                            
+                            <script src="../../resources/amcharts/amcharts.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/serial.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/pie.js" type="text/javascript"></script>                        
+                            <script src="../../resources/amcharts/themes/patterns.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/themes/black.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/themes/chalk.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/themes/dark.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/themes/light.js" type="text/javascript"></script>
+                            <link href="../../resources/amcharts/plugins/export/export.css" rel="stylesheet" type="text/css"/>
+                            <script src="../../resources/amcharts/plugins/export/export.js" type="text/javascript"></script>
+                            <script src="../../resources/amcharts/plugins/export/export.min.js" type="text/javascript"></script>
+                            
+                            <script type="text/javascript">
+                                var chart = AmCharts.makeChart("chartdiv", {
+                                    "theme": "light",
+                                    "type": "serial",
+                                    "legend": {
+                                        "horizontalGap": 10,
+                                        "useGraphSettings": true,
+                                        "markerSize": 10
+                                    },
+                                    "dataProvider": [#{controladorRecaudacionPorDia.json}],
+                                    "valueAxes": [{
+                                            "unit": "$",
+                                            "position": "left",
+                                            "title": "Dinero recaudado",
+                                        }],
+                                    "startDuration": 1,
+                                    "graphs": [#{controladorRecaudacionPorDia.estilo}],
+                                    "plotAreaFillAlphas": 0.1,
+                                    "categoryField": "dia",
+                                    "categoryAxis": {
+                                        "gridPosition": "start",
+                                        "axisAlpha": 0,
+                                        "gridAlpha": 0,
+                                        "position": "left"
+                                    },
+                                    "responsive": {
+                                        "enabled": true
+                                    },
+                                    "export": {
+                                        "enabled": true
+                                    }
+
+                                });
+                            </script>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="card">
+                                    <div id="chartdiv"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </center>
+                </h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

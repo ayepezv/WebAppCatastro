@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgEditarDominio" widgetVar="dlgEditarDominio" closable="false" modal="true" resizable="true" 
+              header="Editar Dominio" showEffect="size" hideEffect="size">
+        <h:form id="frmEditarDominio">
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Nombre Dominio: "/>
+                <p:inputText value="#{ctrlDominio.dominioSel.dominio}"
+                             required="true"
+                             requiredMessage="Nombre Obligatorio"/>
+                <p:outputLabel value="Descripción: "/>
+                <p:inputText value="#{ctrlDominio.dominioSel.descripcion}"
+                             required="true"
+                             requiredMessage="Descripción Obligatoria"/>  
+            </h:panelGrid>
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlDominio.actualizar()}"
+                                 update="frmListaDominio:tblListaDominio"
+                                 />
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgEditarDominio').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

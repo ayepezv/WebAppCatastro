@@ -1,0 +1,547 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <center>
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <h:form id="frmPredios">
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                                    <p:panelGrid columns="3" style="text-align: center; width: 55%; " layout="grid" >
+                                        <h:outputLabel value="Buscar predio (Clave Catastral o Cedula Propietario)"/>
+                                        <p:inputText style="width: 85%" value="#{predioCtrl.parametro}"/>
+                                        <p:commandButton value="Buscar" icon="ui-icon-search" 
+                                                         action="#{predioCtrl.encontrarPredio()}" update="tblPredios"/>                           
+                                    </p:panelGrid>
+                                    <br/> 
+                                    <p:panel>
+                                        <p:dataTable id="tblPredios" var="predio" value="#{predioCtrl.lstPredios}" rows="5"
+                                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="5,10,15" reflow="true" selection="#{predioCtrl.predioSel}"
+                                                     selectionMode="single" rowKey="#{predio.idPredio}">
+                                            <f:facet name="header">
+                                                <h:outputLabel value="Predios Urbanos"/>
+                                            </f:facet>
+                                            <p:column headerText="Clave Catastral" width="10%" style="text-align: center">
+                                                <h:outputLabel value="#{predio.claveCatastral}"/>
+                                            </p:column>
+                                            <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                                <h:outputLabel value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                            </p:column>
+                                            <p:column headerText="Cedula" width="8%" style="text-align: center">
+                                                <h:outputLabel value="#{predio.propietario.cedula}"/>
+                                            </p:column>
+                                            <p:column headerText="Parroquia" width="8%" style="text-align: center">
+                                                <h:outputLabel value="#{predio.parroquia.nombre}"/>
+                                            </p:column>
+                                            <p:column headerText="Barrio" width="8%" style="text-align: center">
+                                                <h:outputLabel value="#{predio.barrio.nombre}"/>
+                                            </p:column>
+                                            <p:column headerText="Direccion" >
+                                                <h:outputLabel value="#{predio.callePrincipal.nombre} y #{predio.calleSecundaria.nombre}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha de Registro:"  width="8%" style="text-align: center">
+                                                <h:outputLabel value="#{predio.fechaRegistroPredio}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha de escrituración"  width="8%" style="text-align: center" >
+                                                <h:outputLabel value="#{predio.fechaEscrituracion}"/>
+                                            </p:column>
+                                            <p:column headerText="Ver Bloques" width="5%" style="text-align: center" exportable="false">
+                                                <p:commandButton title="Ver Bloques" icon="ui-icon-folder-open"
+                                                                 onclick="PF('dlgRegistrar').show();" 
+                                                                 action="#{predioCtrl.obtenerBloques()}"
+                                                                 update="frmBloque"/>
+                                            </p:column>
+                                            <p:column headerText="Reporte" width="5%" style="text-align: center" exportable="false">
+                                                <h:commandLink id="reportDirigentesPDF" target="_blank"
+                                                               actionListener="#{predioCtrl.verReportePdfPorId()}" title="Imprimir Ficha">
+                                                    <img src="../../resources/imagenes/impresora.png" alt="" width="50%"/>
+                                                    <f:setPropertyActionListener value="#{predio}" target="#{predioCtrl.predioSel}"/>
+                                                </h:commandLink>
+                                            </p:column>
+
+                                            <!--
+                                            <p:column headerText="Operaciones" width="5%" style="text-align: center" exportable="false">
+                                                <p:commandButton title="Ver Ficha Completa" icon="ui-icon-comment"/>
+                                            </p:column>
+                                            -->
+
+                                            <f:facet name="footer">  
+
+                                                <h:commandLink>
+
+                                                    <img src="../../resources/imagenes/excel.png" alt=""/>
+                                                    <p:dataExporter type="xls" target="tblPredios" fileName="predios_urbanos" pageOnly="true" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <img src="../../resources/imagenes/pdf.png" alt=""/>
+                                                    <p:dataExporter type="pdf" target="tblPredios" fileName="predios_urbanos" pageOnly="true" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <img src="../../resources/imagenes/csv.png" alt=""/>
+                                                    <p:dataExporter type="csv" target="tblPredios" fileName="predios_urbanos" pageOnly="true" />
+                                                </h:commandLink>
+
+                                                <h:commandLink>
+                                                    <img src="../../resources/imagenes/xml.png" alt=""/>
+                                                    <p:dataExporter type="xml" target="tblPredios" fileName="predios_urbanos" pageOnly="true" />
+                                                </h:commandLink>
+
+                                            </f:facet>
+                                        </p:dataTable>
+
+                                    </p:panel>
+                                </h:form>
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                                    <img src="../../resources/gifs/Loading.gif" alt=""/>
+                                </p:dialog>
+
+                                <p:dialog header="Bloques" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                                          showEffect="clip" hideEffect="fold" width="75%">
+                                    <h:form id="frmBloque">                            
+                                        <div class="ui-g-12">                                                                   
+                                            <p:panel >                                    
+                                                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputText value="#{predioCtrl.bloque.bloque}" required="true" 
+                                                                     requiredMessage="Se necesita el nombre del bloque."
+                                                                     style="width: 100%"/>
+                                                        <label>Bloque</label>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputText value="#{predioCtrl.bloque.descripcion}" required="true" 
+                                                                     requiredMessage="Se necesita la descripción del bloque."
+                                                                     style="width: 100%"/>         
+                                                        <label>Descripción</label>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:inputText value="#{predioCtrl.bloque.area}" required="true" 
+                                                                     requiredMessage="Se necesita el área total del bloque."
+                                                                     style="width: 100%"/>         
+                                                        <label>Área</label>
+                                                    </h:panelGroup>                                      
+                                                    <h:panelGroup styleClass="md-inputfield">
+                                                        <p:commandButton icon="ui-icon-plus" value="Registrar" action="#{predioCtrl.insertarBloque()}"
+                                                                         update="frmBloque:tblBloques, frmBloque"/>
+                                                    </h:panelGroup>
+                                                </p:panelGrid>    
+                                            </p:panel>
+                                            <br/>
+                                            <p:dataTable id="tblBloques" var="bloque" value="#{predioCtrl.lstBloques}" rows="5"
+                                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{bloque.idBloque}"
+                                                         editable="true" selection="#{predioCtrl.bloqueSel}" selectionMode="single">
+                                                <p:column headerText="Bloque">                                        
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{bloque.bloque}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText id="modelInput" value="#{bloque.bloque}" /></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+                                                <p:column headerText="Descripción:">
+                                                    <h:outputText value="#{bloque.descripcion}"/>
+                                                </p:column>
+                                                <p:column headerText="Área">
+                                                    <h:outputText value="#{bloque.area}"/>
+                                                </p:column>      
+                                                <!--
+                                                <p:column headerText="Eliminar"  width="8%" style="text-align: center">
+                                                    <p:commandButton icon="ui-icon-trash"/>
+                                                </p:column>
+                                                -->
+                                                <p:column headerText="Registar Pisos"  width="8%" style="text-align: center">
+                                                    <p:commandButton icon="ui-icon-notice" onclick="PF('dlgRegPiso').show();" 
+                                                                     process="@this" update="frmRegistrarPriso">
+                                                        <f:setPropertyActionListener value="#{bloque}" target="#{predioCtrl.bloqueSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                                <p:column headerText="Pisos"  width="8%" style="text-align: center">
+                                                    <p:commandButton icon="ui-icon-folder-open" 
+                                                                     action="#{predioCtrl.obtenerPisosDadoBloque()}"
+                                                                     onclick="PF('dlgVerPisos').show();" 
+                                                                     update="frmPisos:tblPisos"
+                                                                     process="@this">
+                                                        <f:setPropertyActionListener value="#{bloque}" target="#{predioCtrl.bloqueSel}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                                <!--
+                                                <p:column style="width:8%" headerText="Editar">
+                                                    <p:rowEditor />
+                                                </p:column>
+                                                -->
+
+                                            </p:dataTable>
+                                            <br/>
+                                            <p:commandButton value="Salir" onclick="PF('dlgRegistrar').hide();"
+                                                             icon="ui-icon-close" process="@this"/>
+                                        </div>                            
+
+                                    </h:form>
+                                </p:dialog>
+
+                                <p:dialog header="Pisos" widgetVar="dlgVerPisos" modal="true" closable="false" resizable="false"
+                                          showEffect="clip" hideEffect="fold" width="65%">
+                                    <h:form id="frmPisos">
+                                        <div class="ui-g-12">
+                                            <p:dataTable id="tblPisos" var="piso" value="#{predioCtrl.lstPisos}" rows="5"
+                                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="5,10,15" reflow="true"
+                                                         editable="true">
+                                                <p:column headerText="Piso" width="8%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.piso}"/>
+                                                </p:column>
+                                                <p:column headerText="Condición física" width="8%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.condFisica}"/>
+                                                </p:column>
+                                                <p:column headerText="Valor Unidad" width="5%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.valorUnidad}"/>
+                                                </p:column>
+                                                <p:column headerText="Área" width="5%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.areaPiso}"/>
+                                                </p:column>
+                                                <p:column headerText="Año construcción" width="5%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.anioEdificacion}"/>
+                                                </p:column>
+                                                <p:column headerText="Año reconstrucción" width="5%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.anioReconstruccion}"/>
+                                                </p:column>
+                                                <p:column headerText="Estado" width="5%" style="text-align: center">
+                                                    <h:outputLabel value="#{piso.estado}"/>
+                                                </p:column>
+                                                <p:column width="5%" style="text-align: center">
+                                                    <p:commandButton icon="ui-icon-info" title="Ver mas"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                            <br/>
+                                            <p:commandButton value="Aceptar" onclick="PF('dlgVerPisos').hide();"
+                                                             icon="ui-icon-check" process="@this"/>
+                                        </div>
+
+                                    </h:form>
+                                </p:dialog>
+
+                                <p:dialog header="Registrar Piso" widgetVar="dlgRegPiso" modal="true" closable="false" resizable="false"
+                                          showEffect="clip" hideEffect="fold" width="75%">
+                                    <h:form id="frmRegistrarPriso">                            
+                                        <div class="ui-g-12">
+                                            <p:panel header="CONDICIÓN - AÑO" style="text-align:  left"> 
+                                                <h:panelGrid columns="8">
+                                                    <p:outputLabel value="N° Piso:"  />  
+                                                    <p:inputText value="#{predioCtrl.piso.piso}" required="true" requiredMessage="El piso es obligatorio."/> 
+                                                    <h:outputLabel value="Año de Edificación:"/>
+                                                    <p:inputText value="#{predioCtrl.piso.anioEdificacion}" required="true" requiredMessage="El Año de edificación es obligatorio."/>  
+                                                    <h:outputLabel value="Año de Reconstr."/>  
+                                                    <p:inputText value="#{predioCtrl.piso.anioReconstruccion}" required="true" requiredMessage="El Año de reconstrucción es obligatorio."/>
+                                                    <h:outputLabel value="Area."/>  
+                                                    <p:inputText value="#{predioCtrl.piso.areaPiso}" required="true" requiredMessage="El Área del piso es obligatorio."/>
+                                                    <p:outputLabel value="Condición física:" />
+                                                    <p:selectOneMenu id="condFisica" value="#{predioCtrl.piso.condFisica}" required="true" requiredMessage="La codición del piso es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="En Const.." itemValue="En Construccion" />
+                                                        <f:selectItem itemLabel="Sin " itemValue="1" />
+                                                        <f:selectItem itemLabel="Ampliada" itemValue="Ampliada" />
+                                                        <f:selectItem itemLabel="Reconst" itemValue="Reconstruccion" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputLabel value="Valor Unidad:"/>
+                                                    <p:inputText value="#{predioCtrl.piso.valorUnidad}" required="true" requiredMessage="El Valor de la Unidad es obligatorio."/>
+                                                    <h:outputLabel value="Estado:"/>
+                                                    <p:selectOneMenu id="estado" value="#{predioCtrl.piso.estado}" required="true" requiredMessage="El Estado del piso es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="Malo" itemValue="Malo" />
+                                                        <f:selectItem itemLabel="Regular" itemValue="Regular" />
+                                                        <f:selectItem itemLabel="Bueno" itemValue="Bueno" />
+                                                        <f:selectItem itemLabel="Muy Bueno" itemValue="Muy Bueno" />
+                                                    </p:selectOneMenu>
+                                                </h:panelGrid>
+                                            </p:panel>     
+                                            <br/>
+                                            <p:panel header="PRINCIPALES MATERIALES EMPLEADOS EN LA EDIFICACIÓN" style="text-align: left">
+                                                <b>Estructura</b>
+                                                <h:panelGrid columns="8">
+                                                    <h:outputText value="Cimientos:"/> 
+                                                    <p:selectOneMenu id="cimientos" value="#{predioCtrl.estructura.cimientos}" required="true" requiredMessage="El material de los cimientos es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                                        <f:selectItem itemLabel="Piedra" itemValue="Piedra" />
+                                                        <f:selectItem itemLabel="H. ciclopeo" itemValue="H. ciclopeo" />
+                                                        <f:selectItem itemLabel="Zapatas" itemValue="Zapatas" />
+                                                        <f:selectItem itemLabel="Vigas" itemValue="Vigas" />                                                                                        
+                                                        <f:selectItem itemLabel="Losas" itemValue="Losas" />
+                                                        <f:selectItem itemLabel="Pilotes Madera" itemValue="Pilotes Madera" />
+                                                        <f:selectItem itemLabel="Pilotes H. Armado" itemValue="Pilotes H. Armado" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Cadenas:"/> 
+                                                    <p:selectOneMenu id="cadenas" value="#{predioCtrl.estructura.cadenas}" required="true" 
+                                                                     requiredMessage="El Material empleado en las cadenas es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                                        <f:selectItem itemLabel="Piedra" itemValue="Piedra" />                                            
+                                                        <f:selectItem itemLabel="H. Armado" itemValue="H. Armado" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Columnas:"/> 
+                                                    <p:selectOneMenu id="columnas" value="#{predioCtrl.estructura.columnas}" required="true" 
+                                                                     requiredMessage="El Material empleado en las columnas es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                                        <f:selectItem itemLabel="Caña" itemValue="Caña" />
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />
+                                                        <f:selectItem itemLabel="H .Armado" itemValue="H .Armado" />                                                                                        
+                                                        <f:selectItem itemLabel="Trabada Soportante" itemValue="Trabada Soportante" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Vigas: "/> 
+                                                    <p:selectOneMenu id="vigas" value="#{predioCtrl.estructura.vigas}" required="true" 
+                                                                     requiredMessage="El Material empleado en las vigas es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                                        <f:selectItem itemLabel="Caña" itemValue="Caña" />
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />
+                                                        <f:selectItem itemLabel="H .Armado" itemValue="H .Armado" />                                                                                                                                    
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Entrepiso: "/> 
+                                                    <p:selectOneMenu id="entrepiso" value="#{predioCtrl.estructura.entrepiso}" required="true" 
+                                                                     requiredMessage="El Material empleado en el entrepiso es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />
+                                                        <f:selectItem itemLabel="H .Armado" itemValue="Hormigon Armado" />                                                                                                                                    
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Paredes:"/> 
+                                                    <p:selectOneMenu id="paredes" value="#{predioCtrl.estructura.paredes}" required="true" 
+                                                                     requiredMessage="El Material empleado en las paredes es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                                        <f:selectItem itemLabel="Caña" itemValue="Caña" />
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />
+                                                        <f:selectItem itemLabel="H .Armado" itemValue="H .Armado" />                                                                                        
+                                                        <f:selectItem itemLabel="Trabada Soportante" itemValue="Trabada Soportante" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Cubierta:"/> 
+                                                    <p:selectOneMenu id="cubierta" value="#{predioCtrl.estructura.cubierta}" required="true" 
+                                                                     requiredMessage="El Material empleado en la cubierta es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />
+                                                        <f:selectItem itemLabel="Caña" itemValue="Caña" />
+                                                        <f:selectItem itemLabel="Madera Rustica" itemValue="Madera Rustica" />
+                                                        <f:selectItem itemLabel="Madera Tratadada" itemValue="Madera Tratadada" />
+                                                        <f:selectItem itemLabel="Metálica" itemValue="Metálica" />
+                                                        <f:selectItem itemLabel="H .Armado" itemValue="H .Armado" />                                             
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Escaleras: "/> 
+                                                    <p:selectOneMenu id="escaleras" value="#{predioCtrl.estructura.escaleras}" required="true" 
+                                                                     requiredMessage="El Material empleado en las escaleras es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Madera Rustica" itemValue="Madera Rustica" />                                            
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />
+                                                        <f:selectItem itemLabel="H .Armado" itemValue="H .Armado" />                                             
+                                                    </p:selectOneMenu>
+                                                </h:panelGrid>
+                                                <b>Acabados</b>
+                                                <h:panelGrid columns="8">
+                                                    <h:outputText value="Pisos: "/> 
+                                                    <p:selectOneMenu id="pisos" value="#{predioCtrl.acabados.pisos}" required="true" 
+                                                                     requiredMessage="El acabado de los pisos es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Cemento" itemValue="Cemento" />                                            
+                                                        <f:selectItem itemLabel="Baldosa" itemValue="Baldosa" />
+                                                        <f:selectItem itemLabel="Duela" itemValue="Duela" />    
+                                                        <f:selectItem itemLabel="Parq - Vinil" itemValue="Parq - Vinil" />                                            
+                                                        <f:selectItem itemLabel="Duela - Tab" itemValue="Duela - Tab" />                                            
+                                                        <f:selectItem itemLabel="Marmetón" itemValue="Marmeton" />
+                                                        <f:selectItem itemLabel="Marmol" itemValue="Marmol" />    
+                                                        <f:selectItem itemLabel="Cerámica" itemValue="Ceramica" />    
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Puertas exteriores: "/> 
+                                                    <p:selectOneMenu id="puertExteriores" value="#{predioCtrl.acabados.puertasExteriores}" required="true" 
+                                                                     requiredMessage="El acabado de las puertas exteriores es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Madera Rústica" itemValue="Madera Rustica" />                                            
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />
+                                                        <f:selectItem itemLabel="Madera fina" itemValue="Madera fina" />    
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />                                            
+                                                        <f:selectItem itemLabel="Envolvente" itemValue="Envolvente" />                                            
+                                                        <f:selectItem itemLabel="Alum-vidrio" itemValue="Alum - Vidrio" />                                              
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Puertas interiores: "/> 
+                                                    <p:selectOneMenu id="puertInteriores" value="#{predioCtrl.acabados.puertasInteriores}" required="true" 
+                                                                     requiredMessage="El acabado de las puertas interiores es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Madera Rústica" itemValue="Madera Rustica" />                                            
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />
+                                                        <f:selectItem itemLabel="Madera fina" itemValue="Madera fina" />    
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />                                                                                                                               
+                                                        <f:selectItem itemLabel="Alum-vidrio" itemValue="Alum - Vidrio" />                                              
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Ventanas: "/> 
+                                                    <p:selectOneMenu id="ventanas" value="#{predioCtrl.acabados.ventanas}" required="true" 
+                                                                     requiredMessage="El acabado de las ventanas es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />                                              
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />                                                                                                                                                                                                                  
+                                                        <f:selectItem itemLabel="Aluminio" itemValue="Aluminio" />                                              
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Vidrios: "/> 
+                                                    <p:selectOneMenu id="vidrios" value="#{predioCtrl.acabados.vidrios}" required="true" 
+                                                                     requiredMessage="El acabado de los vidrios es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Claros" itemValue="Claros" />                                              
+                                                        <f:selectItem itemLabel="Oscuros" itemValue="Oscuros" />                                                                                                                                                                                                                                                              
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Protec. ventanas: "/> 
+                                                    <p:selectOneMenu id="protecVentanas" value="#{predioCtrl.acabados.protecVentanas}" required="true" 
+                                                                     requiredMessage="El acabado de la protección de las ventanas es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Hierro" itemValue="Hierro" />                                              
+                                                        <f:selectItem itemLabel="Madera" itemValue="Madera" />                                                                                                                                                                                                                  
+                                                        <f:selectItem itemLabel="Aluminio" itemValue="Aluminio" />                                                                                                                                                                                                                                                    
+                                                        <f:selectItem itemLabel="Enrrollable" itemValue="Enrrollable" /> 
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Enlucidos: "/> 
+                                                    <p:selectOneMenu id="enlucidos" value="#{predioCtrl.acabados.enlucidos}" required="true" 
+                                                                     requiredMessage="El acabado de los enlucidos es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Arena - Cemento" itemValue="Arena-Cemento" />                                                                                        
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Tumbados: "/> 
+                                                    <p:selectOneMenu id="tumbados" value="#{predioCtrl.acabados.tumbados}" required="true" 
+                                                                     requiredMessage="El acabado de los tumbados es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Caña" itemValue="Cania" />                                                                                        
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Cubierta: "/> 
+                                                    <p:selectOneMenu id="cubiertas" value="#{predioCtrl.acabados.cubiertas}" required="true" 
+                                                                     requiredMessage="El acabado de la cubierta es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Zinc" itemValue="Zinc" />                                                                                        
+                                                        <f:selectItem itemLabel="Teja Comun / Cemento" itemValue="Teja Comun" />   
+                                                        <f:selectItem itemLabel="Teja vidriada" itemValue="Teja vidriada" />                                            
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Piezas sanitarias: "/> 
+                                                    <p:selectOneMenu id="piezasSanit" value="#{predioCtrl.acabados.piezasSanitarias}" required="true" 
+                                                                     requiredMessage="El acabado de las piezas sanitarias es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Completar..." itemValue="Zinc" />                                                                                                                                                                          
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Cocina: "/> 
+                                                    <p:selectOneMenu id="cocina" value="#{predioCtrl.acabados.cocina}" required="true" 
+                                                                     requiredMessage="El acabado de la cocina es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Económico" itemValue="Economico" />                                                                                                                                                                          
+                                                        <f:selectItem itemLabel="Normal" itemValue="Normal" />                                                                                                                                                                          
+                                                        <f:selectItem itemLabel="Lujoso" itemValue="Lujoso" />                                                                                                                                                                          
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Closets: "/> 
+                                                    <p:selectOneMenu id="closets" value="#{predioCtrl.acabados.closets}" required="true" 
+                                                                     requiredMessage="El acabado de los closets es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Madera Rustica" itemValue="Madera Rustica" />
+                                                        <f:selectItem itemLabel="Madera Fina" itemValue="Madera Fina" /> 
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Pintura: "/> 
+                                                    <p:selectOneMenu id="pintura" value="#{predioCtrl.acabados.pintura}" required="true" 
+                                                                     requiredMessage="El acabado de la pintura es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Artesanal" itemValue="Artesanal" />
+                                                        <f:selectItem itemLabel="Caucho" itemValue="Caucho" /> 
+                                                        <f:selectItem itemLabel="Esmalte" itemValue="Esmalte" />                                            
+                                                        <f:selectItem itemLabel="Barniz" itemValue="Barniz" />
+                                                        <f:selectItem itemLabel="Aceite" itemValue="Aceite" /> 
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Fachada: "/> 
+                                                    <p:selectOneMenu id="fachada" value="#{predioCtrl.acabados.fachada}" required="true" 
+                                                                     requiredMessage="El acabado de la fachada es obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Vidrio" itemValue="Vidrio" />
+                                                        <f:selectItem itemLabel="Marmol" itemValue="Marmol" /> 
+                                                        <f:selectItem itemLabel="Grafiado" itemValue="Grafiado" />
+                                                    </p:selectOneMenu>
+                                                </h:panelGrid>
+                                                <b>Instalaciones</b>
+                                                <h:panelGrid columns="8">
+                                                    <h:outputText value="Energía Elect: "/> 
+                                                    <p:selectOneMenu id="energiaElectr" value="#{predioCtrl.instalaciones.energElectr}" required="true" 
+                                                                     requiredMessage="Las instalaciones eléctricas en campo obligatorio.">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Vista" itemValue="Vista" />
+                                                        <f:selectItem itemLabel="Empotrada" itemValue="Empotrada" /> 
+                                                        <f:selectItem itemLabel="Mixta" itemValue="Mixta" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Sanitarias: "/> 
+                                                    <p:selectOneMenu id="sanitarias" value="#{predioCtrl.instalaciones.sanitarias}" required="true">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Vista" itemValue="Vista" />
+                                                        <f:selectItem itemLabel="Empotrada" itemValue="Empotrada" /> 
+                                                        <f:selectItem itemLabel="Mixta" itemValue="Mixta" />
+                                                        <f:selectItem itemLabel="Fosa Séptica" itemValue="Fosa Septica" /> 
+                                                        <f:selectItem itemLabel="Letrina" itemValue="Letrina" />
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Especiales: "/> 
+                                                    <p:selectOneMenu id="especiales" value="#{predioCtrl.instalaciones.especiales}" required="true">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                            
+                                                        <f:selectItem itemLabel="Ascensor" itemValue="Ascensor" />
+                                                        <f:selectItem itemLabel="Aire acondicionado" itemValue="Aire acond" /> 
+                                                        <f:selectItem itemLabel="Ventilador Mecánico" itemValue="Ventilador mecanico" />                                            
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Sistema contra incendio: "/> 
+                                                    <p:selectOneMenu id="sistIncendios" value="#{predioCtrl.instalaciones.sistemContraIncend}" required="true">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" />
+                                                        <f:selectItem itemLabel="No tiene" itemValue="No tiene" />                                                                                                                                 
+                                                        <f:selectItem itemLabel="SI tiene" itemValue="Si tiene" />                                            
+                                                    </p:selectOneMenu>
+                                                </h:panelGrid>
+                                            </p:panel>
+                                            <br/>
+                                            <p:commandButton value="Aceptar" icon="ui-icon-plus" action="#{predioCtrl.insertarPiso()}"/>
+                                            <p:commandButton value="Cancelar" icon="ui-icon-close" onclick="PF('dlgRegPiso').hide();" process="@this"/>
+                                        </div>
+
+                                    </h:form>
+                                </p:dialog>
+
+                            </div>                
+
+                        </div>           
+
+                    </center>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgBloques" widgetVar="wdlgBloques" closable="true" modal="true" resizable="true" 
+              header="Bloques" showEffect="size" hideEffect="size" width="75%">
+        <h:form id="frmBloques">
+            <p:growl id="msj" globalOnly="false" life="10000" escape="true"/>                     
+            <p:dataTable id="tblBloques" var="bloque" value="#{listadoPrediosCtrl.lstBloques}" rows="4"
+                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="4,8,12,16" reflow="true" rowKey="#{bloque.idBloque}"
+                         editable="true" selection="#{listadoPrediosCtrl.bloqueSel}" selectionMode="single">
+                <f:facet name="header">
+                    <h:outputText value="Bloques y Construcciones"/>
+                </f:facet>
+                <p:column headerText="Bloque" width="5%" style="text-align: center">
+                    <h:outputLabel value="#{bloque.bloque}"/>
+                </p:column>
+                <p:column headerText="Descripción" width="8%" style="text-align: center">
+                    <h:outputLabel value="#{bloque.descripcion}"/>
+                </p:column>
+                <p:column headerText="Área" width="5%" style="text-align: center">
+                    <h:outputLabel value="#{bloque.areaBloque}"/>
+                </p:column>
+
+                <c:choose>
+                    <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">                        
+                        <p:column headerText="Editar Bloque" width="3%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil" title="Actualizar Bloque"
+                                             onclick="PF('dlgEditarBloque').show();"
+                                             update="frmEditarBloque">
+                                <f:setPropertyActionListener value="#{bloque}" target="#{listadoPrediosCtrl.bloqueSel}"/> 
+                            </p:commandButton>
+                        </p:column>
+                        <!--
+                        <p:column headerText="Eliminar Bloque" width="3%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-trash" title="Eliminar Bloque"
+                                             onclick="PF('dlgEliminarBloque').show()"
+                                             update="frmEliminarBloque">
+                                <f:setPropertyActionListener value="#{bloque}" target="#{listadoPrediosCtrl.bloqueSel}"/> 
+                            </p:commandButton>
+                        </p:column>
+                        -->
+                       <!--
+                        <p:column headerText="Pisos" width="3%" style="text-align: center">
+                            <p:commandButton icon="ui-icon-plus" title="Registrar un nuevo piso"
+                                             onclick="PF('wdlgRegistrarPiso').show()"
+                                             update="frmRegistrarPiso">
+                                <f:setPropertyActionListener value="#{bloque}" target="#{listadoPrediosCtrl.bloqueSel}"/>
+                            </p:commandButton>
+                        </p:column>
+                       -->
+                    </c:when>
+                </c:choose>    
+
+                <p:column headerText="Ver Pisos" width="3%" style="text-align: center">
+                    <p:commandButton icon="ui-icon-folder-open" title="Ver Piso"
+                                     onclick="PF('wdlgListadoPisos').show()"
+                                     update="frmListadoPiso"
+                                     action="#{listadoPrediosCtrl.obtenerPisosDadoBloque()}">
+                        <f:setPropertyActionListener value="#{bloque}" target="#{listadoPrediosCtrl.bloqueSel}"/>
+                    </p:commandButton>
+                </p:column>
+                
+            </p:dataTable>                                    
+        </h:form>        
+    </p:dialog>
+    <!--<ui:include src="frmRegistrarPiso.xhtml"/>-->
+    <ui:include src="frmListadoPisos.xhtml"/> 
+    <ui:include src="frmEditarBloque.xhtml"/> 
+    <!--<ui:include src="frmEliminarBloque.xhtml"/> -->
+</ui:composition>

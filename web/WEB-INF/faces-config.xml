@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <validator>
+        <validator-id>recursos.utilBeans.ValidatorBean</validator-id>
+        <validator-class>recursos.utilBeans.ValidatorBean</validator-class>
+    </validator>
+    <application>
+        <resource-bundle>
+            <base-name>recursos.Mensajes</base-name>
+            <var>Mensajes</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>recursos.AtributosVista</base-name>
+            <var>AtributosVistas</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>recursos.VariablesGlobales</base-name>
+            <var>VariablesGlobales</var>
+        </resource-bundle>   
+        <resource-bundle>
+            <base-name>recursos.rutasMedia</base-name>
+            <var>rutasMedia</var>
+        </resource-bundle>   
+    </application>
+</faces-config>

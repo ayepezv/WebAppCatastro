@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgConfirmar" widgetVar="dlgConfirmar" closable="true" modal="true" resizable="true" 
+              header="Advertencia" showEffect="size" hideEffect="size">
+        <h:form id="frmConfirmar">
+            <center>
+                <b><h3>El predio tiene construcciones</h3>
+                    <br/>
+                    ¿Desea continuar?
+                    <br/>
+                </b>
+
+                <p:commandButton value="Continuar" icon="ui-icon-arrow-forward"
+                                 action="#{ctrlEliminarPredio.procederEliminacion()}"
+                                 update="frmEliminar"/>
+                <p:commandButton value="Cancelar"
+                                 icon="ui-icon-close"
+                                 onclick="PF('dlgConfirmar').hide();"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:dialog id="dlgReporte" widgetVar="dlgReporte" closable="true" modal="true" resizable="true" 
+              header="Reporte Interés" showEffect="size" hideEffect="size" closeOnEscape="true" appendTo="@(body)">
+        <h:form id="frmReporte">
+            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Año:"/>
+                <p:selectOneMenu id="cmbAnio" value="#{ctIntereses.anioReporte}" 
+                                 effect="fold"
+                                 required="true" requiredMessage="EL año es obligatorio">  
+                    <f:selectItem itemLabel="Todos los años" itemValue="0"/>
+                    <f:selectItems value="#{ctIntereses.lstAnios}" var="anio"
+                                   itemLabel="#{anio.anio}" itemValue="#{anio.anio}"/>
+                    <p:ajax event="change" listener="#{ctIntereses.obtenerTrimestres()}" update="frmReporte:cmbTrimestre"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Trimestre:"/>
+                <p:selectOneMenu id="cmbTrimestre" value="#{ctIntereses.trimestre}" 
+                                 effect="fold"
+                                 required="true" requiredMessage="EL trimestre es obligatorio"
+                                 disabled="#{ctIntereses.habilitado}">                    
+                    <f:selectItems value="#{ctIntereses.lstTrimestres}" var="trimestre" itemLabel="#{trimestre.trimestre}"
+                                   itemValue="#{trimestre.numTrimestre}"/>
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+            <center>
+                <p:commandButton icon="ui-icon-save"  ajax="false" title="Ver Pdf"
+                                 value="Generar"
+                                 actionListener="#{ctIntereses.imprimirReporte()}"
+                                 onclick="this.form.target = '_blank'"/>
+            </center>
+        </h:form>
+    </p:dialog> 
+</ui:composition>

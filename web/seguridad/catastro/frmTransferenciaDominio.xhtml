@@ -1,0 +1,332 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="../../WEB-INF/templates/interna/template.xhtml">
+            <ui:define name="title">Asignación de Turnos</ui:define>
+            <ui:define name="content">                
+                <c:choose>
+                    <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                        <c:choose>
+                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                <h:form id="frmPrincipal">
+                                    <center><h3>Transferencia de Predio</h3></center>
+                                    <p:growl autoUpdate="true" showDetail="true"/>
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                                 
+                                    <div class="ui-g"> 
+                                        <div class="ui-g-12 ui-md-12 ui-lg-3">
+                                            <div class="card">
+                                                <b>Buscar: </b>                                    
+                                                <p:selectOneMenu value="#{ctTransferenciaDominio.band}">
+                                                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                                    <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>                                                    
+                                                    <f:selectItem itemLabel="Por Propietario" itemValue="2"/>
+                                                    <p:ajax event="change" listener="#{ctTransferenciaDominio.limpiar()}" 
+                                                            update="pnlBuscarClaveCatastral,
+                                                            pnlBuscarPropietario,pnlBuscarDefecto"/>
+                                                </p:selectOneMenu>
+                                                <br/>
+                                                <center>
+                                                    <p:commandButton value="Cancelar"
+                                                                     action="#{ctTransferenciaDominio.limpiar()}"
+                                                                     icon="ui-icon-clear"/>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="ui-g-12 ui-md-12 ui-lg-9">
+                                            <div class="card">
+                                                <p:panel id="pnlBuscarDefecto" visible="#{ctTransferenciaDominio.band==0}" style="border: none">
+                                                    <b>Seleccione el filtro de búsqueda</b>
+                                                </p:panel>
+
+                                                <p:panel id="pnlBuscarClaveCatastral" visible="#{ctTransferenciaDominio.band==1}" style="border: none">
+                                                    <center>
+                                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                            <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                                <h:outputText id="otxtZona" value="Zona:"/>
+                                                                <h:outputText id="otxtSector" value="Sector:"/>
+                                                                <h:outputText id="otxtManzana" value="Manzana:"/>
+                                                                <h:outputText id="otxtPredio" value="Predio:"/>
+                                                                <h:inputText id="txtZona" value="#{ctTransferenciaDominio.zona}" size="5"/>
+                                                                <h:inputText id="txtSector" value="#{ctTransferenciaDominio.sector}" size="5"/>
+                                                                <h:inputText id="txtManzana" value="#{ctTransferenciaDominio.manzana}" size="5"/>
+                                                                <h:inputText id="txtpredio" value="#{ctTransferenciaDominio.predio}" size="5"/>
+                                                            </p:panelGrid>
+                                                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                                                <p:commandButton id="btnBuscar" value="Buscar" icon="ui-icon-search"
+                                                                                 action="#{ctTransferenciaDominio.buscarPredios()}"
+                                                                                 update="tblPredios"
+                                                                                 process="btnBuscar,txtZona,txtSector,txtManzana,txtpredio"/>
+                                                                <p:commandButton id="btnLimpiar" value="Limpiar" icon="ui-icon-refresh"
+                                                                                 action="#{ctTransferenciaDominio.limpiar()}"
+                                                                                 update="tblPredios"
+                                                                                 process="btnLimpiar,txtZona,txtSector,txtManzana,txtpredio"/>
+                                                            </p:panelGrid>
+                                                        </p:panelGrid>
+                                                    </center>
+                                                </p:panel>
+
+                                                <p:panel id="pnlBuscarPropietario" visible="#{ctTransferenciaDominio.band==2}" style="border: none">
+                                                    <center>
+                                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                            <h:outputText value="Apellidos/Cédula:"/>
+                                                            <p:inputText value="#{ctTransferenciaDominio.txtCriterio}"/>
+                                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                                             action="#{ctTransferenciaDominio.buscarPorPropietario()}"
+                                                                             update="frmPrincipal:tblPredios"/>
+                                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                                             action="#{ctTransferenciaDominio.limpiar()}"
+                                                                             update="frmPrincipal:tblPredios,@form"/>
+                                                        </p:panelGrid>
+                                                    </center>
+                                                </p:panel>
+                                            </div>
+                                        </div>
+
+                                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                            <p:dataTable id="tblPredios" var="predio" value="#{ctTransferenciaDominio.lstPredios}" rows="10"
+                                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                                         editable="true" selection="#{ctTransferenciaDominio.objPredio}" selectionMode="single">
+                                                <f:facet name="header">
+                                                    <p:outputLabel value="Listado de predios"/>
+                                                </f:facet>
+
+                                                <p:column headerText="Clave Catastral" width="5%" style="text-align: center">
+                                                    <h:outputText value="#{predio.zona} - #{predio.sector} - #{predio.manzana} - #{predio.numPredio}"/>
+                                                </p:column>
+                                                <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                                    <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                                </p:column>
+                                                <p:column headerText="Cédula" width="5%" style="text-align: center">
+                                                    <h:outputText value="#{predio.propietario.ruc}"/>
+                                                </p:column>
+                                                <p:column headerText="Dirección" width="12%" style="text-align: center">
+                                                    <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                                </p:column>                                           
+
+                                                <p:column headerText="Seleccionar" width="5%" style="text-align: center" exportable="false">
+                                                    <p:commandButton icon="ui-icon-description"
+                                                                     process="@this"
+                                                                     action="#{ctTransferenciaDominio.chequear()}"
+                                                                     update="frmTransferencia:txtDatosProp">
+                                                        <f:setPropertyActionListener value="#{predio}" target="#{ctTransferenciaDominio.objPredio}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>                                        
+                                    </div>
+                                </h:form> 
+
+                                <h:form id="frmTransferencia" style="visibility: #{ctTransferenciaDominio.visible}">    
+                                    <div class="ui-g">
+                                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                            <div class="card">
+                                                <center>
+                                                    <h3>Datos Propietario:</h3>
+                                                </center>
+                                                <div class="contenido-aturnos">                                                       
+                                                    <h:outputText id="txtDatosProp" value="#{ctTransferenciaDominio.datosPropietario}" 
+                                                                  escape="false"/>                                                       
+                                                </div> 
+                                            </div>
+                                        </div>
+
+                                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                            <div class="card">
+                                                <center>
+                                                    <h3>Comprador:</h3>
+                                                    <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group">
+                                                        <p:outputLabel value="Cédula/RUC:"/>
+                                                        <p:inputText id="txtCedulaComprador" value="#{ctTransferenciaDominio.txtComprador}" placeholder="Ej. 0603977224"
+                                                                     />
+                                                        <p:commandButton id="btnBuscarComp" value="Buscar" icon="ui-icon-search"
+                                                                         process="txtCedulaComprador,btnBuscarComp"
+                                                                         action="#{ctTransferenciaDominio.buscarComprador()}"
+                                                                         update="frmTransferencia:txtDatosComprador,
+                                                                         frmTransferencia:txtNumeroDocumento,
+                                                                         frmTransferencia:txtTipoDocumento,
+                                                                         frmTransferencia:fechaDocumento,
+                                                                         frmTransferencia:cmbFormaAdq,
+                                                                         frmTransferencia:txtCuantia
+                                                                         ,frmTransferencia:txtArea
+                                                                         ,frmTransferencia:txtNotaria
+                                                                         ,frmTransferencia:fechaEscritura
+                                                                         ,frmTransferencia:fechaRegistroTitulo
+                                                                         ,frmTransferencia:txtObservaciones,
+                                                                         frmTransferencia:btnRegistrar"/>                                                    
+                                                    </p:panelGrid>
+                                                </center>
+                                                <div class="contenido-aturnos">                                                       
+                                                    <h:outputText id="txtDatosComprador" value="#{ctTransferenciaDominio.datosComprador}" 
+                                                                  escape="false"/>                                                       
+                                                </div>  
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                            <div class="card">
+                                                <center>
+                                                    <h3>Autorización:</h3>
+                                                </center>
+                                                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                    <h:outputText value="Tipo de documento:"/>
+                                                    <p:selectOneMenu id="txtTipoDocumento" value="#{ctTransferenciaDominio.objTransferencia.tipoTocumento}"
+                                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                                     required="true" requiredMessage="El tipo de documento es obligatorio."
+                                                                     disabled="#{ctTransferenciaDominio.habilitado}">
+                                                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                                                        <f:selectItem itemLabel="ESCRITURA" itemValue="ESCRITURA"/>
+                                                        <f:selectItem itemLabel="OFICIO" itemValue="OFICIO"/>
+                                                        <f:selectItem itemLabel="MEMORANDUM" itemValue="MEMORANDUM"/>
+                                                        <f:selectItem itemLabel="CIRCULAR" itemValue="CIRCULAR"/>
+                                                        <f:selectItem itemLabel="CARTA" itemValue="CARTA"/>
+                                                        <f:selectItem itemLabel="ACTA" itemValue="ACTA"/>
+                                                        <f:selectItem itemLabel="CONSTANCIAS" itemValue="CONSTANCIAS"/>
+                                                    </p:selectOneMenu>
+                                                    <h:outputText value="Número de documento:"/>
+                                                    <p:inputText id="txtNumeroDocumento" value="#{ctTransferenciaDominio.objTransferencia.numeroDocumento}"
+                                                                 placeholder="Ej. UGT-049-GADMA"
+                                                                 required="true" requiredMessage="El número de documento es obligatorio."
+                                                                 disabled="#{ctTransferenciaDominio.habilitado}"/>
+                                                    <h:outputText value="Fecha del documento:"/>
+                                                    <p:calendar id="fechaDocumento" value="#{ctTransferenciaDominio.objTransferencia.fechaDocumento}" 
+                                                                navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                                required="true" requiredMessage="La fecha del documento es obligatoria."
+                                                                disabled="#{ctTransferenciaDominio.habilitado}"
+                                                                showOn="button"/>  
+                                                </p:panelGrid>
+                                            </div>                                            
+                                        </div>
+
+
+                                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                            <div class="card">
+                                                <center>
+                                                    <h3>Datos de la transferencia:</h3>
+                                                </center>
+                                                <p:selectOneMenu id="cmbFormaAdq" value="#{ctTransferenciaDominio.objTransferencia.formaAdquisicion}" 
+                                                                 effect="fold"  filter="true" filterMatchMode="contains"
+                                                                 disabled="#{ctTransferenciaDominio.habilitado}">
+                                                    <f:selectItem itemLabel="Forma de Adquisición" itemValue="#{null}"/>
+                                                    <f:selectItems value="#{ctrlFormaAdquisicion.lstFAdquisicion}" var="forma"
+                                                                   itemLabel="#{forma.formaAdq}" itemValue="#{forma.formaAdq}"/>                                                   
+                                                </p:selectOneMenu>
+                                                <br/>
+                                                <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                                    <p:outputLabel value="Cuantía propiedad:"/>
+                                                    <p:inputText value="#{ctTransferenciaDominio.objTransferencia.avaluoProp}"
+                                                                 id="txtCuantia" disabled="#{ctTransferenciaDominio.habilitado}"/>
+                                                    <p:outputLabel value="Área de la escritura:"/>
+                                                    <p:inputText  id="txtArea" value="#{ctTransferenciaDominio.objTransferencia.areaEscritura}"
+                                                                  disabled="#{ctTransferenciaDominio.habilitado}"/>
+                                                    <p:outputLabel value="Notaría:"/>
+                                                    <p:inputText value="#{ctTransferenciaDominio.objTransferencia.notaria}" placeholder="Ej. Notaría de Archidona"
+                                                                 required="true" requiredMessage="La Notaría es obligatoria."
+                                                                 id="txtNotaria" disabled="#{ctTransferenciaDominio.habilitado}"/>
+                                                    <h:outputText value="Fecha de escritura:"/>
+                                                    <p:calendar id="fechaEscritura" value="#{ctTransferenciaDominio.objTransferencia.fechaEscritura}" 
+                                                                navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                                required="true" requiredMessage="La fecha de escritura es obligatoria."
+                                                                disabled="#{ctTransferenciaDominio.habilitado}" showOn="button"/>
+                                                    <h:outputText value="Fecha de registro:"/>
+                                                    <p:calendar id="fechaRegistroTitulo" value="#{ctTransferenciaDominio.objTransferencia.fechaRegistroTitulo}" 
+                                                                navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                                required="true" requiredMessage="La fecha de registro es obligatoria."
+                                                                disabled="#{ctTransferenciaDominio.habilitado}" showOn="button"/>
+                                                    <p:outputLabel value="Observaciones:"/>
+                                                    <p:inputTextarea value="#{ctTransferenciaDominio.objTransferencia.observaciones}"
+                                                                     id="txtObservaciones" disabled="#{ctTransferenciaDominio.habilitado}"/>
+                                                </p:panelGrid>                                                                                                        
+
+
+                                                <center>
+                                                    <p:panel id="pnlPrestamo" visible="#{ctTransferenciaDominio.prestamo=='Si'}" style="border: none">
+                                                        <p:panelGrid columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                            <p:outputLabel value="Préstamo:"/>
+                                                            <p:inputText value="#{ctTransferenciaDominio.objTransferencia.prestamo}"
+                                                                         placeholder="Ej. Préstamo Quirografario"/>
+                                                            <p:outputLabel value="Entidad financiera:"/>
+                                                            <p:inputText value="#{ctTransferenciaDominio.objTransferencia.entidad}"
+                                                                         placeholder="Ej. BIESS"/>                                                            
+                                                            <p:outputLabel value="Objeto:"/> 
+                                                            <p:inputText value="#{ctTransferenciaDominio.objTransferencia.objeto}"
+                                                                         placeholder="Ej. NO"/>
+                                                            <p:outputLabel value="Monto:"/>
+                                                            <p:inputText value="#{ctTransferenciaDominio.objTransferencia.montoCredito}"/>
+                                                            <p:outputLabel value="Plazo (Años):"/>
+                                                            <p:inputText value="#{ctTransferenciaDominio.objTransferencia.plazo}"/>
+                                                            <p:outputLabel value="Fecha consec:"/>
+                                                            <p:calendar id="fechaConsec" value="#{ctTransferenciaDominio.objTransferencia.fechaConsec}" 
+                                                                        navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                                        showOn="button"/>      
+                                                        </p:panelGrid>
+                                                    </p:panel>
+                                                </center>                                                    
+                                            </div>                                                
+                                        </div>
+
+
+                                    </div>
+                                    <center>
+                                        <p:commandButton id="btnRegistrar" value="Registrar"
+                                                         icon="ui-icon-save"
+                                                         action="#{ctTransferenciaDominio.registarTransferencia()}"
+                                                         update="frmPrincipal,frmTransferencia"
+                                                         disabled="#{ctTransferenciaDominio.habilitado}"/>
+                                    </center>
+                                </h:form>                               
+
+                                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                                </p:dialog>
+                            </c:when>
+                        </c:choose>
+
+                        <c:choose>
+                            <c:when  test="#{sessionScope.privInsert != VariablesGlobales.privActivo}">
+                                <center>
+                                    <div class="ui-g">
+                                        <div class="ui-g-12">
+                                            <div class="card">  
+                                                <b><h1>Permisos Insuficientes</h1></b>
+                                                <b>Consulte con el administrador</b>                      
+                                            </div>                        
+                                        </div>                        
+                                    </div>  
+                                </center>
+                            </c:when>
+                        </c:choose>               
+                    </c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                        <center>
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <div class="card">  
+                                        <b><h1>Permisos Insuficientes</h1></b>
+                                        <b>Consulte con el administrador</b>                      
+                                    </div>                        
+                                </div>                        
+                            </div>  
+                        </center>
+                    </c:when>
+                </c:choose>
+
+                <ui:include src="dlgPendientesTransfDominio.xhtml"/>
+                <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+                <h:outputStylesheet name="css/layout-yelou.css" library="ultima-layout" />
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

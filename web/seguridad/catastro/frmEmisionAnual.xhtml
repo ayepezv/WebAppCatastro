@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+
+                <h:form id="frmPrincipal">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <c:choose>
+                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <center>
+                                        <div class="card">    
+                                            <p:commandButton value="EMITIR TÍTULOS"
+                                                             icon="ui-icon-send"
+                                                             action="#{ctEmisionAnual.emisionAnual()}"/>
+                                        </div>   
+                                    </center>                     
+                                </div>                        
+                            </div> 
+                        </c:when>
+                    </c:choose>
+
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">                        
+                            </div>                        
+                        </div>                        
+                    </div> 
+                </h:form>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="card">  
+                                <b><h1>Permisos Insuficientes</h1></b>
+                                <b>Consulte con el administrador</b>                      
+                            </div>                        
+                        </div>                        
+                    </div>  
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

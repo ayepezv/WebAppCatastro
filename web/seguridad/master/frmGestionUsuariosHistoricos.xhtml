@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h:form id="frmUsuarios">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                            <center><h3>Gestión de Usuarios Inactivos</h3></center>
+                            <p:dataTable id="tblUsuarios" var="usuario" value="#{usuarioCtrl.lstUsuariosInactivos}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true"
+                                         rowKey="#{usuario.idPersona}" selectionMode="single" selection="#{usuarioCtrl.usuarioSel}">
+
+                                <p:column filterBy="#{usuario.apellidos}"  headerText="Apellidos" width="10%" style="text-align: center"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.apellidos}"/>
+                                </p:column>
+                                <p:column headerText="Nombres" width="10%" style="text-align: center"
+                                          filterBy="#{usuario.nombres}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.nombres}"/>
+                                </p:column>
+                                <p:column headerText="Sexo" width="3%" style="text-align: center">
+                                    <h:outputText value="#{usuario.sexo}"/>
+                                </p:column>
+                                <p:column headerText="Nick" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.nick}"/>
+                                </p:column>
+                                <p:column headerText="Mail" width="8%" style="text-align: center">
+                                    <h:outputText value="#{usuario.mail}"/>
+                                </p:column>
+                                <p:column headerText="Fecha de Registro" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.fechaRegistro}"/>
+                                </p:column>
+                                <p:column headerText="Estado lógico" width="5%" style="text-align: center">
+                                    <h:outputText value="#{usuario.estadoLogico}"/>
+                                </p:column>
+                                <c:choose>
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Activar Usuario" width="5%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-delete-sweep" onclick="PF('dlgActualizar').show();"
+                                                             title="Activar Usuario" update="frmActivarUsuario"/>
+                                        </p:column>
+                                    </c:when>
+                                </c:choose>
+                            </p:dataTable>
+                        </h:form>
+
+                        <p:dialog header="Activar Usuarios" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold" >
+                            <h:form id="frmActivarUsuario">
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                                <h:panelGrid>
+                                    <center><h3>¿Desea activar al usuario?</h3>
+                                    <h:outputLabel value="#{usuarioCtrl.usuarioSel.apellidos} #{usuarioCtrl.usuarioSel.nombres}"/>
+                                        </center>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton value="Aceptar"  action="#{usuarioCtrl.activarUsuario()}" update="frmUsuarios:tblUsuarios,frmActivarUsuario"/>
+                                    <p:commandButton value="Cancelar" type="button" onclick="PF('dlgActualizar').hide();"/>
+                                </center>
+                            </h:form>
+                        </p:dialog>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>
+                        </p:dialog>
+
+                    </div>                
+
+                </div>           
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose> 
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgCoefConstruccion" widgetVar="dlgCoefConstruccion" closable="true" modal="true" resizable="true" 
+              header="Valorización de la Construcción" showEffect="size" hideEffect="size">
+        <h:form id="frmCoeficientes">                               
+            <p:panel header="Datos Generales">
+                <b>
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Descripción: #{registrarConstruccionesCtrl.pisoSel.descripcion}"/>
+                        <h:outputLabel value="Estado: #{registrarConstruccionesCtrl.pisoSel.estadoPiso}"/>
+                        <h:outputLabel value="Área de construcción: #{registrarConstruccionesCtrl.pisoSel.areaConstruccion}"/>
+                        <h:outputLabel value="Año de construcción: #{registrarConstruccionesCtrl.pisoSel.anioConstruccion}"/>
+                    </p:panelGrid>
+                </b>
+            </p:panel>
+            <br/>
+            <p:panel header="Estructura">
+                <b>
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="1.- Cimientos: #{registrarConstruccionesCtrl.detalleConstruccion.estructCimientos}"/>
+                        <h:outputLabel value="2.- Columnas: #{registrarConstruccionesCtrl.detalleConstruccion.estructColumnas}"/>
+                        <h:outputLabel value="3.- Vigas/Cadenas: #{registrarConstruccionesCtrl.detalleConstruccion.estructVigas}"/>
+                        <h:outputLabel value="4.- Entrepisos: #{registrarConstruccionesCtrl.detalleConstruccion.estructEntrepisos}"/>
+                        <h:outputLabel value="5.- Paredes: #{registrarConstruccionesCtrl.detalleConstruccion.estructParedes}"/>
+                        <h:outputLabel value="6.- Cubierta: #{registrarConstruccionesCtrl.detalleConstruccion.estructCubierta}"/>
+                        <h:outputLabel value="7.- Escaleras: #{registrarConstruccionesCtrl.detalleConstruccion.estructEscaleras}"/>                    
+                    </p:panelGrid>
+                </b>
+            </p:panel>
+            <br/>
+            <p:panel header="Acabados">
+                <b>
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="1.- Pisos: #{registrarConstruccionesCtrl.detalleConstruccion.acabPisos}"/>
+                        <h:outputLabel value="2.- Puertas: #{registrarConstruccionesCtrl.detalleConstruccion.acabPuertas}"/>
+                        <h:outputLabel value="3.- Ventanas: #{registrarConstruccionesCtrl.detalleConstruccion.acabVentanas}"/>
+                        <h:outputLabel value="4.- Cubreventanas: #{registrarConstruccionesCtrl.detalleConstruccion.acabCubrevent}"/>
+                        <h:outputLabel value="5.- Tumbados: #{registrarConstruccionesCtrl.detalleConstruccion.acabTumbados}"/>
+                        <h:outputLabel value="6.- Cubierta: #{registrarConstruccionesCtrl.detalleConstruccion.acabCubierta}"/>
+                        <h:outputLabel value="7.- Baños: #{registrarConstruccionesCtrl.detalleConstruccion.acabBanios}"/>                          
+                        <h:outputLabel value="8.- Cocina: #{registrarConstruccionesCtrl.detalleConstruccion.acabCocina}"/>
+                        <h:outputLabel value="9.- Closets: #{registrarConstruccionesCtrl.detalleConstruccion.acabClosets}"/>
+                        <h:outputLabel value="10.- Rev. Interior: #{registrarConstruccionesCtrl.detalleConstruccion.acabRevInterior}"/>   
+                        <h:outputLabel value="11.- Rev. Exterior: #{registrarConstruccionesCtrl.detalleConstruccion.acabRevExt}"/>   
+                    </p:panelGrid>
+                </b>
+            </p:panel>                        
+        </h:form>
+    </p:dialog>
+</ui:composition>

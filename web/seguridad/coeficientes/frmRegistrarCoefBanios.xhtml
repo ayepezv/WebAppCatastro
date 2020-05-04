@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarCoefBanios" widgetVar="dlgRegistrarCoefBanios" closable="false" modal="true" resizable="true" 
+              header="Registrar Seccion" showEffect="size" hideEffect="size">
+        <h:form id="frmRegistrarCoefBanios">
+            <p:messages autoUpdate="true"/>
+            <p:panel>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Nombre del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefAcabBanios.objCoefBanios.coeficiente}"
+                                 required="true"
+                                    requiredMessage="Nombre Obligatorio"/>
+                    <p:outputLabel value="Codigo: "/>
+                    <p:inputText value="#{ctrlCoefAcabBanios.objCoefBanios.codigo}"
+                                 required="true"
+                                 requiredMessage="Codigo Obligatorio"/>             
+                    <p:outputLabel value="Valor del Coeficiente: "/>
+                    <p:inputText value="#{ctrlCoefAcabBanios.objCoefBanios.valorCoeficiente}"
+                                 required="true"
+                                 requiredMessage="Valor Obligatorio"/>
+                </h:panelGrid>
+            </p:panel>
+
+            <center>
+                <p:commandButton value="Aceptar" icon="ui-icon-check"
+                                 action="#{ctrlCoefAcabBanios.insertar()}"
+                                 update="frmListaCoefBanios:tblListaCoefBanios"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgRegistrarCoefBanios').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

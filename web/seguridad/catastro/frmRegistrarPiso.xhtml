@@ -1,0 +1,177 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="dlgRegistrarPiso" widgetVar="wdlgRegistrarPiso" closable="false" modal="true" resizable="true" 
+              header="Registrar Piso" showEffect="size" hideEffect="size" appendTo="@(body)">
+
+        <h:form id="frmRegistrarPiso">
+            <p:growl id="msj" autoUpdate="true" showDetail="true"/>
+            <p:messages id="msjs" autoUpdate="true" showDetail="true"/>   
+
+            <p:fieldset legend="Aspectos Generales" toggleable="true">
+                <p:panelGrid columns="6"  styleClass="ui-panelgrid-blank form-group">
+                    <h:outputText value="Piso:"/>
+                    <p:inputText value="#{registrarConstruccionesCtrl.pisoSel.piso}"
+                                 placeholder="Ej. Piso 1A"/>
+                    <h:outputText value="Año de Constr:"/>
+                    <p:inputText value="#{registrarConstruccionesCtrl.pisoSel.anioConstruccion}" style="width: 50%"/>  
+                    <h:outputText value="Estado:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estadoPiso}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstEstadosConstruccion}" var="estado"
+                                       itemLabel="#{estado.coeficiente}" itemValue="#{estado.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Descripción"/>
+                    <p:inputText value="#{registrarConstruccionesCtrl.pisoSel.descripcion}" />
+
+                </p:panelGrid>
+            </p:fieldset>
+
+            <p:fieldset legend="Estructura" toggleable="true">
+                <p:panelGrid columns="6" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputText value="Cimientos:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructCimientos}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstCimientos}" var="cimientos"
+                                       itemLabel="#{cimientos.coeficiente}" itemValue="#{cimientos.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Columnas:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructColumnas}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstColumnas}" var="columnas"
+                                       itemLabel="#{columnas.coeficiente}" itemValue="#{columnas.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Vigas/Cad"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructVigas}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstVigas}" var="vigas"
+                                       itemLabel="#{vigas.coeficiente}" itemValue="#{vigas.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Entrepisos:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructEntrepisos}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstEntrepisos}" var="entrepisos"
+                                       itemLabel="#{entrepisos.coeficiente}" itemValue="#{entrepisos.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Paredes:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructParedes}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstParedes}" var="paredes"
+                                       itemLabel="#{paredes.coeficiente}" itemValue="#{paredes.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Cubierta:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructCubierta}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstCubierta}" var="cubierta"
+                                       itemLabel="#{cubierta.coeficiente}" itemValue="#{cubierta.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Escaleras:"/>  
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.estructEscaleras}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstEscaleras}" var="escaleras"
+                                       itemLabel="#{escaleras.coeficiente}" itemValue="#{escaleras.coeficiente}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </p:fieldset>
+
+            <p:fieldset legend="Acabados" toggleable="true">                
+                <p:panelGrid columns="6" styleClass="ui-panelgrid-blank form-group">
+                    <h:outputText value="Pisos:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabPisos}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstAcabPisos}" var="acabPisos"
+                                       itemLabel="#{acabPisos.coeficiente}" itemValue="#{acabPisos.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Puertas:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabPuertas}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstPuertas}" var="puertas"
+                                       itemLabel="#{puertas.coeficiente}" itemValue="#{puertas.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Ventanas:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabVentanas}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstVentanas}" var="ventanas"
+                                       itemLabel="#{ventanas.coeficiente}" itemValue="#{ventanas.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Cubreventanas:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabCubrevent}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstCubreVentanas}" var="cubreVentanas"
+                                       itemLabel="#{cubreVentanas.coeficiente}" itemValue="#{cubreVentanas.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Tumbados:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabTumbados}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstTumbados}" var="tumbados"
+                                       itemLabel="#{tumbados.coeficiente}" itemValue="#{tumbados.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Cubierta:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabCubierta}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstAcabCubierta}" var="acabCubiert"
+                                       itemLabel="#{acabCubiert.coeficiente}" itemValue="#{acabCubiert.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Baños:"/>  
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabBanios}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstBanios}" var="banio"
+                                       itemLabel="#{banio.coeficiente}" itemValue="#{banio.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Cocina:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabCocina}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstCocina}" var="cocina"
+                                       itemLabel="#{cocina.coeficiente}" itemValue="#{cocina.coeficiente}"/>
+                    </p:selectOneMenu>
+                    <h:outputText value="Closets:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabClosets}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstClosets}" var="closet"
+                                       itemLabel="#{closet.coeficiente}" itemValue="#{closet.coeficiente}"/>                           
+                    </p:selectOneMenu>
+                    <h:outputText value="Rev. Interior:"/>
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabRevInterior}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstRevInterior}" var="revInt"
+                                       itemLabel="#{revInt.coeficiente}" itemValue="#{revInt.coeficiente}"/>                           
+                    </p:selectOneMenu>
+                    <h:outputText value="Rev. Exterior:"/>  
+                    <p:selectOneMenu value="#{registrarConstruccionesCtrl.pisoSel.acabRevExt}" effect="fold" 
+                                     filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}"/>
+                        <f:selectItems value="#{registrarConstruccionesCtrl.lstRevExterior}" var="revExt"
+                                       itemLabel="#{revExt.coeficiente}" itemValue="#{revExt.coeficiente}"/>                             
+                    </p:selectOneMenu>
+                </p:panelGrid>                
+            </p:fieldset>
+            <center>
+                <p:commandButton value="Registrar" icon="ui-icon-save"
+                                 action="#{registrarConstruccionesCtrl.insertarPiso()}"
+                                 update="frmPrincipal:tblPisos"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-cancel" onclick="PF('wdlgRegistrarPiso').hide()"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

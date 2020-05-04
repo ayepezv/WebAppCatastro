@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgInfrestructura" widgetVar="wgInfrestructura" modal="true" resizable="false" 
+              appendTo="@(body)" header="Escoja una Opción" showEffect="fade" hideEffect="fade" style="width: 100%">
+
+        <h:form id="frmInfrestructura">
+            <p:panel id="panelIngresar"  widgetVar="plnInfrestructura" closable="true" toggleable="true" style="width: 100%">                
+                <div class="menu-gestion">
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefUsovias.xhtml">                            
+                            <span class="gestion-icono">3</span>
+                            <div >
+                                <h2 class="titulo-gestion">Uso de vías</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefMatvial.xhtml">
+                            <span class="gestion-icono">2</span>
+                            <div >
+                                <h2 class="titulo-gestion">Material víal</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefAguapotable.xhtml">
+                            <span class="gestion-icono">1</span>
+                            <div >
+                                <h2 class="titulo-gestion">Red de agua</h2>
+                            </div>
+                        </a>
+                    </div >
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefAlcantarillado.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Alcantarillado</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefEnergiaElectrica.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Energía Eléctrica</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

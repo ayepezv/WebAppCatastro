@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="frmObras">
+            <p:growl id="grlMessages" autoUpdate="true" showDetail="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">                 
+                        <center>
+                            <b>
+                                <p:selectOneMenu id="advanced" value="#{controladorObras.idMejora}" effect="fade"
+                                                 filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="-- Seleccionar mejora --" itemValue="#{null}"/>
+                                    <f:selectItems value="#{controladorObras.lstMejoras}" 
+                                                   var="mejora" itemLabel="#{mejora.nombre}" itemValue="#{mejora.idMejora}" />
+                                    <p:ajax event="change" listener="#{controladorObras.obtenerObrasDadoMejora()}" update="tblObras"/>
+                                    <p:ajax event="change" listener="#{controladorObras.obtenerMejoraDadoCodigo()}"/>
+                                </p:selectOneMenu>
+                            </b>
+                        </center>
+                    </div>
+                </div>
+
+                <div class="ui-g-12">
+                    <div class="card">                                         
+                        <p:dataTable id="tblObras" var="obra" value="#{controladorObras.lstObras}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{obra.idObra}"
+                                     editable="true" selection="#{controladorObras.obraSel}" selectionMode="single">
+                            <p:column headerText="Código" width="3%" style="text-align: center">
+                                <p:outputLabel value="#{obra.idObra}"/>
+                            </p:column>
+
+                            <p:column headerText="Obra" width="10%" style="text-align: center">
+                                <p:outputLabel value="#{obra.nombreObra}"/>
+                            </p:column>
+
+                            <p:column headerText="Costo" width="10%" style="text-align: center">
+                                <p:outputLabel value="#{obra.valorObra} $"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo de obra" width="15%" style="text-align: left">
+                                <p:outputLabel value="#{obra.tipoObra.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" 
+                                                 onclick="PF('dlgEditarObra').show()"
+                                                 update="frmEditarObra">
+                                    <f:setPropertyActionListener value="#{obra}" target="#{controladorObras.obraSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-delete" 
+                                                 onclick="PF('dlgEliminarObra').show()"
+                                                 update="frmEliminarObra">
+                                    <f:setPropertyActionListener value="#{obra}" target="#{controladorObras.obraSel}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Beneficiarios directos" width="7%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-document" title="Registrar"/>
+                                <p:commandButton icon="ui-icon-folder-open" title="Ver"
+                                                 onclick="PF('dlgBenefDirectos').show()"
+                                                 update="frmBenefDirectos"/>                                                                                              
+                            </p:column>
+
+                            <!--
+                            <p:column headerText="Beneficiarios indirectos" width="7%" style="text-align: left">
+                                <p:commandButton icon="ui-icon-document" title="Registrar"/>
+                                <p:commandButton icon="ui-icon-folder-open" title="Ver"/>
+                                <p:commandButton icon="ui-icon-document" title="Edita"/>
+                                <p:commandButton icon="ui-icon-cancel" title="Edita"/>                                                                
+                            </p:column>
+                            -->
+
+                            <f:facet name="header">
+                                <p:outputLabel value="Obras"/>
+                            </f:facet>
+                            <f:facet name="footer">
+                                <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                 onclick="PF('dlgRegistrarObras').show()"
+                                                 update="frmRegistrarObra"/>
+                            </f:facet> 
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+
+        <ui:include src="frmRegistrarObra.xhtml"/>   
+        <ui:include src="frmBeneficiariosDirectos.xhtml"/>   
+        <ui:include src="frmActualizarObra.xhtml"/>   
+        <ui:include src="frmEliminarObra.xhtml"/>          
+    </ui:define>
+</ui:composition>

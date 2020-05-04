@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:dialog id="dlgEliminar" widgetVar="dlgEliminar" closable="false" modal="true" resizable="true" 
+              header="Eliminar excencion" showEffect="size" hideEffect="size" width="30%">
+        <h:form id="frmEliminar">            
+            <center>
+                ¿Está seguro que desea eliminar la Excencion <b>#{ctPrediosExcenciones.excencionSel.excencion.excencion}</b> <br/>asignada al predio: 
+                <b>#{ctPrediosExcenciones.excencionSel.predio.claveCatastral} </b><br/>
+                del propietario <b>#{ctPrediosExcenciones.excencionSel.predio.propietario.nombres}
+                    #{ctPrediosExcenciones.excencionSel.predio.propietario.nombres}?</b><br/>
+            </center>            
+            <br/>
+            <center>
+                <p:commandButton value="SI" icon="ui-icon-check"                                 
+                                 update="frmPrincipal:tblExcenciones"
+                                 action="#{ctPrediosExcenciones.eliminar()}"/>
+                <p:commandButton value="NO" icon="ui-icon-close"
+                                 onclick="PF('dlgEliminar').hide()"
+                                 process="@this"/>
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="/WebAppCatastro/faces/resources/css/estilos-menus.css" rel="stylesheet" type="text/css"/>
+
+    <p:dialog id="dlgEstrucEdificacion" widgetVar="wgEstrucEdificacion" modal="true" resizable="false" 
+              appendTo="@(body)" header="Escoja una Opción" showEffect="fade" hideEffect="fade" style="width: 100%">
+
+        <h:form id="frmEstrucEdificacion">
+            <p:panel id="panelIngresar"  widgetVar="plnEstrucEdificacion" closable="true" toggleable="true" style="width: 100%">                
+                <div class="menu-gestion">
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefCimientos.xhtml">                            
+                            <span class="gestion-icono">3</span>
+                            <div >
+                                <h2 class="titulo-gestion">Cimientos</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefColumnas.xhtml">
+                            <span class="gestion-icono">2</span>
+                            <div >
+                                <h2 class="titulo-gestion">Columnas</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefVigas.xhtml">
+                            <span class="gestion-icono">1</span>
+                            <div >
+                                <h2 class="titulo-gestion">Vigas/Cadenas</h2>
+                            </div>
+                        </a>
+                    </div >
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefEntrepisos.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Entrepisos</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefParedes.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Paredes</h2>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefEcubierta.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Cubierta</h2>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefEscaleras.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Escaleras</h2>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="opcion-gestion">
+                        <a href="/WebAppCatastro/faces/seguridad/coeficientes/frmListadoCoefVidaUtil.xhtml">
+                            <span class="gestion-icono">w</span>
+                            <div >
+                                <h2 class="titulo-gestion">Vida Útil</h2>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

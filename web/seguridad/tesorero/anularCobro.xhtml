@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"                                
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <p:growl id="msgs" autoUpdate="true"/>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <div class="card">
+                        <center>
+                            <h3>Recaudaciones realizadas</h3>
+                            <p:dataTable id="tblTransacciones" var="transaccion" value="#{ctAnularCobro.lstTransacciones}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{transaccion.idTransaccion}"
+                                         editable="true" selection="#{ctAnularCobro.objTransaccion}" selectionMode="single">
+                                <f:facet name="header">                                   
+                                    <b>Recaudaciones realizadas</b>
+                                </f:facet>
+                                <p:column headerText="Num Transacción" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.numTransaccion}"/>
+                                </p:column>
+                                <p:column headerText="Recaudación" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.recaudacion}"/>
+                                </p:column>                                
+                                <p:column headerText="Valor recaudado" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.valorTransaccion}">                                    
+                                        <f:convertNumber pattern="###.##"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Estado" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.estadoTransacion}"/>
+                                </p:column>
+                                <p:column headerText="Fecha Cobro" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.fechaEmision}"/>
+                                </p:column>
+                                <p:column headerText="Cliente" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.cliente.nombres} #{transaccion.cliente.apellidos}"/>
+                                </p:column>
+                                <p:column headerText="Recaudador" width="6%" style="text-align: center">
+                                    <h:outputText value="#{transaccion.recaudador.nick}"/>
+                                </p:column>
+
+                                <p:column headerText="Detalles" width="3%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-description"
+                                                     onclick="PF('dlgTitulo').show();"
+                                                     update="frmTituloRecaudado"
+                                                     action="#{ctAnularCobro.obtenerTitulo()}">
+                                        <f:setPropertyActionListener target="#{ctAnularCobro.objTransaccion}" value="#{transaccion}"/>        
+                                    </p:commandButton>
+                                </p:column>   
+
+                                <p:column headerText="Anular" width="3%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     onclick="PF('dlgAnulacion').show();"
+                                                     update="frmAnulacion">
+                                        <f:setPropertyActionListener target="#{ctAnularCobro.objTransaccion}" value="#{transaccion}"/>        
+                                    </p:commandButton>
+                                </p:column> 
+                            </p:dataTable>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <ui:include src="dlgTitulo.xhtml"/>
+        <ui:include src="dlgAnulacion.xhtml"/>
+    </ui:define>     
+</ui:composition>

@@ -1,0 +1,37 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:form id="menuform"> 
+        <link href="../resources/css/iconos-menus/styles.css" rel="stylesheet" type="text/css"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <div class="layout-menu layout-menu-dark">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile" >
+                            <img src="../resources/imagenes/login.png" alt="" width="20%"/>
+                        </div>                        
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="me" model="#{indexSeguridad.menu}" >
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    </pu:menu>                
+                    <!--<pu:menu widgetVar="me">
+                        <p:menuitem id="lista" value="Cooperativas"  icon="home" />
+                        <p:menuitem id="listaPersona" value="Usuarios"  icon="view_list"/>
+                    </pu:menu>-->
+
+                </div>
+            </div>
+        </div>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../resources/gifs/Loading.gif" alt=""/>
+        </p:dialog>
+    </h:form>
+</ui:composition>

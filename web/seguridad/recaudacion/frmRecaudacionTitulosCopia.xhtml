@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="frmPrincipal">
+            <center><h1>Impresión de Títulos Cobrados</h1></center>
+            <p:growl autoUpdate="true"/>            
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+            <div class="ui-g">
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <div class="card">
+                        <b>Buscar: </b>
+                        <p:selectOneMenu value="#{ctrlRecaudacionTitulos.band}">
+                            <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Por Cédula" itemValue="1"/>
+                            <f:selectItem itemLabel="Por Clave Catastral" itemValue="2"/>
+                            <p:ajax event="change" 
+                                    listener="#{ctrlRecaudacionTitulos.limpiar()}"
+                                    update="pnlBuscarPorCedula,pnlBuscarPorClaveCat,tblTitulosPagados" />
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+
+
+                <div class="ui-g-12 ui-md-6 ui-lg-8">
+                    <div class="card">
+                        <p:panel id="pnlBuscarPorCedula" 
+                                 visible="#{ctrlRecaudacionTitulos.band==1}" 
+                                 style="border: none">                            
+                            <center>
+                                <p:panelGrid columns="4"  styleClass="ui-panelgrid-blank form-group">
+                                    <h:outputLabel value="Propietario:"/>
+                                    <p:inputText value="#{ctrlRecaudacionTitulos.parametro}" 
+                                                 requiredMessage="El criterio de búsqueda es obligatorio"/>
+                                    <p:commandButton title="Buscar predio" 
+                                                     icon="ui-icon-search"
+                                                     value="Buscar"
+                                                     action="#{ctrlRecaudacionTitulos.obtenerPrediosDadoPropietario()}"
+                                                     update="tblPredios"/>
+                                    <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                     action="#{ctrlRecaudacionTitulos.limpiar()}"
+                                                     update="tblPredios,tblTitulosPagados,@form"/>
+                                </p:panelGrid>
+                            </center>
+                            <p:separator/>
+                            <p:dataTable id="tblPredios" var="predio" value="#{ctrlRecaudacionTitulos.lstPredios}" rows="5"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{predio.idPredio}"
+                                         editable="true" selection="#{ctrlRecaudacionTitulos.predio}" selectionMode="single">
+                                <f:facet name="header">
+                                    <b>Predios aosciados</b>
+                                </f:facet>                            
+                                <p:column headerText="Clave Catastral" width="10%" style="text-align: center">                                
+                                    <h:outputText value="#{predio.claveCatastral}"/>
+                                </p:column>
+                                <p:column headerText="Cedula/RUC" width="8%" style="text-align: center">
+                                    <h:outputText value="#{predio.propietario.ruc}"/>
+                                </p:column>
+                                <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                    <h:outputText value="#{predio.propietario.nombres} #{predio.propietario.apellidos}"/>
+                                </p:column>
+                                <p:column headerText="Dirección" width="12%" style="text-align: center">
+                                    <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                </p:column>
+                                <p:column headerText="Consultar titulos Pagados" width="5%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-search" title="Consultar valores a pagar"
+                                                     action="#{ctrlRecaudacionTitulos.obtenerTitulosPagados()}"
+                                                     update="frmPrincipal:tblTitulosPagados">
+                                        <f:setPropertyActionListener value="#{predio}" target="#{ctrlRecaudacionTitulos.predio}"/>
+                                    </p:commandButton>
+                                </p:column>                            
+                            </p:dataTable>
+
+                        </p:panel>
+
+
+                        <p:panel id="pnlBuscarPorClaveCat" 
+                                 visible="#{ctrlRecaudacionTitulos.band==2}" 
+                                 style="border: none">
+                            <p:panelGrid columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group">                                        
+                                <p:outputLabel value="Zona"/>
+                                <p:inputText id="zona" value="#{ctrlRecaudacionTitulos.intZona}" style="width: 35%"/>
+                                <p:outputLabel value="Sector"/>
+                                <p:inputText id="sector" value="#{ctrlRecaudacionTitulos.intSector}" style="width: 35%"/>
+                                <p:outputLabel value="Manzana"/>
+                                <p:inputText id="manzana" value="#{ctrlRecaudacionTitulos.intManzana}" style="width: 35%"/>
+                                <p:outputLabel value="Predio"/>
+                                <p:inputText id="predio" value="#{ctrlRecaudacionTitulos.intPredio}" style="width: 35%"/>                                        
+
+                                
+                                <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                 action="#{ctrlRecaudacionTitulos.obtenerTitulosPagadosZonaSectorManzanapredio()}"
+                                                 update="tblTitulosPagados"/>
+                                <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                 action="#{ctrlRecaudacionTitulos.limpiar()}"
+                                                 update="tblTitulosPagados,@form"/>
+                                
+                            </p:panelGrid>
+                        </p:panel>
+                    </div>
+                </div>
+
+
+
+                <div class="ui-g-12">
+                    <center>                       
+                        <p:dataTable id="tblTitulosPagados" var="tit" value="#{ctrlRecaudacionTitulos.lstTitulosPagados}" rows="5"
+                                     paginator="true"  emptyMessage="No se han encontrado registros" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{tit.idTitulo}"
+                                     editable="true" selection="#{ctrlRecaudacionTitulos.titulo}" selectionMode="single">
+                            <f:facet name="header">
+                                <b>Títulos</b>
+                            </f:facet> 
+                            <!--
+                            <p:column headerText="Id" width="5%" style="text-align: center">                                
+                                <h:outputText value="#{tit.idTitulo}"/>
+                            </p:column>
+                            -->
+                            <p:column headerText="Año" width="3%" style="text-align: center">
+                                <h:outputText value="#{tit.anioTitulo}"/>
+                            </p:column>
+                            <p:column headerText="Número de título" width="5%" style="text-align: center">
+                                <h:outputText value="#{tit.tituloNumero}"/>
+                            </p:column>
+                            <p:column headerText="Fecha de emisión" width="5%" style="text-align: center">
+                                <h:outputText value="#{tit.fechaEmision}">
+                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Fecha de cobro" width="5%" style="text-align: center">
+                                <h:outputText value="#{tit.fechaActualizacion}">
+                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Valor cancelado" width="5%" style="text-align: center">
+                                <h:outputText value="#{tit.totalPagar}">
+                                    <f:convertNumber type="currency" currencySymbol="$" />
+                                </h:outputText>
+                            </p:column>
+
+                            
+                             <p:column headerText="Propietario" width="10%" style="text-align: center">
+                                 <h:outputText value="#{tit.propietarioIndex.nombres} #{tit.propietarioIndex.apellidos}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Duplicado" width="3%" style="text-align: center">
+                                <p:commandButton icon="ui-icon-archive"  ajax="false" title="Ver Pdf"
+                                                 actionListener="#{ctrlRecaudacionTitulos.verReporteDuplicado()}"
+                                                 onclick="this.form.target = '_blank'">
+                                    <f:setPropertyActionListener value="#{tit}" target="#{ctrlRecaudacionTitulos.titulo}"/>
+                                </p:commandButton>
+
+                            </p:column>
+                            <!--
+                                                                <p:column headerText="Transacción" width="3%" style="text-align: center">
+                                                                      <p:commandButton icon="ui-icon-event-note"  ajax="false" title="Ver Pdf"/>
+                                                                </p:column>  -->
+                        </p:dataTable>
+
+                    </center>
+                </div>
+            </div>
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                <img src="../../resources/gifs/Loading.gif" alt=""/>
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

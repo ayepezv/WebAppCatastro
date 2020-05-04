@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when test="true"> <!--test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">-->
+                <div class="ui-g">                        
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form id="frmPrincipal">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                                <center>
+                                    <b>Gestión de Excenciones Tercera Edad cumplen los 65 años de edad</b> <br/> 
+                                    El presente listado de abonados indica que se encuentran sin aplicar excención de Tercera Edad, <br/> pero han cumplido los 65 años según su fecha de nacimiento
+
+                                    <p:dataTable id="tblExcenciones" var="excencionTerACumplir" value="#{ctPrediosExcenciones.lstExcencionTerACumplir}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{excencionTerACumplir.id_titular}"
+                                                 editable="false" selectionMode="multiple">
+
+                                        <p:column filterBy="#{excencionTerACumplir.ruc}" filterMatchMode="contains"
+                                                  headerText="Cedula / RUC" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.ruc}"/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{excencionTerACumplir.apellidos} #{excencionTerACumplir.nombres}" filterMatchMode="contains"
+                                                  headerText="Nombres" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.apellidos} #{excencionTerACumplir.nombres}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Fecha Nacimiento" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.nacimiento}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Edad Completa" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.edadCompleta}">
+                                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <!--
+                                        <p:column headerText="Edad Completa" width="3%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.edadCompleta}"/>
+                                        </p:column> -->
+
+                                        <p:column filterBy="#{excencionTerACumplir.clave_catastral}"
+                                                  headerText="Clave del Predio" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.clave_catastral}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Avaluo" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.avaluo}">
+                                                <f:convertNumber type="currency" currencySymbol="$ " locale="en_US" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column filterBy="#{excencionTerACumplir.excencion}"
+                                                  headerText="Excencion del Predio" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.excencion}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Dirección" width="20%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.direccion}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Celular" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencionTerACumplir.celular}"/>
+                                        </p:column>
+
+
+                                        <f:facet name="footer">
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                                <p:dataExporter type="xls" target="tblExcenciones" fileName="Excenciones_Tercera_Cumplir" />
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/pdf.png"/>
+                                                <p:dataExporter type="pdf" target="tblExcenciones" fileName="Excenciones_Tercera_Cumplir"/>
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/csv.png"/>
+                                                <p:dataExporter type="csv" target="tblExcenciones" fileName="Excenciones_Tercera_Cumplir" />
+                                            </h:commandLink>
+                                        </f:facet>
+                                    </p:dataTable>
+                                </center>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+        <ui:include src="dlgNuevaExencion.xhtml"/> 
+        <ui:include src="dlgEditarExencion.xhtml"/> 
+        <ui:include src="dlgEliminarExencion.xhtml"/> 
+    </ui:define>
+</ui:composition>

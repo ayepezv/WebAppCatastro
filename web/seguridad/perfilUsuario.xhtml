@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/templates/interna/template.xhtml">        
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card">
+                    <p:growl autoUpdate="true" showDetail="true"/>
+                    <h:form id="frmPerfilUsuario">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                        <p:panel id="pnlUsuario"  style="text-align: center" >
+                            <center>
+                                <div class="ui-g">
+                                    <div class="ui-g-12">                    
+                                        <h3>Perfil</h3>
+                                       <!--<span class="overview-detail">#{controladorPerfilUsuario.us.cedula}</span>-->
+                                        <h:panelGrid columns="2" >
+                                            <h:graphicImage id="fotoUsuario" value="#{controladorPerfilUsuario.us.foto}"/>                           
+                                            <h:panelGrid columns="3">
+                                                <pre>      </pre>
+                                                <!--<h:outputLabel value="   "/>-->
+                                                <p:commandButton icon="ui-icon-person" />
+                                                <h:outputLabel value="#{controladorPerfilUsuario.us.nombres} #{controladorPerfilUsuario.us.apellidos}" />
+                                                <h:outputLabel value="   "/>
+                                                <p:commandButton icon="ui-btn ui-corner-all ui-icon-mail ui-btn-icon-notext" />
+                                                <h:outputLabel value="#{controladorPerfilUsuario.us.mail}"/>
+                                                <h:outputLabel value="   "/>
+                                                <p:commandButton icon="ui-btn ui-corner-all ui-icon-phone ui-btn-icon-notext" />
+                                                <h:outputLabel value="#{controladorPerfilUsuario.us.celular}"/>
+                                                <h:outputLabel value="   "/>
+                                                <p:commandButton icon="ui-btn ui-corner-all ui-icon-navigation ui-btn-icon-notext" />
+                                                <h:outputLabel value="#{controladorPerfilUsuario.us.direccionDom}"/>
+
+
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2">
+                                            <p:commandButton icon="ui-btn ui-corner-all ui-icon-camera ui-btn-icon-notext" value="CAMBIAR IMAGEN" 
+                                                             onclick="PF('dlgActualizarImagen').show();"
+                                                             update="frmInsertarImagen,frmPerfilUsuario:fotoUsuario">
+
+                                            </p:commandButton>
+
+                                            <h:panelGrid columns="1">
+                                                <p:commandButton icon="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" value="ACTUALIZAR PERFIL" 
+                                                                 onclick="PF('dlgActualizar').show();"
+                                                                 update="frmActualizar,frmPerfilUsuario:fotoUsuario">
+
+                                                </p:commandButton>
+
+
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                            </center>
+                        </p:panel>
+                    </h:form>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                    <p:dialog header="Cambiar Imagen" widgetVar="dlgActualizarImagen" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold">
+
+                        <h:form id="frmInsertarImagen" enctype="multipart/form-data">
+                            <p:panel id="displayInsertarImagen" >
+
+                                <p:outputLabel value="Previzualización"/>
+                                <p:graphicImage id="griPrevisualizar" value="#{controladorPerfilUsuario.us.foto}" 
+                                                height="80"/>
+
+                                <p:panelGrid id="pngSubirArchivo" columns="2" style="width: 510px;">
+                                    <p:fileUpload fileUploadListener="#{controladorPerfilUsuario.cargarArchivoImagen}"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Abrir" mode="advanced"  
+                                                  uploadLabel="Subir" cancelLabel="Cancelar"   
+                                                  value="#{controladorPerfilUsuario.archivoImagen} "
+                                                  required="true" requiredMessage="Cargar Imagen!!" 
+                                                  update="displayInsertarImagen griPrevisualizar"  
+                                                  />
+
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" style="text-align: center;">
+                                    <p:commandButton value="Aceptar" actionListener="#{controladorPerfilUsuario.insertarImagen()}" 
+                                                     update="frmPerfilUsuario:fotoUsuario" ajax="false" />
+                                    <p:commandButton value="Cancelar" onclick="PF('dlgActualizarImagen').hide();"/>
+
+
+                                </p:panelGrid>
+                            </p:panel>
+                        </h:form>
+
+                    </p:dialog>
+
+                    <p:dialog header="Actualizar Perfil" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                              showEffect="clip" hideEffect="fold" >
+                        <h:form id="frmActualizar">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />     
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Cedula:"/>
+                                <p:inputText value="${controladorPerfilUsuario.us.cedula}" maxlength="10" id="cedula"
+                                             title="Cedula" required="true" requiredMessage="La Cédula es un campo obligatorio."
+                                             onkeypress="return validar(event)" 
+                                             /> 
+                                <h:outputLabel value="Nombres:"/>
+                                <p:inputText value="#{controladorPerfilUsuario.us.nombres}" title="Nombres Persona" required="true" 
+                                             requiredMessage="El Nombre es requerido!" type="text"  onkeypress="return soloLetras(event)"
+                                             validatorMessage="Nombres, No puede ingresar números..." >
+                                    <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                                </p:inputText>
+                                <h:outputLabel value="Apellidos:"/>
+                                <p:inputText  value="#{controladorPerfilUsuario.us.apellidos}" title="Apellidos Persona" required="true" 
+                                              requiredMessage="Los apellidos son requeridos!" type="text"  onkeypress="return soloLetras(event)"
+                                              validatorMessage="Apellidos, No puede ingresar números..." >
+                                    <f:validateRegex pattern="^[A-Za-z,ñ,Ñ, ]+$" />
+                                </p:inputText>
+                                <h:outputLabel value="Sexo:"/>
+                                <p:selectOneRadio value="#{controladorPerfilUsuario.us.sexo}" required="true" requiredMessage="El sexo del usuario es obligatorio.">
+                                    <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                    <f:selectItem itemLabel="Femenino" itemValue="F" />                                       
+                                </p:selectOneRadio>
+                                <h:outputLabel value="Celular:"/>
+                                <p:inputText value="#{controladorPerfilUsuario.us.celular}" title="Celular Persona" required="true" 
+                                             requiredMessage="El Celular es requerido!" maxlength="10" onkeypress="return validar(event)"
+                                             validatorMessage="Celular, Debe ingresar mínimo 10 dígitos." >
+                                    <f:validateLength minimum="10"/>
+                                </p:inputText>
+                                <h:outputLabel value="Dirección Domiciliaria:"/>
+                                <p:inputText  value="#{controladorPerfilUsuario.us.direccionDom}" title="Dirección Domiciliaria" required="true" 
+                                              requiredMessage="La Dirección es requerida!" >
+                                </p:inputText>
+                                <h:outputLabel value="Fecha de Nacimiento:"/>
+                                <p:calendar value="#{controladorPerfilUsuario.fechaN}" showOn="button" 
+                                            navigator="true"  />
+                                <h:outputLabel value="Estado Civil:"/>
+                                <p:inputText value="#{controladorPerfilUsuario.us.estadoCivil}" required="true" 
+                                             requiredMessage="El Campo es obligatorio."/>
+                                <h:outputLabel value="R.U.C:"/>
+                                <p:inputText value="#{controladorPerfilUsuario.us.ruc}" required="true" 
+                                             requiredMessage="El Ruc es obligatorio."/>
+                                <h:outputLabel value="Nick:"/>
+                                <p:inputText value="#{controladorPerfilUsuario.us.nick}" required="true" 
+                                             requiredMessage="El Nick es obligatorio."/>
+                                <h:outputLabel value="Email:"/>
+                                <p:inputText value="#{controladorPerfilUsuario.us.mail}" required="true" 
+                                             requiredMessage="El Nick es obligatorio."/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <center>
+                                <p:commandButton value="Aceptar"  action="#{controladorPerfilUsuario.actualizarPerfil()}" update=":frmPerfilUsuario:pnlUsuario"/>
+                                <p:commandButton value="Cancelar" type="button" onclick="PF('dlgActualizar').hide();"/>
+                            </center>
+                        </h:form>
+                    </p:dialog>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,170 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true" showDetail="true"/>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />  
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolMaster}">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h:form id="frmSubmenus">
+                            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />                                                
+                            <p:panel header="Gestión de Submenús">
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:outputText value="Seleccione un Módulo"/>
+                                        <p:selectOneMenu id="cmbModulos" value="#{menuCtrl.idMenuPadre}" required="true" requiredMessage="Seleccione un Item de un menú">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{menuCtrl.lstModulosGruposMenus}" var="modulo"
+                                                           itemLabel="#{modulo.codigoMenu.nombre}" itemValue="#{modulo.codigoMenu.idMenu}"/>
+                                            <p:ajax event="change" listener="#{menuCtrl.obtenerSubmenusDadoPadre()}" 
+                                                    update="tblMenus,frmRegistrar"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </center>
+                                <p:separator/>
+                                <p:dataTable id="tblMenus" var="submenu" value="#{menuCtrl.lstSubmenus}" rows="5"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15" reflow="true"
+                                             selection="#{menuCtrl.menuSel}">                                            
+                                    <p:column headerText="Menu" width="15%" style="text-align: center">
+                                        <h:outputText value="#{submenu.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Descripción" width="15%" style="text-align: center">
+                                        <h:outputText value="#{submenu.descripcion}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha Creación" width="5%" style="text-align: center">
+                                        <h:outputText value="#{submenu.fechaRegistro}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha Ult. Actualización" width="5%" style="text-align: center">
+                                        <h:outputText value="#{submenu.fechaActualizacion}"/>
+                                    </p:column>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Editar" width="5%" style="text-align: center">
+                                                <p:commandButton title="Editar" icon="ui-icon-pencil"
+                                                                 onclick="PF('dlgActualizar').show()"
+                                                                 update="frmEditar">
+                                                    <f:setPropertyActionListener value="#{submenu}" target="#{menuCtrl.menuSel}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:choose>
+                                        <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                            <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                                <p:commandButton title="Eliminar" icon="ui-icon-trash"
+                                                                 onclick="PF('dlgEliminar').show()"
+                                                                 update="frmEliminar">
+                                                    <f:setPropertyActionListener value="#{submenu}" target="#{menuCtrl.menuSel}"/>   
+                                                </p:commandButton>
+                                            </p:column>
+                                        </c:when>
+                                    </c:choose>
+                                    <f:facet name="footer">
+                                        <c:choose>
+                                            <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                                <p:commandButton value="Registrar" icon="ui-icon-plusthick"
+                                                                 onclick="PF('dlgRegistrar').show();">
+
+                                                </p:commandButton>
+                                            </c:when>
+                                        </c:choose>
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </p:panel>
+                        </h:form>
+
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                            <img src="../../resources/gifs/Loading.gif" alt=""/>
+                        </p:dialog>
+
+                        <p:dialog header="Registrar Submenú" widgetVar="dlgRegistrar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmRegistrar">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="Grupo de Menus"/>
+                                    <h:outputLabel value="#{menuCtrl.idMenuPadre}"/>
+                                    <h:outputLabel value="Nombre:"/>
+                                    <p:inputText value="#{menuCtrl.menu.nombre}" required="true" 
+                                                 requiredMessage="El nombre del menú es un campo obligatorio"/>
+                                    <h:outputLabel value="Descripción:"/>
+                                    <p:inputTextarea value="#{menuCtrl.menu.descripcion}" required="true" 
+                                                     requiredMessage="La descripción del menú es un campo obligatorio"/>
+                                </h:panelGrid>
+                                <center>
+                                    <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                     action="#{menuCtrl.insertarMenuDadoPadre()}" 
+                                                     update="frmSubmenus:tblMenus,frmRegistrar"/>
+                                    <p:commandButton value="Cancelar" type="button" 
+                                                     icon="ui-icon-close"
+                                                     onclick="PF('dlgRegistrar').hide();"/> 
+                                </center>
+                            </h:form>
+                        </p:dialog>
+
+
+                        <p:dialog header="Actualizar URL" widgetVar="dlgActualizar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold" >
+                            <h:form id="frmEditar">
+                                <h:panelGrid columns="2">                                    
+                                    <h:outputLabel value="Nombre:"/>
+                                    <p:inputText value="#{menuCtrl.menuSel.nombre}" required="true" 
+                                                 requiredMessage="El nombre del menú es un campo obligatorio"/>
+                                    <h:outputLabel value="Descripción:"/>
+                                    <p:inputTextarea value="#{menuCtrl.menuSel.descripcion}" required="true" 
+                                                     requiredMessage="La descripción del menú es un campo obligatorio"/>
+                                </h:panelGrid>
+                                <center>
+                                    <p:commandButton value="Aceptar" action="#{menuCtrl.actualizarSubmenu()}" 
+                                                     icon="ui-icon-save"
+                                                     update="frmSubmenus:tblMenus,frmEditar"/>
+                                    <p:commandButton value="Cancelar" type="button" 
+                                                     icon="ui-icon-close"
+                                                     onclick="PF('dlgActualizar').hide();"/> 
+                                </center>
+                            </h:form>
+                        </p:dialog>
+
+                        <p:dialog header="Basic Dialog" widgetVar="dlgEliminar" modal="true" closable="false" resizable="false"
+                                  showEffect="clip" hideEffect="fold">
+                            <h:form id="frmEliminar">
+                                <center>
+                                    <h1>¿Está seguro de elminar este item?</h1>
+                                    <h:outputText value="#{menuCtrl.menuSel.nombre}"/>
+                                    <p:separator/>
+                                    <p:commandButton value="Si"
+                                                     icon="ui-icon-check"
+                                                     action="#{menuCtrl.eliminarSubmenu()}"
+                                                     update="frmSubmenus:tblMenus,frmEliminar"/>
+                                    <p:commandButton value="No" type="button" 
+                                                     icon="ui-icon-close"
+                                                     onclick="PF('dlgEliminar').hide();"/> 
+                                </center>
+                            </h:form>
+                        </p:dialog>
+
+                    </div>                
+
+                </div>  
+            </c:when>
+        </c:choose>        
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolMaster}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

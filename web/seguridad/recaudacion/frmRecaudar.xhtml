@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <p:dialog id="dlgCobrarTitulo" widgetVar="dlgCobrarTitulo" closable="false" modal="true" resizable="true" 
+              header="Cobrar título" showEffect="size" hideEffect="size">
+        <h:form id="frmCobrarTitulo">                     
+            <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                <p:panel header="Detalles">
+                    <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Valor del Título:"/>
+                        <h:outputLabel value="#{ctrlRecaudacionTitulos.titulo.totalTitulo}">
+                            <f:convertNumber pattern="#0.00" />
+                        </h:outputLabel>
+                        <h:outputLabel value="Intereses por mora:"/>
+                        <h:outputLabel value="#{ctrlRecaudacionTitulos.titulo.interesesMora}">
+                            <f:convertNumber pattern="#0.00" />
+                        </h:outputLabel>
+                        <h:outputLabel value="Descuento:"/>
+                        <h:outputLabel value="#{ctrlRecaudacionTitulos.titulo.descuento}">
+                            <f:convertNumber pattern="#0.00" />
+                        </h:outputLabel>                        
+                    </p:panelGrid>
+                    <p:separator/>
+                    <b>
+                        <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                            <h:outputLabel value="Total a pagar:"/>
+                            <h:outputLabel id="totalPagar" value="#{ctrlRecaudacionTitulos.titulo.totalPagar}">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:outputLabel>  
+                        </p:panelGrid>
+                    </b>                 
+                </p:panel>
+                <p:panel header="Forma de pago">
+                    <p:panelGrid columns="2"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Forma de pago"/>
+                        <p:selectOneMenu id="cmbFormaPago" value="#{ctrlRecaudacionTitulos.idFormaPago}" required="true" 
+                                         requiredMessage="Seleccione un Item de un menú">
+                            <f:selectItem itemLabel="Seleccione..." itemValue="#{null}"/>
+                            <f:selectItems value="#{ctrlRecaudacionTitulos.lstFormasPago}" var="formaPago"
+                                           itemLabel="#{formaPago.formaRecaudacion}" itemValue="#{formaPago.codigo}"/>
+                        </p:selectOneMenu>  
+                    </p:panelGrid>
+                    <p:panelGrid columns="4"  styleClass="ui-panelgrid-blank form-group">
+                        <h:outputLabel value="Cliente: "/>
+                        <p:inputText value="#{ctrlRecaudacionTitulos.cedula}"/>
+                        <p:commandButton icon="ui-icon-search" action="#{ctrlRecaudacionTitulos.obtenerPersonas()}"
+                                         update="txtDatosCliente"/>
+                        <p:commandButton icon="ui-icon-control-point" title="Registrar Cliente"/>
+                    </p:panelGrid>
+                    <center>
+                        <b><h:outputLabel id="txtDatosCliente" value="#{ctrlRecaudacionTitulos.cliente.apellidos} #{ctrlRecaudacionTitulos.cliente.nombres}"/></b>
+                    </center>
+                    <p:panelGrid columns="3"  styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Efectivo:"/>
+                        <p:inputText id="efectivo" value="#{ctrlRecaudacionTitulos.dineroEfectivo}"/>
+                        <p:commandButton icon="ui-icon-monetization-on"
+                                         action="#{ctrlRecaudacionTitulos.calcularVuelto()}"
+                                         update="vuelto"
+                                         title="Calcular Vuelto"/>
+                        <p:outputLabel value="Cambio:"/>
+                        <p:outputLabel id="vuelto" value="#{ctrlRecaudacionTitulos.vuelto}">
+                            <f:convertNumber pattern="#0.00" />
+                        </p:outputLabel>
+
+                    </p:panelGrid>                    
+                </p:panel>
+            </p:panelGrid>
+            <center>   
+
+                <p:commandButton id="btnCobrar" value="Recaudar" icon="ui-icon-save"
+                                 action="#{ctrlRecaudacionTitulos.recaudarTitulo()}"
+                                 ajax="false" onclick="this.form.target = '_blank'"
+                                 update="frmPrincipal:tabTitulos:tblTitulos, frmPrincipal:tabTitulos:tblTitulosPagados"/>      
+                
+                 <p:commandButton value="Aceptar" icon="ui-icon-refresh"
+                                  action="#{ctrlRecaudacionTitulos.refrescarRecaudacion()}"                                 
+                                 update="frmPrincipal:tabTitulos:tblTitulos, frmPrincipal:tabTitulos:tblTitulosPagados"/>     
+
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 onclick="PF('dlgCobrarTitulo').hide()" />
+
+            </center>
+        </h:form>
+    </p:dialog>
+</ui:composition>

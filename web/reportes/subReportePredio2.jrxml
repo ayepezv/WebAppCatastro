@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subReportePredio2" pageWidth="550" pageHeight="870" columnWidth="550" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="47abffb9-9151-4844-9aa5-afb64d712085">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_predio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from catastro.v_reporte_caracteristicas_edificacion
+where int_id_predio = $P{id_predio}]]>
+	</queryString>
+	<field name="int_id_predio" class="java.lang.Integer"/>
+	<field name="sr_id_bloque" class="java.lang.Integer"/>
+	<field name="chv_bloque" class="java.lang.String"/>
+	<field name="db_area" class="java.lang.Double"/>
+	<field name="sr_id_piso" class="java.lang.Integer"/>
+	<field name="chv_piso" class="java.lang.String"/>
+	<field name="chv_descripcion" class="java.lang.String"/>
+	<field name="db_area_piso" class="java.lang.Double"/>
+	<field name="chv_condicion_fisica" class="java.lang.String"/>
+	<field name="db_valor_unidad" class="java.lang.Double"/>
+	<field name="int_anio_edificacion" class="java.lang.Integer"/>
+	<field name="int_anio_reconstr" class="java.lang.Integer">
+		<fieldDescription><![CDATA[anio de construcción]]></fieldDescription>
+	</field>
+	<field name="chv_estado" class="java.lang.String"/>
+	<field name="chv_cimientos" class="java.lang.String"/>
+	<field name="chv_cadenas" class="java.lang.String"/>
+	<field name="chv_columnas" class="java.lang.String"/>
+	<field name="chv_vigas" class="java.lang.String"/>
+	<field name="chv_entrepiso" class="java.lang.String"/>
+	<field name="chv_paredes" class="java.lang.String"/>
+	<field name="chv_cubierta" class="java.lang.String"/>
+	<field name="chv_escaleras" class="java.lang.String"/>
+	<field name="chv_pisos" class="java.lang.String"/>
+	<field name="chv_puertas_exteriores" class="java.lang.String"/>
+	<field name="chv_puertas_interiores" class="java.lang.String"/>
+	<field name="chv_ventanas" class="java.lang.String"/>
+	<field name="chv_vidrios" class="java.lang.String"/>
+	<field name="chv_protec_ventanas" class="java.lang.String"/>
+	<field name="chv_enlucidos" class="java.lang.String"/>
+	<field name="chv_tumbados" class="java.lang.String"/>
+	<field name="acab_cubierta" class="java.lang.String"/>
+	<field name="chv_piezas_sanita" class="java.lang.String"/>
+	<field name="chv_cocina" class="java.lang.String"/>
+	<field name="chv_closets" class="java.lang.String"/>
+	<field name="chv_pintura" class="java.lang.String"/>
+	<field name="chv_fachada" class="java.lang.String"/>
+	<field name="chv_energia_elect" class="java.lang.String"/>
+	<field name="chv_sanitarias" class="java.lang.String"/>
+	<field name="chv_especiales" class="java.lang.String"/>
+	<field name="chv_sist_contra_incend" class="java.lang.String">
+		<fieldDescription><![CDATA[sistema contra incendios]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="433" splitType="Stretch">
+			<rectangle>
+				<reportElement x="6" y="4" width="538" height="427" uuid="aa2cd613-7c1b-40e7-ab43-22a804646c9d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="169" y="27" width="363" height="394" uuid="22f4687a-bd09-4770-b9fb-39c4949c842b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="178" y="317" width="341" height="94" uuid="db9f1fff-7a39-4fa5-b653-1f2d2eb3a306"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="178" y="155" width="341" height="155" uuid="628fff60-afa4-42fc-9790-6e3587aca086"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="177" y="46" width="342" height="103" uuid="736e3d2b-ee67-4aaf-bbf0-743d7be87203"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="16" y="5" width="50" height="20" uuid="7410a022-cf93-4090-8335-3a18a9d21314"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bloque:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="66" y="5" width="100" height="20" uuid="f2e29c34-f5ca-4d68-8217-091979b30669"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_bloque}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="162" y="5" width="115" height="20" uuid="485d480f-3aa5-40de-80b9-6d9ede3f856e"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Área bloque (m2):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="269" y="5" width="100" height="20" uuid="943811dd-6da6-4b85-bd6a-1a1685a26309"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{db_area}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="31" width="32" height="20" uuid="29b076e9-d804-4544-b7b0-bf8c20850c73"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Piso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="57" y="31" width="100" height="20" uuid="f58f268e-3571-4e40-8214-bfa29d3ed0bc"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chv_piso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="51" width="53" height="20" uuid="04e6b622-41a7-4a14-9052-47934f99bb15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Área (m2):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="51" width="100" height="20" uuid="2679fa4f-4920-4af9-b32c-042a94b6255b"/>
+				<textFieldExpression><![CDATA[$F{db_area_piso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="70" width="86" height="20" uuid="95b87ca1-e592-48a9-a4c0-a1871ec00b79"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condición fisica:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="27" y="86" width="140" height="16" uuid="bf382c42-01e1-42eb-b8cb-792e46b041c5"/>
+				<textFieldExpression><![CDATA[$F{chv_condicion_fisica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="106" width="66" height="20" uuid="af32efa7-ece0-44c1-ba52-dd0b2132314a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor (USD):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="92" y="106" width="75" height="20" uuid="6b0feadb-f032-4732-8839-f1d428b82902"/>
+				<textFieldExpression><![CDATA[$F{db_valor_unidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="26" y="127" width="53" height="20" uuid="3949c2e2-f11e-4de8-b852-dbf770b0327a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año edif:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="77" y="127" width="100" height="20" uuid="067fe889-c1ad-4bf5-9783-930e55dfc63c"/>
+				<textFieldExpression><![CDATA[$F{int_anio_edificacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="146" width="85" height="20" uuid="7d7cf927-2ab5-49d7-84e9-777d0571f320"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anio reconstr:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="98" y="146" width="69" height="20" uuid="71d6fed5-f2a7-4c36-9616-c31a9c70619b"/>
+				<textFieldExpression><![CDATA[$F{int_anio_reconstr}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="165" width="52" height="20" uuid="054c005f-606e-49ef-9872-d0c0835e71fa"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="67" y="166" width="100" height="20" uuid="bb1b0084-11fe-4d8a-86cb-2ec0ca360999"/>
+				<textFieldExpression><![CDATA[$F{chv_estado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="51" width="100" height="20" uuid="3a72b838-ff06-4f0b-a579-8c67205b1ccd"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTRUCTURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="72" width="58" height="20" uuid="997719dc-feff-4fd7-82b4-2c93b6149647"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cimientos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="232" y="72" width="100" height="20" uuid="fc4f98fb-d0f8-4f69-83b7-b5bbc67db9e8"/>
+				<textFieldExpression><![CDATA[$F{chv_cimientos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="27" width="352" height="20" uuid="b6b12178-736c-4dfd-b951-8745bb51acb7"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRINCIPALES MATERIALES EMPLEADOS EN LA CONSTRUCCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="90" width="55" height="20" uuid="8f9cdecc-a54a-4ce2-baeb-72dd2b0e8922"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cadenas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="229" y="90" width="100" height="20" uuid="bb12dabf-6e0b-48c2-8ac7-6e0558621b38"/>
+				<textFieldExpression><![CDATA[$F{chv_cadenas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="108" width="32" height="20" uuid="df6d9b03-6496-4a84-b1eb-b0eaa2180427"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vigas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="213" y="108" width="100" height="20" uuid="1db08dac-bf40-4a39-b671-901c80fd87b9"/>
+				<textFieldExpression><![CDATA[$F{chv_vigas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="127" width="54" height="20" uuid="8187db9a-9b1a-4e97-88b4-d90551e2537d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Entrepiso: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="233" y="127" width="100" height="20" uuid="807a9246-c34a-4ee7-a276-b500ef163fb0"/>
+				<textFieldExpression><![CDATA[$F{chv_entrepiso}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="72" width="53" height="20" uuid="f7cd04b1-7acd-4270-80e0-a0bb926be907"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Columnas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="396" y="72" width="100" height="20" uuid="2ca8a398-21f6-4da8-b27e-f27382c7d803"/>
+				<textFieldExpression><![CDATA[$F{chv_columnas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="91" width="53" height="20" uuid="64f55677-c18e-4921-a8e4-231d272ca045"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paredes:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="389" y="91" width="100" height="20" uuid="3cddc0bd-d707-40e4-b399-9fce28f07adb"/>
+				<textFieldExpression><![CDATA[$F{chv_paredes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="110" width="54" height="20" uuid="eb36831e-b023-4e80-9929-aa7356b97bae"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cubierta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="388" y="110" width="100" height="20" uuid="47614cf3-4f7f-4adf-a580-0b6adbf08c5d"/>
+				<textFieldExpression><![CDATA[$F{chv_cubierta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="129" width="54" height="20" uuid="f1ab3724-e83b-41b8-8aa5-a972914f699d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escaleras:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="395" y="129" width="100" height="20" uuid="bf84eae1-3645-48fb-9b12-ca3fe8523b65"/>
+				<textFieldExpression><![CDATA[$F{chv_escaleras}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="157" width="100" height="20" uuid="37df23e1-ac1a-42fe-bd1e-079bd12d1bdf"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACABADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="177" width="33" height="20" uuid="4fbfe8b7-c401-4c6f-8f3f-f640e86b5b3a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pisos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="212" y="177" width="100" height="20" uuid="ba4ce319-ae98-4b8c-b6dc-b490308aadee"/>
+				<textFieldExpression><![CDATA[$F{chv_pisos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="196" width="100" height="20" uuid="9069f1df-dae4-4b95-ba41-311c08f27a72"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Puertas exteriores:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="277" y="196" width="64" height="20" uuid="24006215-3f66-4037-9984-beef1476bb33"/>
+				<textFieldExpression><![CDATA[$F{chv_puertas_exteriores}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="216" width="100" height="20" uuid="f41f2287-0c5a-45b8-aa0f-24294e755b82"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Puertas interiores:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="275" y="216" width="66" height="20" uuid="5b4ed7fb-6dc0-452f-a293-6075b3a8f217"/>
+				<textFieldExpression><![CDATA[$F{chv_puertas_interiores}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="235" width="52" height="20" uuid="e8d169cf-14d7-4be3-8fb3-8c4806740d83"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ventanas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="232" y="235" width="100" height="20" uuid="a5f17826-6587-4f44-a27c-97cc4b7c79e1"/>
+				<textFieldExpression><![CDATA[$F{chv_ventanas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="254" width="100" height="20" uuid="a93473b3-c3fd-4f2c-bf66-2d686d140976"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Protec ventanas:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="269" y="254" width="72" height="20" uuid="8a41ff6e-b73d-4f17-b5b7-ccf378d5feb5"/>
+				<textFieldExpression><![CDATA[$F{chv_protec_ventanas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="182" y="272" width="55" height="20" uuid="e5123d2c-0a2c-4355-86cc-8988fdf5574a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Enlucidos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="237" y="272" width="100" height="20" uuid="740620b3-aa3b-4c04-b380-b2dc6d3a265e"/>
+				<textFieldExpression><![CDATA[$F{chv_enlucidos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="181" y="290" width="56" height="20" uuid="abc0809c-28f4-4ca9-9166-775a1a8d8511"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tumbados:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="237" y="290" width="100" height="20" uuid="2e1de3d4-da0c-4a5c-b721-d1a4dba4cfb4"/>
+				<textFieldExpression><![CDATA[$F{chv_tumbados}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="180" width="47" height="20" uuid="93ab6f11-7dd4-4931-a96d-d8d738e09e32"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cubierta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="389" y="180" width="100" height="20" uuid="59c1fbcd-7841-496c-b619-ea787ce5f537"/>
+				<textFieldExpression><![CDATA[$F{acab_cubierta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="198" width="100" height="20" uuid="e7a66344-d736-4174-b70e-30a8ad8db3ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Piezas sanita:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="415" y="198" width="100" height="20" uuid="40c81f4a-abfe-4bfe-951d-baf6d748240e"/>
+				<textFieldExpression><![CDATA[$F{chv_piezas_sanita}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="344" y="216" width="44" height="20" uuid="b2fbf31e-0100-4b42-a5ed-33e89233d6fb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cocina:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="384" y="216" width="100" height="20" uuid="e904ae7e-7ae0-4037-b072-5f7bfe403ca7"/>
+				<textFieldExpression><![CDATA[$F{chv_cocina}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="344" y="235" width="100" height="20" uuid="6e68b7a5-a46c-4eb6-97a4-90dac39db190"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Closets:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="386" y="235" width="100" height="20" uuid="9dfb35d9-5b7e-4742-9bfa-b565d62ea846"/>
+				<textFieldExpression><![CDATA[$F{chv_closets}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="255" width="100" height="20" uuid="a79c2357-82e1-48bb-9622-7193de263238"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pintura:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="385" y="255" width="100" height="20" uuid="a0202d03-5772-45e0-8a2f-8a8cc233b4c9"/>
+				<textFieldExpression><![CDATA[$F{chv_pintura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="275" width="100" height="20" uuid="92070b13-903e-4789-bade-3ccb5bf0923a"/>
+				<text><![CDATA[Fachada:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="391" y="275" width="100" height="20" uuid="593d3ceb-4cfb-4e4f-a3d1-40eced213a86"/>
+				<textFieldExpression><![CDATA[$F{chv_fachada}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="179" y="319" width="100" height="20" uuid="62e6a8e6-fe33-48fc-aba2-6b67da12f720"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSTALACIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="339" width="100" height="20" uuid="52f80fb4-f84d-4052-9097-af761e008b90"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EnergÍa elect:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="252" y="339" width="104" height="20" uuid="f8702908-52b0-4e3a-b1ce-bf4644acd329"/>
+				<textFieldExpression><![CDATA[$F{chv_energia_elect}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="356" width="100" height="20" uuid="37d37b45-fa71-4976-b288-2d6138cc1afc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sanitarias:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="237" y="356" width="100" height="20" uuid="1aa85ba6-04aa-485d-810d-338e653ff5bf"/>
+				<textFieldExpression><![CDATA[$F{chv_sanitarias}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="374" width="100" height="20" uuid="19bebd64-c445-4d04-8f3d-29dc91ebdd6e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Especiales:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="242" y="374" width="100" height="20" uuid="bb686525-a250-45cc-ad04-27251645996f"/>
+				<textFieldExpression><![CDATA[$F{chv_especiales}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="391" width="130" height="20" uuid="d81dd0bc-4877-460d-a3a6-7bd453277129"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sistema contra incendios:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="311" y="391" width="100" height="20" uuid="a51a1097-4d6f-46a0-a00e-3b3a449c2979"/>
+				<textFieldExpression><![CDATA[$F{chv_sist_contra_incend}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

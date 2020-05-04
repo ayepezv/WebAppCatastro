@@ -1,0 +1,240 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <p:growl autoUpdate="true" showDetail="true"/>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                <h:form id="frmPrincipal">
+                    <center><h1>Registrar construcciones</h1></center>
+                    <div class="ui-g">                           
+                        <div class="ui-g-12 ui-md-12 ui-lg-3">
+                            <div class="card">
+                                <b>Buscar por:</b>
+                                <p:selectOneMenu value="#{registrarConstruccionesCtrl.band}">
+                                    <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>
+                                    <f:selectItem itemLabel="Por Propietario" itemValue="2"/>
+                                    <p:ajax event="change" listener="#{registrarConstruccionesCtrl.limpiar()}" 
+                                            update="pnlBuscarClaveCatastral,pnlBuscarPropietario,tblPredios,pnlBuscarDefecto"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-9">
+                            <div class="card">
+                                <center>   
+
+                                    <p:panel id="pnlBuscarDefecto" visible="#{registrarConstruccionesCtrl.band==0}" style="border: none">
+                                        <h3>Seleccione el filtro de búsqueda.</h3>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarClaveCatastral" visible="#{registrarConstruccionesCtrl.band==1}" style="border: none">
+                                        <p:panelGrid columns="10" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <p:outputLabel value="Zona"/>
+                                            <h:inputText size="3" id="zona" value="#{registrarConstruccionesCtrl.zona}" />
+                                            <p:outputLabel value="Sector"/>
+                                            <h:inputText size="3"  id="sector" value="#{registrarConstruccionesCtrl.sector}" />
+                                            <p:outputLabel value="Manzana"/>
+                                            <h:inputText size="3"  id="manzana" value="#{registrarConstruccionesCtrl.manzana}" />
+                                            <p:outputLabel value="Predio"/>
+                                            <h:inputText size="3"  id="predio" value="#{registrarConstruccionesCtrl.numPredio}" />                                        
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{registrarConstruccionesCtrl.buscarPredios()}"
+                                                             update="tblPredios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{registrarConstruccionesCtrl.limpiar()}"
+                                                             update="tblPredios, @form"/>
+                                        </p:panelGrid> 
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPropietario" visible="#{registrarConstruccionesCtrl.band==2}" style="border: none">
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                            <p:outputLabel value="Cédula/Apellidos:"/>
+                                            <p:inputText value="#{registrarConstruccionesCtrl.txtCriterio}"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{registrarConstruccionesCtrl.encontrarPredios()}"
+                                                             update="tblPredios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{registrarConstruccionesCtrl.limpiar()}"
+                                                             update="tblPredios, @form"/>
+                                        </p:panelGrid>     
+                                    </p:panel>
+                                </center>
+                            </div>
+                        </div>
+
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">
+                                <p:dataTable id="tblPredios" var="predio" value="#{registrarConstruccionesCtrl.lstPredios}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                             editable="true" selection="#{registrarConstruccionesCtrl.objPredio}" selectionMode="single"
+                                             style="visibility: #{registrarConstruccionesCtrl.visibilidad}">
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Listado de predios"/>
+                                    </f:facet>
+                                    <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.claveCatastral}"/>
+                                    </p:column>
+                                    <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                        <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                    </p:column>
+                                    <p:column headerText="Dirección" width="12%">
+                                        <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                    </p:column>
+                                    <p:column headerText="Bloques" width="4%" style="text-align: center">
+                                        <p:commandButton icon="ui-icon-folder-shared"
+                                                         action="#{registrarConstruccionesCtrl.obtenerBloques()}"
+                                                         update="frmPrincipal:tblBloques"/>
+                                    </p:column>                                   
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-g">  
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <p:dataTable id="tblBloques" var="bloque" value="#{registrarConstruccionesCtrl.lstBloques}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{bloque.idBloque}"
+                                         editable="true" selection="#{registrarConstruccionesCtrl.bloqueSel}" selectionMode="single"
+                                         style="visibility: #{registrarConstruccionesCtrl.visibleBloques}">
+                                <f:facet name="header">
+                                    <h:outputLabel value="Bloques"/>
+                                </f:facet>
+                                <p:column headerText="Bloque" width="4%" style="text-align: center">
+                                    <h:outputLabel value="#{bloque.bloque}"/>
+                                </p:column>
+                                <p:column headerText="Descripción" width="8%" style="text-align: center">
+                                    <h:outputLabel value="#{bloque.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="Área" width="5%" style="text-align: center">
+                                    <h:outputLabel value="#{bloque.areaBloque}">
+                                        <f:convertNumber pattern="#0.00" />
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Editar Nombre" width="2%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     title="Editar" onclick="PF('dlgEditarBloque').show()"
+                                                     update="frmEditarBloque"/>
+                                </p:column>
+                                <p:column headerText="Ver Pisos" width="2%" style="text-align: center">
+                                    <p:commandButton icon="ui-icon-create-new-folder"
+                                                     title="Ver Pisos"
+                                                     action="#{registrarConstruccionesCtrl.obtenerPisosDadoBloque()}"
+                                                     update="frmPrincipal:tblPisos">
+                                        <f:setPropertyActionListener value="#{bloque}" target="#{registrarConstruccionesCtrl.bloqueSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <p:dataTable id="tblPisos" var="piso" value="#{registrarConstruccionesCtrl.lstPisos}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{piso.idPiso}"
+                                         editable="true" selection="#{registrarConstruccionesCtrl.pisoSel}" selectionMode="single"
+                                         style="visibility: #{registrarConstruccionesCtrl.visiblePisos}">
+                                <f:facet name="header">
+                                    <h:outputLabel value="Pisos"/>
+                                    <p:commandButton id="toggler" type="button" value="Campos" style="float:right" icon="ui-icon-apps" />
+                                    <p:columnToggler datasource="tblPisos" trigger="toggler" />
+                                </f:facet>
+
+                                <p:column headerText="Piso" width="5%" style="text-align: center">                    
+                                    <h:outputText value="#{piso.piso}"/>
+                                </p:column>
+                                <p:column headerText="Estado" width="5%" style="text-align: center">
+                                    <h:outputText value="#{piso.estadoPiso}"/>
+                                </p:column>
+                                <p:column headerText="Año Construc." width="5%" style="text-align: center">
+                                    <h:outputText value="#{piso.anioConstruccion}"/>
+                                </p:column>
+                                <p:column headerText="Area Construc." width="5%" style="text-align: center">
+                                    <h:outputText value="#{piso.areaConstruccion}">
+                                        <f:convertNumber pattern="#0.00" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column width="2%" style="text-align: center" headerText="Editar"
+                                          visible="false">
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     title="Editar" action="#{registrarConstruccionesCtrl.obtenerCoeficientes()}"
+                                                     onclick="PF('wdlgRegistrarPiso').show()"
+                                                     update="frmRegistrarPiso">
+                                        <f:setPropertyActionListener target="#{piso}" value="#{registrarConstruccionesCtrl.pisoSel}"/>             
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column width="2%" style="text-align: center" headerText="Eliminar" 
+                                          visible="false">
+                                    <p:commandButton icon="ui-icon-delete"
+                                                     title="Eliminar" 
+                                                     onclick="PF('dlgEliminarPiso').show()"
+                                                     update="frmEliminarPiso">
+                                        <f:setPropertyActionListener target="#{piso}" value="#{registrarConstruccionesCtrl.pisoSel}"/>             
+                                    </p:commandButton>
+                                </p:column>                            
+
+                                <p:column width="2%" style="text-align: center" headerText="Detalles"
+                                          visible="false">
+                                    <p:commandButton icon="ui-icon-content-copy"
+                                                     title="Detalles"
+                                                     onclick="PF('dlgVerPiso').show()"
+                                                     update="frmVerPiso">
+                                        <f:setPropertyActionListener target="#{piso}" value="#{registrarConstruccionesCtrl.pisoSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column width="2%" style="text-align: center" headerText="Coef. construcción"
+                                          visible="false">
+                                    <p:commandButton action="#{registrarConstruccionesCtrl.obtenerDetalleConstruccion()}"
+                                                     icon="ui-icon-font-download"
+                                                     title="Coeficientes de la Construcción"
+                                                     onclick="PF('dlgValoresConstruccion').show()"
+                                                     update="frmCoefConstruccion">
+                                        <f:setPropertyActionListener target="#{piso}" value="#{registrarConstruccionesCtrl.pisoSel}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </div>                    
+                    </div>     
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+        <ui:include src="frmEditarBloque.xhtml"/> 
+        <ui:include src="frmInfoPiso.xhtml"/>
+        <ui:include src="frmRegistrarPiso.xhtml"/>
+        <ui:include src="dlgEliminarPiso.xhtml"/>
+        <ui:include src="dlgValoresConstruccion.xhtml"/>
+    </ui:define>
+</ui:composition>

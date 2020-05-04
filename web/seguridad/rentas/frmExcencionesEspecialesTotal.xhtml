@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+
+        <c:choose>
+            <c:when  test="true"> <!--test="#{sessionScope.idRol == VariablesGlobales.rolRentas}"> -->
+                <div class="ui-g">                        
+                    <div class="ui-g-12">
+                        <div class="card">
+                            <h:form id="frmPrincipal">
+                                <p:growl autoUpdate="true" showDetail="true"/>
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                                <center>
+                                    <b>Listado de Excenciones Especiales</b>    
+                                    
+                                    <p:dataTable id="tblExcenciones" var="excencion" value="#{ctPrediosExcenciones.lstExcenciones}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{excencion.predio.idPredio}"
+                                                 editable="true" selection="#{ctPrediosExcenciones.excencionSel}" selectionMode="single">
+
+                                        <p:column filterBy="#{excencion.predio.claveCatastral}" filterMatchMode="contains"
+                                                  headerText="Predio" width="6%" style="text-align: center">
+                                            <h:outputText value="#{excencion.predio.claveCatastral}"/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{excencion.excencion.excencion}" filterMatchMode="contains"
+                                                  headerText="Excención" width="5%" style="text-align: center">
+                                            <h:outputText value="#{excencion.excencion.excencion}"/>
+                                        </p:column>
+
+                                        <p:column filterBy="#{excencion.predio.propietario.apellidos} #{excencion.predio.propietario.nombres}" filterMatchMode="contains"
+                                                  headerText="Titular" width="10%" style="text-align: center">
+                                            <h:outputText value="#{excencion.predio.propietario.apellidos} #{excencion.predio.propietario.nombres}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Porcentaje" width="3%" style="text-align: center">
+                                            <h:outputText value="#{excencion.porcentaje}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Fecha de inicio" width="3%" style="text-align: center">
+                                            <h:outputText value="#{excencion.fechaInicio}"/>
+                                        </p:column>   
+
+                                        <p:column headerText="Fecha de fin" width="3%" style="text-align: center">
+                                            <h:outputText value="#{excencion.fechaFin}"/>
+                                        </p:column> 
+
+                                        <p:column headerText="Observaciones" width="7%" style="text-align: center">
+                                            <h:outputText value="#{excencion.observaciones}"/>
+                                        </p:column>                                         
+
+                                        <f:facet name="footer">
+                                            <!--
+                                            <p:commandButton value="Nuevo" 
+                                                             icon="ui-icon-plus"
+                                                             onclick="PF('dlgRegistrar').show()"/>
+                                            -->
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/excel.png"/>                                            
+                                                <p:dataExporter type="xls" target="tblExcenciones" fileName="excenciones" />
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/pdf.png"/>
+                                                <p:dataExporter type="pdf" target="tblExcenciones" fileName="excenciones"/>
+                                            </h:commandLink>
+
+                                            <h:commandLink>
+                                                <p:graphicImage name="/imagenes/csv.png"/>
+                                                <p:dataExporter type="csv" target="tblExcenciones" fileName="excenciones" />
+                                            </h:commandLink>  
+
+                                        </f:facet>
+                                    </p:dataTable>
+                                </center>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>     
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+
+            </c:when>
+
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-4"></div>
+                        <div class="ui-g-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+
+
+        <ui:include src="dlgNuevaExencion.xhtml"/> 
+        <ui:include src="dlgEditarExencion.xhtml"/> 
+        <ui:include src="dlgEliminarExencion.xhtml"/> 
+    </ui:define>
+</ui:composition>

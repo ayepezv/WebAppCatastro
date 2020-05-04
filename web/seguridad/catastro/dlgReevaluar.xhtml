@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <p:dialog id="dlgReevaluar" widgetVar="wldgReevaluar" closable="true" modal="true" resizable="true" 
+              header="Reevaluar" showEffect="size" hideEffect="size" appendTo="@(body)">
+        <h:form id="frmReevaluar">
+            <center>
+                <b>Clave Catastral:</b>
+                <br/>
+                <h1>#{liquidacionCtrl.objLiquidacion.predio.zona} - #{liquidacionCtrl.objLiquidacion.predio.sector} - #{liquidacionCtrl.objLiquidacion.predio.manzana} - #{liquidacionCtrl.objLiquidacion.predio.numPredio}</h1>
+            </center>
+            <div class="menu-alertas">
+
+                <div class="opcion-alertas">
+                    <p:commandLink action="#{liquidacionCtrl.reevaluarConstruccionDadoPredio()}">
+                        <span class="alertas-icono">z</span>
+                        <div >
+                            <h2 class="titulo">Construcciones</h2>
+                            <h3 class="subtitulo">Reevaluar Construcciones</h3>
+                        </div>
+                    </p:commandLink>
+                </div>
+
+                <div class="opcion-alertas">
+                    <p:commandLink action="#{liquidacionCtrl.reevaluarUsoSueloDadoPredio()}">
+                        <span class="alertas-icono">%</span>
+                        <div >
+                            <h2 class="titulo">Uso del Suelo</h2>
+                            <h3 class="subtitulo">Reevaluar el Valor del Suelo</h3>
+                        </div>
+                    </p:commandLink>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

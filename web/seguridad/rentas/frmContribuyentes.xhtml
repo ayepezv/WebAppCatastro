@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <p:growl autoUpdate="true"/>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == 21}">
+                <div class="ui-g">
+                    <h:form id="frmUsuarios">
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />    
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">                                
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">                                                            
+                            <b>Buscar:</b>
+                            <p:panelGrid columns="8" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Criterio:"/>
+                                <p:inputText id="criterio" value="#{ctContribuyente.strCriterio}" />
+                                <p:commandButton icon="ui-icon-search"
+                                                 action="#{ctContribuyente.obtenerContribuyentes()}"
+                                                 update="frmUsuarios:tblUsuarios"/>
+                                <p:commandButton icon="ui-icon-refresh"
+                                                 action="#{ctContribuyente.limpiar()}"
+                                                 update="frmUsuarios:tblUsuarios,criterio"/>
+                            </p:panelGrid>
+
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <center><h3>Gestión de Contribuyentes</h3></center>
+                            <p:dataTable id="tblUsuarios" var="usuario" value="#{ctContribuyente.lstUsuarios}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,25,30,35,40" reflow="true"
+                                         rowKey="#{usuario.idPersona}" selectionMode="single" selection="#{ctContribuyente.usuarioSel}">
+
+                                <p:column filterBy="#{usuario.cedula}"  headerText="Cédula" width="8%" style="text-align: center"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.cedula}"/>
+                                </p:column>
+
+                                <p:column filterBy="#{usuario.apellidos}"  headerText="Apellidos" width="10%" style="text-align: center"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.apellidos}"/>
+                                </p:column>
+                                <p:column headerText="Nombres" width="10%" style="text-align: center"
+                                          filterBy="#{usuario.nombres}" filterMatchMode="contains">
+                                    <h:outputText value="#{usuario.nombres}"/>
+                                </p:column>
+                                <p:column headerText="Sexo" width="3%" style="text-align: center">
+                                    <h:outputText value="#{usuario.sexo}"/>
+                                </p:column>                                
+                                <p:column headerText="Mail" width="8%" style="text-align: center">
+                                    <h:outputText value="#{usuario.mail}"/>
+                                </p:column>                                                               
+                                <p:column headerText="Celular" width="8%" style="text-align: center">
+                                    <h:outputText value="#{usuario.celular}"/>
+                                </p:column>
+                                <p:column headerText="Dirección" width="10%">
+                                    <h:outputText value="#{usuario.direccionDom}"/>
+                                </p:column>
+
+
+                                <f:facet name="footer">
+
+                                    <h:commandLink title="Exportar a Excel">
+                                        <img src="../../resources/imagenes/excel.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a PDF">                                        
+                                        <img src="../../resources/imagenes/pdf.png" alt="" />                                        
+                                        <p:dataExporter type="pdf" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a CSV">
+                                        <img src="../../resources/imagenes/csv.png" alt="" />                                        
+                                        <p:dataExporter type="xls" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                    <h:commandLink title="Exportar a XML">
+                                        <img src="../../resources/imagenes/xml.png" alt="" />                                        
+                                        <p:dataExporter type="xml" target="tblUsuarios" fileName="Contribuyentes" pageOnly="false" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                        </div> 
+                    </h:form>
+
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">                        
+                        <img src="../../resources/gifs/Loading.gif" alt=""/>
+                    </p:dialog>
+
+                </div>
+            </c:when>
+        </c:choose>
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != 21}">
+                <center>
+                    <h1>Permisos Insuficientes</h1>
+                </center>
+            </c:when>
+        </c:choose>        
+    </ui:define>
+</ui:composition>

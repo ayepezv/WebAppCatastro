@@ -1,0 +1,665 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol == VariablesGlobales.rolCatastro}">
+                <p:growl autoUpdate="true" showDetail="true"/>
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                <h:form id="frmBusquedas">
+                    <center>
+                        <h1>Actualizar Predio</h1>
+                        <div class="ui-g">                        
+                            <div class="ui-g-12 ui-md-12 ui-lg-3">
+                                <div class="card">
+                                    <b>Búsqueda </b>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.band}">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Por Clave Catastral" itemValue="1"/>
+                                        <f:selectItem itemLabel="Por Propietario" itemValue="2"/>
+                                        <p:ajax event="change" listener="#{editarPredioCtrl.limpiar()}" 
+                                                update="pnlBuscarClaveCatastral,pnlBuscarPropietario,tblPredios,frmEditar,pnlBuscarDefecto"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-9">
+                                <div class="card">
+                                    <p:panel id="pnlBuscarDefecto" visible="#{editarPredioCtrl.band==0}" style="border: none">
+                                        <center><h3>Seleccione una opción</h3></center>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarClaveCatastral" visible="#{editarPredioCtrl.band==1}" style="border: none">
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">                                        
+                                            <p:outputLabel value="Zona:"/>
+                                            <p:outputLabel value="Sector:"/>
+                                            <p:outputLabel value="Manzana:"/>
+                                            <p:outputLabel value="Predio:"/>
+                                            <h:inputText id="zona" value="#{editarPredioCtrl.zona}" style="width: 35%"/>                                            
+                                            <h:inputText id="sector" value="#{editarPredioCtrl.sector}" style="width: 35%"/>                                            
+                                            <h:inputText id="manzana" value="#{editarPredioCtrl.manzana}" style="width: 35%"/>                                            
+                                            <h:inputText id="predio" value="#{editarPredioCtrl.numPredio}" style="width: 35%"/>                                                                                    
+                                        </p:panelGrid>
+                                        <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                         action="#{editarPredioCtrl.buscarPredios()}"
+                                                         update="tblPredios"/>
+                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                         action="#{editarPredioCtrl.limpiar()}"
+                                                         update="tblPredios, frmEditar,@form"/>
+                                    </p:panel>
+
+                                    <p:panel id="pnlBuscarPropietario" visible="#{editarPredioCtrl.band==2}" style="border: none">
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                            <h:outputText value="Apellidos/Cédula:"/>
+                                            <p:inputText value="#{editarPredioCtrl.cedula}"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{editarPredioCtrl.obtenerPredioPorCedula()}"
+                                                             update="tblPredios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-refresh"
+                                                             action="#{editarPredioCtrl.limpiar()}"
+                                                             update="tblPredios,@form,frmEditar"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+
+
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="card">
+                                    <p:dataTable id="tblPredios" var="predio" value="#{editarPredioCtrl.lstPredios}" rows="10"
+                                                 paginator="true"  emptyMessage="No se han encontrado registros" 
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{predio.idPredio}"
+                                                 editable="true" selection="#{editarPredioCtrl.objPredio}" selectionMode="single">  
+
+                                        <f:facet name="header">
+                                            <b>Predios Vinculados</b>
+                                        </f:facet>
+                                        <p:column headerText="Clave Catastral" width="8%" style="text-align: center">
+                                            <h:outputText value="#{predio.claveCatastral}"/>
+                                        </p:column>
+                                        <p:column headerText="Cédula/RUC" width="8%" style="text-align: center">
+                                            <h:outputText value="#{predio.propietario.cedula}"/>
+                                        </p:column>
+                                        <p:column headerText="Propietario" width="8%" style="text-align: center">
+                                            <h:outputText value="#{predio.propietario.apellidos} #{predio.propietario.nombres}"/>
+                                        </p:column>
+                                        <p:column headerText="Dirección" width="12%">
+                                            <h:outputText value="#{predio.callePrinc} y #{predio.calleSecund}, #{predio.numCasa}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Editar" width="4%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-pencil"
+                                                             update="frmEditar"
+                                                             onclick="#{editarPredioCtrl.cambiarEstadoBand()}">
+                                                <f:setPropertyActionListener value="#{predio}" target="#{editarPredioCtrl.objPredio}"/>
+                                            </p:commandButton>
+                                        </p:column> 
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+
+                </h:form>
+
+                <h:form id="frmEditar" style="visibility: #{editarPredioCtrl.estadoForm}">
+                    <p:messages autoUpdate="true"/>
+                    <center><h3>Datos a actualizar:</h3></center>
+                    <div class="ui-g">                        
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <div class="card">
+                                <b>Ubicación</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:outputLabel value="Barrio:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.barrio}"
+                                                     effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{editarPredioCtrl.lstBarrios}" var="barrio" 
+                                                       itemLabel="#{barrio.nombre}" itemValue="#{barrio.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Calle principal: "/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.callePrinc}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">                                        
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{editarPredioCtrl.lstCalles}" var="calle"
+                                                       itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Entre: "/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.calleSecund}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{editarPredioCtrl.lstCalles}" var="calleSec"
+                                                       itemLabel="#{calleSec.nombre}" itemValue="#{calleSec.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Número:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.numCasa}" style="width: 85%"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputLabel value="Nombre del edificio:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.nombreEdificio}" placeholder="Ej. Residencia Yépez"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <div class="card">
+                                <b>Identificación Legal</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:outputLabel value="Situación Legal:"/>
+                                    <p:selectOneMenu id="cmbLegalizado" value="#{editarPredioCtrl.objPredio.legalizado}"
+                                                     effect="fold" required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Legalizado" itemValue="true"/>
+                                        <f:selectItem itemLabel="No Legalizado" itemValue="false"/>
+                                    </p:selectOneMenu>                                    
+                                    <h:outputLabel value="Propietario:"/>
+                                    <h:outputLabel value="#{editarPredioCtrl.objPredio.propietario.nombres} #{editarPredioCtrl.objPredio.propietario.apellidos}"
+                                                   />
+                                    <h:outputLabel value="Representant Legal:"/>
+                                    <h:outputLabel value="#{editarPredioCtrl.objPredio.repLegal.nombres} #{editarPredioCtrl.objPredio.repLegal.apellidos}"
+                                                   />                                    
+                                    <p:outputLabel value="Excenciones especiales:"/>
+                                    <p:outputLabel value="#{editarPredioCtrl.objPredio.excencionEspecial}" />
+                                    <h:outputLabel value="Porcentaje: " id="otxtPorcentaje"/>
+                                    <h:outputLabel value="#{editarPredioCtrl.objPredio.porcentajeExcencion}" id="txtExcencion"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <div class="card">
+                                <b>Régimen de tenencia:</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">                                   
+                                    <p:outputLabel value="Dominio:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.dominio.idDominio}" effect="fold"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">   
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{registrarPredioCtrl.lstDominios}" var="dominio"
+                                                       itemLabel="#{dominio.dominio}" itemValue="#{dominio.idDominio}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Condición:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.condicion}" effect="fold" 
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor"> 
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="Propietario" itemValue="PROPIETARIO"/>
+                                        <f:selectItem itemLabel="Poseedor" itemValue="POSEEDOR"/>
+                                        <f:selectItem itemLabel="Arrendatario" itemValue="ARRENDATARIO"/>
+                                        <f:selectItem itemLabel="Usufructuario" itemValue="USUFRUCTUARIO"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Forma de Adq:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.formaAdq}" effect="fold" 
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">                                                
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{editarPredioCtrl.lstFormasAdquisicion}" var="forma"
+                                                       itemLabel="#{forma.formaAdq}" itemValue="#{forma.formaAdq}"/>
+                                    </p:selectOneMenu>                                    
+                                </p:panelGrid>
+                            </div>                                
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <div class="card">
+                                <b>Título de propiedad:</b>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Notaría N°: "/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.notaria}" placeholder="Ej. Notaría 7"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <p:outputLabel value="Fecha: "/>
+                                    <p:calendar id="txtFecha" value="#{editarPredioCtrl.objPredio.fechaTituloProp}" 
+                                                navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="dd/MM/yyyy"
+                                                required="true" requiredMessage="Ingrese un valor"/>                                                                         
+                                    <p:outputLabel value="Fecha de Registro: "/>
+                                    <p:calendar id="txtFechaRegistro" value="#{editarPredioCtrl.objPredio.fechaRegistroPredio}" 
+                                                navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="dd/MM/yyyy"
+                                                required="true" requiredMessage="Ingrese un valor"/>                                                
+                                    <p:outputLabel value="Área de la escritura: "/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.areaEscritura}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>                                                                                              
+                                    <p:outputLabel value="Cuantía: "/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.avaluoProp}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <p:outputLabel value="Propietario anterior: "/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.propAnterior}" placeholder="Ej. Ángel Cudco"
+                                                 required="true" requiredMessage="Ingrese un valor"/>  
+                                </p:panelGrid>
+                            </div>                                
+                        </div>
+
+                        <b>Descripcion del Terrero</b>
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">                                                                                                        
+                            <div class="ui-g-12 ui-md-6 ui-lg-4">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Gestión:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.usoSueloGestion}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">   
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="Inst. publ." itemValue="INSTITUCIÓN PUBLICA"/>
+                                        <f:selectItem itemLabel="Inst. priv." itemValue="INSTITUCIÓN PRIVADA"/>                                
+                                        <f:selectItem itemLabel="Otros." itemValue="OTROS"/>   
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Consumo:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.usoSueloConsumo}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor"> 
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="Residencial" itemValue="RESIDENCIAL"/>
+                                        <f:selectItem itemLabel="Salud" itemValue="SALUD"/>                                
+                                        <f:selectItem itemLabel="Reacreación" itemValue="RECREACION"/>                                
+                                        <f:selectItem itemLabel="Educación" itemValue="EDUCACION"/>                                
+                                        <f:selectItem itemLabel="Culto" itemValue="CULTO"/>                                
+                                        <f:selectItem itemLabel="Turismo" itemValue="TURISMO"/>  
+                                        <f:selectItem itemLabel="Ninguno" itemValue="NINGUNO"/> 
+                                        <f:selectItem itemLabel="Otros" itemValue="OTROS"/> 
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Topografía:"/>    
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.topografiaPredio}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstTopografia}" var="topografia"
+                                                       itemLabel="#{topografia.coeficiente}" itemValue="#{topografia.coeficiente}"/>                                                                                                                         
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6 ui-lg-4">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Intercambio:"/>    
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.usoSuelIntercambio}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItem itemLabel="Comercio" itemValue="COMERCIO"/>
+                                        <f:selectItem itemLabel="Transporte" itemValue="TRANSPORTE"/>                                
+                                        <f:selectItem itemLabel="Comunicación" itemValue="COMUNICACION"/>                              
+                                        <f:selectItem itemLabel="Ninguno" itemValue="NINGUNO"/> 
+                                        <f:selectItem itemLabel="Otros" itemValue="OTROS"/>  
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Producción:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.usoSuelProduc}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">                                                
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="Industrial" itemValue="INDUSTRIAL"/>
+                                        <f:selectItem itemLabel="Agropecuario" itemValue="AGROPECUARIO"/>    
+                                        <f:selectItem itemLabel="Ninguno" itemValue="NINGUNO"/> 
+                                        <f:selectItem itemLabel="Otros" itemValue="OTROS"/> 
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Forma:"/>  
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.formaPredio}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItem itemLabel="Regular" itemValue="REGULAR"/>
+                                        <f:selectItem itemLabel="Irregular" itemValue="IRREGULAR"/>
+                                        <f:selectItem itemLabel="Muy iregular" itemValue="MUY IRREGULAR"/>
+                                        <f:selectItem itemLabel="Ninguno" itemValue="NINGUNO"/> 
+                                        <f:selectItem itemLabel="Otros" itemValue="OTROS"/> 
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-6 ui-lg-4">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Ocupación:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.ocupacionPredio}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">  
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItem itemLabel="No edificado" itemValue="NO EDIFICADO"/>
+                                        <f:selectItem itemLabel="En construcción" itemValue="EN CONSTRUCCION"/>                                                                                          
+                                        <f:selectItem itemLabel="Edificado" itemValue="EDIFICADO"/>
+                                        <f:selectItem itemLabel="Ninguno" itemValue="NINGUNO"/> 
+                                        <f:selectItem itemLabel="Otros" itemValue="OTROS"/> 
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Localización:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.localizacionPredio}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor"> 
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{registrarPredioCtrl.lstLocalizacion}" var="localizacion"
+                                                       itemLabel="#{localizacion.coeficiente}" itemValue="#{localizacion.coeficiente}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Caract. del suelo:"/>  
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.caracteristSuelo}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItem itemLabel="Seco" itemValue="SECO"/>
+                                        <f:selectItem itemLabel="Húmedo" itemValue="HUMEDO"/>
+                                        <f:selectItem itemLabel="Inundable" itemValue="INUNDABLE"/>
+                                        <f:selectItem itemLabel="Cenagoso" itemValue="CENAGOSO"/>
+                                        <f:selectItem itemLabel="Ninguno" itemValue="NINGUNO"/> 
+                                        <f:selectItem itemLabel="Otros" itemValue="OTROS"/> 
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </div>
+
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <div class="card">
+                                <b>Infraestructura y Servicios</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Uso vías:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.usoVias}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstUsoVias}" var="vias"
+                                                       itemLabel="#{vias.coeficiente}" itemValue="#{vias.coeficiente}"/>  
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Material vías:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.materialVias}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstMaterialVial}" var="matVial"
+                                                       itemLabel="#{matVial.coeficiente}" itemValue="#{matVial.coeficiente}"/>  
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Red de agua:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.redAgua}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstRedesAguaPotable}" var="aguaPot"
+                                                       itemLabel="#{aguaPot.coeficiente}" itemValue="#{aguaPot.coeficiente}"/>  
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Alcantarillado:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.alcantarillado}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstAlcantarilaldo}" var="alcant"
+                                                       itemLabel="#{alcant.coeficiente}" itemValue="#{alcant.coeficiente}"/>                               
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Energía eléctrica:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.energElectric}"
+                                                     effect="fold" filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstEnergElectrica}" var="energElectr"
+                                                       itemLabel="#{energElectr.coeficiente}" itemValue="#{energElectr.coeficiente}"/>     
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <div class="card">
+                                <b>Otros Servicios</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:outputLabel value="Red telefónica:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.redTelefon}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Rec. basura:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.recBasura}"  columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Transp. público:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.transpPublico}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Internet"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.internet}"  columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Otro:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.otrosServicios}" placeholder="Ej. TV Satelital"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <b>Características de la Edificación</b>
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">                                                                
+                                <b>Instalaciones especiales:</b>
+                                <p:panelGrid columns="12" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <p:outputLabel value="Patio:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.patio}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Cerramiento:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.cerramiento}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Muros:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.muros}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Piscina:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.piscina}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Cisterna:"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.cisterna}"  columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="Ascensor"/>
+                                    <p:selectOneRadio value="#{editarPredioCtrl.objPredio.ascensor}" columns="2"
+                                                      required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="Si" itemValue="SI TIENE" />
+                                        <f:selectItem itemLabel="No" itemValue="NO TIENE" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="N° de baños:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.numBanios}" 
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">                                                                
+                                <b>Linderos</b>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:outputText value="Frente 1:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoFrente1}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Frente 2:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoFrente2}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Frente 3:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoFrente3}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Frente 4:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoFrente4}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Calle 1:"/>
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.linderoCalle1}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor">
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>                                                
+                                        <f:selectItems value="#{registrarPredioCtrl.lstCalles}" var="calle"
+                                                       itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                                    </p:selectOneMenu>                                
+                                    <h:outputText value="Calle 2:"/>                                
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.linderoCalle2}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor"> 
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{registrarPredioCtrl.lstCalles}" var="calle"
+                                                       itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                                    </p:selectOneMenu>     
+                                    <h:outputText value="Calle 3:"/>                                
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.linderoCalle3}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor"> 
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{registrarPredioCtrl.lstCalles}" var="calle"
+                                                       itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                                    </p:selectOneMenu>    
+                                    <h:outputText value="Calle 4:"/>                                
+                                    <p:selectOneMenu value="#{editarPredioCtrl.objPredio.linderoCalle4}" effect="fold" editable="true"
+                                                     filter="true" filterMatchMode="contains"
+                                                     required="true" requiredMessage="Ingrese un valor"> 
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="#{null}"/>
+                                        <f:selectItems value="#{registrarPredioCtrl.lstCalles}" var="calle"
+                                                       itemLabel="#{calle.nombre}" itemValue="#{calle.nombre}"/>
+                                    </p:selectOneMenu>  
+                                    <h:outputText value="Alicuota 1:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoAlicuota1}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Alicuota 2:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoAlicuota2}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Alicuota 3:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoAlicuota3}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Alicuota 4:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.linderoAlicuota4}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Derechos y Acciones:"/>
+                                    <p:inputText value="0.0"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <div class="card">                                                                
+                                <b>Colindantes</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <p:outputLabel value="Norte:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.colindantNorte}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <p:outputLabel value="Sur:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.colindantSur}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <p:outputLabel value="Este:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.colindantEste}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <p:outputLabel value="Oeste:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.colindantOeste}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                </p:panelGrid>
+
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <div class="card"> 
+                                <b>Referencias cartográficas</b>                                    
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:outputText value="Topografía:"/>
+                                    <p:inputTextarea value="#{editarPredioCtrl.objPredio.topografiaRefTopog}"
+                                                     required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Otros:"/>
+                                    <p:inputTextarea value="#{editarPredioCtrl.objPredio.otraRefTopog}"
+                                                     required="true" requiredMessage="Ingrese un valor"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">  
+                                <b>Coordenadas planas de referencia</b>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:outputText value="Coordenada E:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.coordenadaE}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Coordenada N:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.coordenadaN}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <div class="card"> 
+                                <b>Observaciones</b>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:outputText value="Información proporcionada:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.fuenteInformante}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>
+                                    <h:outputText value="Telef. referencia:"/>
+                                    <p:inputText value="#{editarPredioCtrl.objPredio.telfInformante}"
+                                                 required="true" requiredMessage="Ingrese un valor"/>                                
+                                    <h:outputText value="Observaciones:"/>
+                                    <p:inputTextarea value="#{editarPredioCtrl.objPredio.observaciones}"
+                                                     required="true" requiredMessage="Ingrese un valor"/>   
+                                    <h:outputText value="Motivo de la Actualización"/>
+                                    <p:inputTextarea value="#{editarPredioCtrl.objPredio.sustentoUpdate}"
+                                                     required="true" requiredMessage="Ingrese un valor"/> 
+                                </p:panelGrid> 
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">
+                                <center>
+                                    <p:commandButton value="Aceptar" icon="ui-icon-save"
+                                                     action="#{editarPredioCtrl.editarPredio()}"
+                                                     update="@form,frmBusquedas"/>
+                                    <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                                     action="#{editarPredioCtrl.limpiar()}"
+                                                     update="@form,frmBusquedas"
+                                                     process="@this"/>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>          
+            </c:when>
+        </c:choose>
+
+        <c:choose>
+            <c:when  test="#{sessionScope.idRol != VariablesGlobales.rolCatastro}">
+                <center>    
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <h1>Error</h1>
+                                <h3>Permisos Insuficientes</h3>
+                                <b>Consulte con el administrador</b>
+                            </div> 
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4"></div>
+                    </div>
+                </center>
+            </c:when>
+        </c:choose>
+    </ui:define>
+</ui:composition>

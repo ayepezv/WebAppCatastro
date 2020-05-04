@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:body>
+        <ui:composition template="../../../WEB-INF/templates/interna/template.xhtml">
+            <ui:define name="title">Menú Coeficientes</ui:define>
+            <ui:define name="content">
+                <h:form id="frmPrincipal">
+                    <p:messages autoUpdate="true" showDetail="true"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+                    <center><h1>Cambios en la Tabla Predios</h1></center>
+                    <div class="ui-g"> 
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <div class="card">
+                                <b>Buscar</b>
+                                <p:selectOneMenu value="#{ctrlCambiosPredios.band}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Busqueda global" itemValue="1"/>
+                                    <f:selectItem itemLabel="Busqueda por predios" itemValue="1"/>
+                                    <p:ajax event="change" update="pnlGlobal,pnlDefecto"/>
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-12 ui-lg-8">
+                            <div class="card">
+                                <center>
+                                    <p:panel id="pnlDefecto" visible="#{ctrlCambiosPredios.band==0}" style="border: none">
+                                        <h3>Seleccione el filtro de búsqueda</h3>
+                                    </p:panel>
+                                    <p:panel id="pnlGlobal" visible="#{ctrlCambiosPredios.band==1}" style="border: none">
+                                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                                            <p:calendar id="fechaInicio" value="#{ctrlCambiosPredios.fechaInicio}" 
+                                                        navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                        maxdate="#{sessionScope.fechaActual}"
+                                                        showOn="button"/>
+                                            <p:calendar id="fechaFin" value="#{ctrlCambiosPredios.fechaFin}" 
+                                                        navigator="true" pattern="dd/MM/yyyy" locale="es" placeholder="Ej. 25/05/2017"
+                                                        maxdate="#{sessionScope.fechaActual}"
+                                                        showOn="button"/>
+                                            <p:commandButton value="Buscar" icon="ui-icon-search"
+                                                             action="#{ctrlCambiosPredios.obtenerCambios()}"
+                                                             update="tblCambios"/>
+                                            <p:commandButton value="Limpiar" icon="ui-icon-clear"
+                                                             action="#{ctrlCambiosPredios.obtenerCambios()}"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+
+                                </center>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">
+                                <p:dataTable id="tblCambios" var="cambio" value="#{ctrlCambiosPredios.lstCambios}" rows="10"
+                                             paginator="true"  emptyMessage="No se han encontrado registros" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,15,20,25" reflow="true" rowKey="#{cambio.idLog}"
+                                             editable="true" selection="#{ctrlCambiosPredios.predioSel}" selectionMode="single">
+
+                                    <p:column headerText="Fecha" width="5%" style="text-align: center">
+                                        <h:outputText value="#{cambio.fecha}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Clave Catastral" width="5%" style="text-align: center">
+                                        <h:outputText value="#{cambio.predio.zona} - #{cambio.predio.sector} - #{cambio.predio.manzana} - #{cambio.predio.numPredio}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Accion Realizada" width="5%" style="text-align: center">
+                                        <h:outputText value="#{cambio.accion}"/>
+                                    </p:column>
+                                    <p:column headerText="Usuario Sistema" width="5%" style="text-align: center">
+                                        <h:outputText value="#{cambio.predio.sessionUsuario.nombres} #{cambio.predio.sessionUsuario.apellidos}"/>
+                                    </p:column>
+                                </p:dataTable>                                                                        
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+                    <img src="../../../resources/gifs/Loading.gif" alt=""/>                        
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../WEB-INF/templates/interna/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="frmTipoObras">
+            <p:growl id="grlMessages" autoUpdate="true" showDetail="true"/>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card">                 
+                        <center>                                                                                   
+                            <p:dataTable id="tblActivos" var="tipObra" value="#{controladorConfigMejoras.lsTipoObras}" rows="10"
+                                         paginator="true"  emptyMessage="No se han encontrado registros" 
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" rowKey="#{tipObra.idTipoObra}"
+                                         selection="#{controladorConfigMejoras.tipoObraSel}" selectionMode="single">
+                                <f:facet name="header">
+                                    <b>Tipos de Obras</b> 
+                                </f:facet>
+                                <p:column headerText="Tipo de Obra" width="10%">
+                                    <p:outputLabel value="#{tipObra.tipoObra}"/>
+                                </p:column>
+                                <p:column headerText="Descripción" width="15%">
+                                    <p:outputLabel value="#{tipObra.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="Fecha de registro" width="10%" style="text-align: center">
+                                    <p:outputLabel value="#{tipObra.fechaRegistro}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy -- HH:mm:ss" />
+                                    </p:outputLabel>
+                                </p:column>
+
+                                <c:choose>  
+                                    <c:when  test="#{sessionScope.privUpdate == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Editar" width="5%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-mode-edit"/>
+                                        </p:column>
+                                    </c:when> 
+                                </c:choose>
+
+                                <c:choose>  
+                                    <c:when  test="#{sessionScope.privDelete == VariablesGlobales.privActivo}">
+                                        <p:column headerText="Eliminar" width="5%" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-delete"/>
+                                        </p:column>
+                                    </c:when> 
+                                </c:choose>
+
+                                <f:facet name="footer">
+                                    <c:choose>                                                                                            
+                                        <c:when  test="#{sessionScope.privInsert == VariablesGlobales.privActivo}">
+                                            <p:commandButton value="Registrar" icon="ui-icon-note-add"
+                                                             onclick="PF('dlgRegistrar').show()"
+                                                             update="frmRegistrarTipoObra"/>
+                                        </c:when>
+                                    </c:choose> 
+                                </f:facet>
+                            </p:dataTable>
+                        </center>
+                    </div>
+                </div>                
+            </div>
+        </h:form>
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="true" header="Procesando">
+            <img src="../../resources/gifs/Loading.gif" alt=""/>                        
+        </p:dialog>
+        <ui:include src="frmRegistrarTipoObra.xhtml"/>   
+    </ui:define>
+</ui:composition>

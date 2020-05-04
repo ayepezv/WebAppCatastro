@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:body>
+        <ui:composition template="../../WEB-INF/templates/interna/template.xhtml">
+            <ui:define name="title">Menú Repositorio</ui:define>
+            <ui:define name="content">
+                <center>
+                    <h1>Repositorio</h1>
+                </center>
+                <div class="menu-alertas">
+
+                    <div class="opcion-alertas">                                                                            
+                        <a href="/WebAppCatastro/seguridad/catastro/frmRepositorioImagenes.sigcat">
+                            <span class="alertas-icono">%</span>
+                            <div >
+                                <h2 class="titulo">Repositorio de imágenes</h2>
+                                <h3 class="subtitulo">Imágenes pediales</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="opcion-alertas">                                                                            
+                        <a href="/WebAppCatastro/seguridad/catastro/frmRepositorioDocumentos.sigcat">
+                            <span class="alertas-icono">6</span>
+                            <div >
+                                <h2 class="titulo">Repositorio de documentos</h2>
+                                <h3 class="subtitulo">Documentos importantes</h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
